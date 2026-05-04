@@ -1255,137 +1255,210 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--green); out
 
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   HERO — DARK SECTION + 2-COLUMN LAYOUT
-   Matches the anime.js demo structure: content LEFT, sphere RIGHT.
-   All sub-elements override their base (light-bg) colors for this dark section.
+   HERO — KINETIC TYPOGRAPHY
 ══════════════════════════════════════════════════════════════════════════════ */
 
-.hero-dark {
-  background: #0B1A12;
+.hero-kinetic {
+  min-height: calc(100vh - 62px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 48px 80px;
+  text-align: center;
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
 }
 
-/* 2-column grid: content | sphere visual */
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  padding: 84px 0 56px;
-  min-height: 560px;
-  align-items: center;
-}
-
-@media (max-width: 860px) {
-  .hero-grid { grid-template-columns: 1fr; min-height: auto; padding-bottom: 320px; }
-  .hero-sphere-col { display: none; }
-}
-
-.hero-content { position: relative; z-index: 2; }
-
-/* Sphere visual column — sphere renders in #hero-bg behind this */
-.hero-sphere-col {
+.kin-stage {
   position: relative;
-  min-height: 440px;
-  z-index: 1;
-  /* Optional: faint vertical rule separating columns */
-  /* border-left: 1px solid rgba(255,255,255,0.06); */
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 52px;
 }
 
-/* Text overrides for dark background */
-.hero-dark .label      { color: rgba(61,214,140,0.75); letter-spacing: 0.2em; }
-.hero-dark .hero-label { margin-bottom: 24px; }
-
-.hero-dark .hero-headline {
-  color: #EAE8E2;
-  font-size: clamp(36px, 5vw, 66px);
-  margin-bottom: 28px;
+.word-silent {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(72px, 14vw, 180px);
+  font-weight: 200;
+  font-style: italic;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  color: rgba(12,11,9,0.07);
+  animation: word1 3.5s var(--ease) forwards;
+  transform-origin: left center;
+}
+.word-or {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(18px, 3vw, 36px);
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.05em;
+  color: var(--light);
+  margin: 8px 0;
+  animation: word2 3.5s var(--ease) 0.18s forwards;
+  opacity: 0;
+}
+.word-burning {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(72px, 14vw, 180px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  color: #5C1A0A;
+  animation: word3 3.5s var(--ease) 0.36s forwards;
+  opacity: 0;
 }
 
-.hero-dark .hero-headline em { color: #3DD68C; }
-
-.hero-dark .hero-sub-text {
-  font-size: 16.5px;
-  line-height: 1.65;
-  color: rgba(255,255,255,0.48);
-  margin-bottom: 36px;
-  max-width: 480px;
+@keyframes word1 {
+  0%   { opacity: 0; transform: translateY(40px) skewX(-3deg); }
+  20%  { opacity: 1; transform: translateY(0) skewX(0); }
+  70%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.96); }
+}
+@keyframes word2 {
+  0%   { opacity: 0; transform: translateX(-20px); }
+  30%  { opacity: 1; transform: translateX(0); }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes word3 {
+  0%   { opacity: 0; transform: translateY(40px) skewX(3deg); }
+  20%  { opacity: 1; transform: translateY(0) skewX(0); }
+  70%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.96); }
 }
 
-.hero-dark .hero-sub-text p + p { margin-top: 12px; }
-
-/* Form on dark bg */
-.hero-dark .domain-field {
-  color: #EAE8E2;
-  border-bottom-color: rgba(255,255,255,0.22);
-}
-
-.hero-dark .domain-field::placeholder { color: rgba(255,255,255,0.28); }
-.hero-dark .domain-field:focus { border-bottom-color: #3DD68C; }
-
-/* Submit button on dark bg — inverted to stand out */
-.hero-dark .btn-submit {
-  color: #0B1A12;
-  background: #EAE8E2;
-  border-color: #EAE8E2;
-}
-
-.hero-dark .btn-submit:hover {
-  background: #3DD68C;
-  border-color: #3DD68C;
-}
-
-/* Trust note on dark bg */
-.hero-dark .trust-note { color: rgba(255,255,255,0.28); }
-
-/* Stats bar on dark bg */
-.hero-dark .stats-bar {
-  border-top-color: rgba(255,255,255,0.08);
-}
-
-.hero-dark .stat-cell {
-  border-right-color: rgba(255,255,255,0.08);
-  padding-top: 24px;
-  padding-bottom: 30px;
-}
-
-.hero-dark .stat-num  { color: #EAE8E2; }
-.hero-dark .stat-label{ color: rgba(255,255,255,0.4); }
-
-/* Underline path on dark bg — make it light */
-.hero-dark .draw-path { stroke: rgba(255,255,255,0.15); }
-
-/* ── SPHERE ──────────────────────────────────────────────────────────────── */
-#hero-bg {
+.headline-wrap {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  animation: reveal-headline 1.2s var(--ease) 3s forwards;
+}
+@keyframes reveal-headline {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
 }
 
-/* Normal latitude rings */
-.bg-draw-path {
-  fill: none;
-  stroke: rgba(61, 214, 140, 0.38);
-  stroke-width: 1.1;
-  vector-effect: non-scaling-stroke;
+.pre-headline {
+  font-family: var(--body);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pre-headline::before, .pre-headline::after {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--rule);
 }
 
+.kin-headline {
+  font-family: var(--serif);
+  font-size: clamp(40px, 6vw, 80px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  color: var(--ink);
+  max-width: 800px;
+  text-align: center;
+}
+.kin-headline em { font-style: italic; color: var(--mid); }
+.kin-headline strong { font-weight: 400; color: var(--ink); }
 
-/* Sphere paths: default to visible (fully drawn) before JS applies animation.
-   Anime.js will override these via stroke-dasharray/dashoffset once running. */
-.bg-draw-path {
-  stroke-dasharray: none;
+.form-wrap {
+  width: 100%;
+  max-width: 480px;
+  opacity: 0;
+  animation: reveal-form 1s var(--ease) 3.5s forwards;
+}
+@keyframes reveal-form {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.form-inner { display: flex; gap: 0; }
+.domain-input {
+  flex: 1;
+  font-family: var(--body);
+  font-size: 15px;
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  border-right: none;
+  padding: 14px 18px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.domain-input::placeholder { color: var(--light); }
+.domain-input:focus { border-color: var(--green); }
+.btn-score {
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 14px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-score:hover { background: var(--green); border-color: var(--green); }
+.form-note {
+  font-size: 11.5px;
+  color: var(--light);
+  font-style: italic;
+  text-align: center;
+  margin-top: 12px;
 }
 
-/* Equatorial accent rings (middle 4) — brighter */
-.bg-draw-path.equator {
-  stroke: rgba(61, 214, 140, 0.72);
-  stroke-width: 1.6;
+.hero-stats {
+  display: flex;
+  gap: 48px;
+  margin-top: 52px;
+  opacity: 0;
+  animation: reveal-form 1s var(--ease) 3.8s forwards;
 }
-
+.hero-stat { text-align: center; }
+.hero-stat-n {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+}
+.hero-stat-l {
+  font-size: 11px;
+  color: var(--mid);
+  letter-spacing: 0.04em;
+  margin-top: 5px;
+}
+.hero-stat-div { width: 1px; background: var(--rule); align-self: stretch; }
+.hero-bottom-rule {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--rule);
+}
 
 /* ─── EMIR ONE LOGO ──────────────────────────────────────────────────────────
    Inline SVG logo: EMIR (wide-tracked serif) + rule + "one" (script) + wave.
@@ -1407,6 +1480,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--green); out
   stroke-width: 0.65;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
+  opacity: 0.35;
 }
 
 /* Logo in dark footer/hero: invert text, lighten wave */
@@ -1418,27 +1492,6 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--green); out
 
 .logo-on-dark .lw {
   stroke: rgba(61,214,140,0.55);
-}
-
-/* ─── HERO BACKGROUND SPHERE ───────────────────────────────────────────────────
-   Latitude-ring orbital sphere drawn by Anime.js createDrawable + onScroll.
-   13 concentric elliptical arcs. Tilt = 26° (viewed slightly from above).
-   Stroke is a very faint green — visible enough to feel, not loud enough to
-   distract from the editorial content above it.
-   ─────────────────────────────────────────────────────────────────────────── */
-#hero-bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.bg-draw-path {
-  fill: none;
-  stroke: rgba(61, 214, 140, 0.10);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
 }
 
 /* ─── ANIME.JS DRAW PATHS ──────────────────────────────────────────────────── */
@@ -1591,12 +1644,6 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
 /* Ensure sticky header still works with Lenis */
 .site-header { transform: translateZ(0); }
 
-/* GPU-accelerate the sphere group — buttery rotation */
-#sphere-group {
-  will-change: transform;
-  transform-origin: center;
-}
-
 /* Reduced motion override */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -1604,33 +1651,10 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
     animation-duration: 0.01ms !important;
   }
   .reveal, .stagger > * { opacity: 1; transform: none; }
-}
-
-
-/* ══ SPHERE RING FLOW — pure GPU animation ══════════════════════════════════
-   Each ring's stroke-dashoffset animates from 0 to -path-length over 12s.
-   Because the animation is GPU-composited, it runs at 60fps+ with zero
-   main-thread cost. The `calc()` with --path-len is set by JS per ring.
-══════════════════════════════════════════════════════════════════════════════ */
-
-@keyframes ringFlow {
-  from { stroke-dashoffset: 0; }
-  to   { stroke-dashoffset: calc(var(--path-len, 100) * -1px); }
-}
-
-.bg-draw-path {
-  animation: ringFlow 14s linear infinite;
-  will-change: stroke-dashoffset;
-}
-
-/* Equatorial rings flow slightly slower (feels weightier) */
-.bg-draw-path.equator {
-  animation-duration: 18s;
-}
-
-/* Honor reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-  .bg-draw-path { animation: none; }
+  .word-silent, .word-or, .word-burning { animation: none; opacity: 1; }
+  .headline-wrap, .form-wrap, .hero-stats { animation: none; opacity: 1; }
+  .headline-wrap { position: relative; }
+  .word-silent, .word-or, .word-burning { display: none; }
 }
 
 </style>
@@ -1680,7 +1704,6 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
     </a>
     <div class="hdr-right">
       <span class="live-dot" aria-hidden="true"></span>
-      <span>All systems 10&thinsp;/&thinsp;10</span>
     </div>
   </div>
 </header>
@@ -1688,67 +1711,50 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
 <main id="top">
 
 <!-- ─── HERO ──────────────────────────── -->
-<section class="hero-dark" aria-label="Hero: Free Deliverability Health Score">
-  <!-- Sphere drawn by Anime.js buildSphere() — absolutely positioned behind everything -->
-  <div id="hero-bg" aria-hidden="true"></div>
+<section class="hero-kinetic" aria-label="Hero: Free Deliverability Health Score">
 
-  <div class="w">
-    <div class="hero-grid">
+  <!-- Phase 1: kinetic words -->
+  <div class="kin-stage" style="height: clamp(280px, 40vh, 480px);">
+    <span class="word-silent">Silent.</span>
+    <span class="word-or">&mdash; or &mdash;</span>
+    <span class="word-burning">Burning.</span>
 
-      <!-- LEFT: all content -->
-      <div class="hero-content">
-        <div class="hero-label">
-          <span class="label">Phase 0 &middot; Free Deliverability Health Score</span>
-        </div>
-
-        <h1 class="hero-headline reveal">
-          Get Your Sending Domain Into the <em>Primary&nbsp;Inbox</em> &mdash; Starting With a Free Health Score
-        </h1>
-        <!-- Draw path #1: hero headline underline -->
-        <svg class="path-svg" aria-hidden="true" viewBox="0 0 1 1" preserveAspectRatio="none" style="margin-bottom:28px;">
-          <path class="draw-path" id="draw-hero" d="M 0 0.5 L 1 0.5"/>
-        </svg>
-
-        <div class="hero-sub-text reveal reveal-delay-1">
-          <p>Your MX, SPF, DKIM, and DMARC records, graded against the 2026 Gmail and Yahoo enforcement standards. 15-minute Loom. Three-point fix list. No email gate. No sales call required.</p>
-          <p>If your domain isn&rsquo;t configured correctly, your outbound isn&rsquo;t ignored &mdash; it&rsquo;s invisible.</p>
-        </div>
-
-        <form class="form-group reveal reveal-delay-2" id="healthForm" novalidate>
-          <label for="domain" class="label" style="margin-bottom:6px;">Your sending domain</label>
-          <input id="domain" name="domain" class="domain-field" type="text" inputmode="url" autocomplete="off" placeholder="yourfirm.com.au" aria-describedby="trust-note" required>
-          <button type="submit" class="btn-submit">
-            <span>See If My Domain Is Ready</span>
-            <span class="arr" aria-hidden="true">&rarr;</span>
-          </button>
-          <p class="trust-note" id="trust-note">We don&rsquo;t store your domain. We don&rsquo;t add you to a list. The Loom arrives in your inbox in 15&thinsp;min &mdash; that&rsquo;s it.</p>
-        </form>
-      </div>
-
-      <!-- RIGHT: sphere visual column (sphere renders in #hero-bg behind this) -->
-      <div class="hero-sphere-col" aria-hidden="true">
-        <!-- intentionally empty — sphere is the visual -->
-      </div>
-
-    </div><!-- /hero-grid -->
-
-    <!-- Stats bar: full width below the 2-col grid -->
-    <div class="stats-bar stagger">
-      <div class="stat-cell">
-        <span class="stat-num">0.3%</span>
-        <span class="stat-label">Gmail spam threshold<br>before domain blacklist</span>
-      </div>
-      <div class="stat-cell">
-        <span class="stat-num">69%</span>
-        <span class="stat-label">Decision-makers who say<br>AI outreach actively bothers them</span>
-      </div>
-      <div class="stat-cell">
-        <span class="stat-num">$10B+</span>
-        <span class="stat-label">Forecast B2B reputation damage<br>from ungoverned AI (Forrester 2026)</span>
-      </div>
+    <!-- Phase 2: headline appears inside the stage -->
+    <div class="headline-wrap">
+      <div class="pre-headline">Deliverability Infrastructure</div>
+      <h1 class="kin-headline">Your outbound is <em>one of two things.</em><br>We fix the one that&rsquo;s <strong>costing you.</strong></h1>
     </div>
-
   </div>
+
+  <!-- Form -->
+  <div class="form-wrap">
+    <form class="form-inner" id="healthForm" novalidate>
+      <input id="domain" name="domain" class="domain-input" type="text" inputmode="url" autocomplete="off" placeholder="yourfirm.com.au" aria-describedby="form-note" required>
+      <button type="submit" class="btn-score">Score my domain &rarr;</button>
+    </form>
+    <p class="form-note" id="form-note">Free audit. No signup. Results in &lt; 30 seconds.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-n">98.7%</div>
+      <div class="hero-stat-l">Inbox placement</div>
+    </div>
+    <div class="hero-stat-div"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">14 days</div>
+      <div class="hero-stat-l">Full build time</div>
+    </div>
+    <div class="hero-stat-div"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">0&thinsp;/&thinsp;92</div>
+      <div class="hero-stat-l">Blacklists</div>
+    </div>
+  </div>
+
+  <div class="hero-bottom-rule"></div>
+
 </section>
 
 <!-- ─── VILLAIN ────────────────────────── -->
@@ -1904,13 +1910,6 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
         <div class="offer-body">
           <p class="offer-promise">Your first deliverability-safe outbound system &mdash; built, warmed, launched, and verifiable &mdash; in 14 calendar days.</p>
 
-          <div class="offer-price-row">
-            <div class="offer-anchor-price">
-              AUD $15,000 &ndash; $25,000<a class="anchor-source" href="#offer-source" aria-label="Source">[1]</a>
-            </div>
-            <div class="offer-price">AUD $6,000</div>
-            <p class="offer-price-note">One invoice. One engineer. One verifiable system.</p>
-          </div>
 
           <div class="offer-section-title">Deliverables &mdash; 14 calendar days</div>
           <div class="del-list">
@@ -2232,11 +2231,12 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
   }
 
   // Final CTA → hero form
-  // CTA → hero form: use Lenis for silky scroll instead of native
   document.getElementById('finalCtaBtn').addEventListener('click', function(){
     var inp = document.getElementById('domain');
     if (inp) {
-      lenis.scrollTo(inp, { offset: -window.innerHeight * 0.35, duration: 1.6 });
+      var l = window.__lenis;
+      if (l) { l.scrollTo(inp, { offset: -window.innerHeight * 0.35, duration: 1.6 }); }
+      else { inp.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
       setTimeout(function(){ inp.focus({ preventScroll: true }); }, 1100);
     }
   });
@@ -2311,135 +2311,28 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
     from 'https://esm.sh/animejs@4';
   import Lenis from 'https://esm.sh/lenis@1.1.20';
 
-  /* ── LENIS SMOOTH SCROLL ─────────────────────────────────────────────────
-     Studio Freight's Lenis replaces native scroll with interpolated smooth
-     scroll. Scroll wheel → virtual scroll target → eased interpolation to
-     real scroll position. The whole site inherits silk scroll for free:
-     sphere rotation, editorial underlines, reveal triggers all read from
-     the smoothed scroll value.
-     ───────────────────────────────────────────────────────────────────── */
+  /* expose lenis to outer scope for finalCtaBtn scroll */
+  window.__lenis = null;
+
   const lenis = new Lenis({
-    duration: 1.2,                            // seconds to catch up to target
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),  // out-expo
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
-    smoothTouch: false,                       // native on mobile (feels better)
+    smoothTouch: false,
     wheelMultiplier: 1.0,
     touchMultiplier: 1.4,
   });
+  window.__lenis = lenis;
 
-  // Drive Lenis on every frame via RAF
-  function rafLenis(time) {
-    lenis.raf(time);
-    requestAnimationFrame(rafLenis);
-  }
+  function rafLenis(time) { lenis.raf(time); requestAnimationFrame(rafLenis); }
   requestAnimationFrame(rafLenis);
 
-  // Lenis dispatches its own scroll events — forward to window listeners
-  lenis.on('scroll', () => {
-    // Sphere + editorial underlines will auto-read from window scrollY
-    // via their own rAF loops, so just trigger a synthetic scroll event
-    window.dispatchEvent(new Event('scroll'));
-  });
+  lenis.on('scroll', () => { window.dispatchEvent(new Event('scroll')); });
 
   document.documentElement.classList.add('js-ready');
 
-  /* ══ buildSphere ═══════════════════════════════════════════════════════════
-     Generates 16 latitude-ring arcs on the hero background.
-     3D illusion math:
-       rx  = R·|cos(φ)|      ring shrinks toward the poles
-       ry  = rx·sin(TILT)    vertical compression = viewing angle
-       yOff= cy - R·sin(φ)·cos(TILT)  vertical placement on the sphere
-     TILT 28° = viewing the sphere slightly from above.
-
-     The middle 4 rings get class="equator" → brighter stroke in CSS.
-     An SVG <filter> adds a subtle glow so paths have presence on dark bg.
-  ════════════════════════════════════════════════════════════════════════════ */
-  function buildSphere() {
-    const bg = document.getElementById('hero-bg');
-    if (!bg) return;
-
-    const section = bg.parentElement;
-    // Use offsetWidth/Height after layout; fallback if not yet laid out
-    const W  = section.offsetWidth  || 1120;
-    const H  = section.offsetHeight || 620;
-
-    // Centre of sphere: right column (68% across), vertically centred
-    const cx = W * 0.68;
-    const cy = H * 0.47;
-    // Expose centre for scroll rotation
-    window.__sphereCenter = { cx, cy, W, H };
-
-    // Radius: proportional to section height, max 280px
-    const R  = Math.min(H * 0.44, 280);
-
-    const RINGS = 16;
-    const TILT  = 28;  // degrees above horizontal
-    const cosT  = Math.cos(TILT * Math.PI / 180);
-    const sinT  = Math.sin(TILT * Math.PI / 180);
-    const NS    = 'http://www.w3.org/2000/svg';
-
-    const svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-    svg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
-
-    // SVG glow filter — blur + source overlay = phosphor-screen presence
-    const defs = document.createElementNS(NS, 'defs');
-    defs.innerHTML =
-      '<filter id="s-glow" x="-40%" y="-40%" width="180%" height="180%">' +
-        '<feGaussianBlur in="SourceGraphic" stdDeviation="2.8" result="b"/>' +
-        '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>' +
-      '</filter>';
-    svg.appendChild(defs);
-
-    // Wrap all paths in a group with the glow filter applied once
-    const g = document.createElementNS(NS, 'g');
-    g.setAttribute('id', 'sphere-group');
-    g.setAttribute('filter', 'url(#s-glow)');
-    svg.appendChild(g);
-
-    for (let i = 0; i < RINGS; i++) {
-      // Latitude from near-south-pole to near-north-pole
-      const phi = (-90 + (i + 0.5) * 180 / RINGS) * Math.PI / 180;
-      const rR  = R * Math.abs(Math.cos(phi));
-      if (rR < 8) continue;
-
-      const ry   = rR * sinT;
-      const yOff = cy - R * Math.sin(phi) * cosT;
-
-      // Arc: stagger the gap position per ring for visual asymmetry
-      const arcDeg   = 296 + Math.min(i, RINGS - 1 - i) * 1.5;
-      const startDeg = -145 + i * 7;
-      const sRad     = startDeg * Math.PI / 180;
-      const eRad     = sRad + arcDeg * Math.PI / 180;
-
-      const x1 = (cx + rR * Math.cos(sRad)).toFixed(1);
-      const y1 = (yOff + ry * Math.sin(sRad)).toFixed(1);
-      const x2 = (cx + rR * Math.cos(eRad)).toFixed(1);
-      const y2 = (yOff + ry * Math.sin(eRad)).toFixed(1);
-
-      const p = document.createElementNS(NS, 'path');
-      // Equatorial rings (middle 4) get accent class for brighter stroke
-      const isEquator = i >= Math.floor(RINGS / 2) - 2 && i <= Math.floor(RINGS / 2) + 1;
-      p.setAttribute('class', 'bg-draw-path' + (isEquator ? ' equator' : ''));
-      p.setAttribute('d',
-        'M ' + x1 + ' ' + y1 +
-        ' A ' + rR.toFixed(1) + ' ' + ry.toFixed(1) +
-        ' 0 ' + (arcDeg > 180 ? 1 : 0) + ' 1 ' +
-        x2 + ' ' + y2
-      );
-      g.appendChild(p);
-    }
-
-    bg.appendChild(svg);
-  }
-
   document.fonts.ready.then(function() {
 
-    // ── 0. Logo wave — draws in on page load, stays drawn ─────────────────
-    //    Each of the 18 wave paths draws from left to right in sequence.
-    //    Uses the same createDrawable API as the editorial underlines but
-    //    plays once on load (no scroll, no loop) — feels like the logo
-    //    signature is being drawn when you arrive.
     animate(createDrawable('.lw'), {
       draw: ['0 0', '0 1'],
       delay: stagger(55),
@@ -2455,115 +2348,6 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
       ease: 'inOut(3)',
       autoplay: onScroll({ sync: true }),
     });
-
-    // ── 2. Build the sphere AFTER layout is final ─────────────────────────
-    buildSphere();
-
-    // ── 3. Sphere animation — continuous loop, NOT scroll-synced ─────────
-    //    Why NOT scroll-synced: onScroll({ sync:true }) maps 0% scroll →
-    //    draw '0 0' (invisible). The sphere is in the HERO (at top of page),
-    //    so it would always be invisible. Instead: autoplay loop.
-    //
-    //    stagger(95, { from:'center' }) means equatorial rings animate first,
-    //    polar rings follow with a delay. With loop:true, at any moment
-    //    different rings are at different phases of draw/erase — sphere
-    //    looks alive and breathing, like the Anime.js demo.
-    /* ── SPHERE: SCROLL-DRIVEN ANIMATION ──────────────────────────────────
-       Three-keyframe draw sequence:
-         '0 1'   — starting state: fully drawn (sphere visible on load)
-         '0.3 1' — midway: sphere "erasing" from the start (rings fade in)
-         '0 1'   — ending state: fully drawn again
-
-       As the user scrolls past the hero, onScroll({ sync:true }) maps
-       scroll progress (0 → 1) to animation progress (0 → 1).
-
-       container: the hero section — so animation range is HERO's scroll,
-       not the whole page. Enter/leave thresholds control when animation
-       starts/ends relative to the hero's viewport position.
-
-       stagger(60, { from:'center' }) → equatorial rings morph first,
-       polar rings follow → sphere breathes as you scroll. */
-
-    /* ══ SPHERE: CONTINUOUS 3D ORBITAL ANIMATION ═══════════════════════════
-       The sphere is now ALIVE. Two layers of motion:
-
-       Layer 1 — PER-RING dash flow
-         Each ring has a continuously-shifting stroke-dashoffset.
-         This makes the lines look like they're flowing AROUND the sphere,
-         like light racing along the ring's circumference.
-         Pure CSS @keyframes = GPU-accelerated = 60fps baseline.
-
-       Layer 2 — SCROLL-REACTIVE parallax tilt
-         Scroll position adds a SUBTLE additional tilt (±8°) to the whole
-         sphere group. NOT a rotation. A feel. You scroll, the sphere
-         gently reacts, like a planet shifting on its axis.
-
-       Lenis provides the smoothed scroll value so the tilt itself is silk.
-       The two layers run independently but feel like one cohesive motion.
-    ══════════════════════════════════════════════════════════════════════ */
-
-    const heroEl       = document.querySelector('.hero-dark');
-    const sphereGroup  = document.getElementById('sphere-group');
-    const spherePaths  = Array.from(document.querySelectorAll('.bg-draw-path'));
-
-    // Cache path lengths (getTotalLength() is expensive per call)
-    const pathLens = spherePaths.map(function(p) {
-      return p.getTotalLength();
-    });
-
-    /* ── Layer 1: continuous dash-flow animation on each ring ──────────── */
-    spherePaths.forEach(function(p, i) {
-      const L = pathLens[i];
-      // Set dasharray so dashoffset shifts visibly cycle the stroke along path
-      // Pattern: 42% visible, 58% invisible — creates "flowing light" look
-      const dashLen  = L * 0.42;
-      const gapLen   = L * 0.58;
-      p.style.strokeDasharray = dashLen.toFixed(1) + ' ' + gapLen.toFixed(1);
-      // Each ring gets a unique CSS variable for its path length
-      p.style.setProperty('--path-len', L.toFixed(1));
-      // Stagger: each ring starts its cycle at a different phase
-      const phase = (i / spherePaths.length) * -8; // seconds
-      p.style.animationDelay = phase.toFixed(2) + 's';
-    });
-
-    /* ── Layer 2: scroll-reactive tilt (subtle, silk) ──────────────────── */
-    let targetTilt = 0;
-    let currentTilt = 0;
-
-    function computeScrollProgress() {
-      if (!heroEl) return 0;
-      const rect = heroEl.getBoundingClientRect();
-      const range = rect.height;
-      if (range <= 0) return 0;
-      return Math.max(0, Math.min(1, -rect.top / range));
-    }
-
-    function updateTiltTarget() {
-      // Scroll progress 0→1 maps to tilt -8° → +8° (subtle)
-      targetTilt = (computeScrollProgress() * 2 - 1) * 8;
-    }
-
-    function tiltLoop() {
-      // Smooth interpolation toward target (one-pole low-pass filter)
-      // 0.08 smoothing factor = very silk, not laggy
-      currentTilt += (targetTilt - currentTilt) * 0.08;
-      if (sphereGroup && window.__sphereCenter) {
-        const c = window.__sphereCenter;
-        sphereGroup.setAttribute(
-          'transform',
-          'rotate(' + currentTilt.toFixed(3) + ' ' +
-                      c.cx.toFixed(1) + ' ' +
-                      c.cy.toFixed(1) + ')'
-        );
-      }
-      requestAnimationFrame(tiltLoop);
-    }
-
-    // Boot the two layers
-    updateTiltTarget();
-    tiltLoop();
-    window.addEventListener('scroll', updateTiltTarget, { passive: true });
-    window.addEventListener('resize', updateTiltTarget, { passive: true });
 
   });
 </script>

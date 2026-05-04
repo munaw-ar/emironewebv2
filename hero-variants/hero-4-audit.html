@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero 4 — Audit Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:   #FAF8F3;
+  --paper-2: #F0EBE0;
+  --ink:     #0C0B09;
+  --ink-2:   #2A2820;
+  --mid:     #5C5648;
+  --light:   #9A9080;
+  --rule:    #C8C0B0;
+  --green:   #0D5C38;
+  --red:     #7A1F10;
+  --serif:   "Fraunces", Georgia, serif;
+  --body:    "Inter Tight", sans-serif;
+  --mono:    "JetBrains Mono", Consolas, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100vh; font-family: var(--body); background: var(--paper-2); -webkit-font-smoothing: antialiased; }
+
+/* ── SITE HEADER ── */
+.site-header {
+  background: var(--ink);
+  padding: 0 48px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--green);
+}
+.wm {
+  font-family: var(--serif);
+  font-size: 15px;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.wm::before {
+  content: "E1";
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 3px 5px;
+  color: rgba(255,255,255,0.5);
+}
+.hdr-right { font-size: 11px; color: rgba(255,255,255,0.3); font-family: var(--mono); letter-spacing: 0.04em; }
+
+/* ── HERO ── */
+.hero {
+  min-height: calc(100vh - 52px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  position: relative;
+}
+
+/* grid paper background */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+.doc-wrap {
+  width: 100%;
+  max-width: 820px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── DOCUMENT ── */
+.doc {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top classification bar */
+.classify-bar {
+  background: var(--ink);
+  padding: 7px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.classify-text {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+.classify-ref {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+}
+
+/* Document header */
+.doc-head {
+  padding: 36px 40px 28px;
+  border-bottom: 2px solid var(--ink);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: start;
+}
+
+.doc-agency {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 14px;
+}
+.doc-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.doc-title em { font-style: italic; }
+
+.doc-meta-grid {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  gap: 10px;
+  min-width: 200px;
+}
+.meta-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.meta-key {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--light);
+}
+.meta-val {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.meta-val.redacted {
+  background: var(--ink);
+  color: var(--ink);
+  border-radius: 2px;
+  padding: 0 4px;
+  user-select: none;
+}
+
+/* Body */
+.doc-body {
+  padding: 32px 40px;
+}
+
+.doc-section {
+  margin-bottom: 28px;
+}
+.doc-section-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.doc-intro {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--mid);
+  font-style: italic;
+  max-width: 620px;
+}
+
+/* Audit fields */
+.audit-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--rule);
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  border-bottom: 1px solid var(--rule);
+}
+.field-row:last-child { border-bottom: none; }
+.field-row.span-2 { grid-column: span 2; }
+.field-key {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--mid);
+  background: #F5F0E8;
+  padding: 12px 16px;
+  border-right: 1px solid var(--rule);
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+}
+.field-val {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.field-val.placeholder {
+  color: var(--light);
+  font-style: italic;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+.pill-pending { background: #FFF8E6; border: 1px solid #E8D080; color: #7A6020; }
+.pill-pass { background: #E8F4EC; border: 1px solid #90C8A0; color: var(--green); }
+
+/* Form area */
+.input-section {
+  background: #F5F0E8;
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  position: relative;
+}
+.input-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 12px;
+}
+.input-row {
+  display: flex;
+  gap: 0;
+}
+.domain-input {
+  flex: 1;
+  font-family: var(--mono);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-right: none;
+  padding: 13px 18px;
+  outline: none;
+}
+.domain-input::placeholder { color: var(--light); font-style: italic; }
+.domain-input:focus { border-color: var(--green); }
+.btn-audit {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 13px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.btn-audit:hover { background: var(--green); border-color: var(--green); }
+.input-note { font-size: 11.5px; color: var(--light); font-style: italic; margin-top: 10px; }
+
+/* Stamp */
+.stamp {
+  position: absolute;
+  top: 28px;
+  right: 40px;
+  border: 2.5px solid rgba(13,92,56,0.4);
+  padding: 8px 14px;
+  transform: rotate(-8deg);
+  text-align: center;
+}
+.stamp-text {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(13,92,56,0.5);
+  line-height: 1.3;
+}
+
+/* Footer bar */
+.doc-footer {
+  padding: 14px 40px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #F5F0E8;
+}
+.doc-foot-text { font-family: var(--mono); font-size: 10px; color: var(--light); }
+
+/* Watermark */
+.doc::after {
+  content: "SAMPLE";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-35deg);
+  font-family: var(--serif);
+  font-size: 100px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: rgba(0,0,0,0.025);
+  pointer-events: none;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wm">Emir One</div>
+  <div class="hdr-right">ETHICAL OUTBOUND INFRASTRUCTURE</div>
+</header>
+
+<div class="hero">
+  <div class="doc-wrap">
+    <div class="doc">
+      <div class="classify-bar">
+        <span class="classify-text">Deliverability Audit Report — Preliminary</span>
+        <span class="classify-ref">Form EMR-DA-01</span>
+      </div>
+
+      <div class="doc-head">
+        <div>
+          <div class="doc-agency">Emir One Infrastructure Services · AU/NZ Division</div>
+          <h1 class="doc-title">Domain Deliverability<br><em>Health Assessment</em></h1>
+        </div>
+        <div class="doc-meta-grid">
+          <div class="meta-field">
+            <div class="meta-key">Reference No.</div>
+            <div class="meta-val">EMR-2026-????</div>
+          </div>
+          <div class="meta-field">
+            <div class="meta-key">Date Issued</div>
+            <div class="meta-val">2026-05-04</div>
+          </div>
+          <div class="meta-field">
+            <div class="meta-key">Client Domain</div>
+            <div class="meta-val redacted">PENDING INPUT</div>
+          </div>
+          <div class="meta-field">
+            <div class="meta-key">Status</div>
+            <div class="meta-val">Awaiting Submission</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-body">
+        <div class="doc-section">
+          <div class="doc-section-title">§ 1 — Purpose of Assessment</div>
+          <p class="doc-intro">This report provides a full-spectrum deliverability audit of the submitted sending domain, including authentication record verification, blacklist status across 92 registries, domain reputation scoring, and inbox placement probability. All findings are MXToolbox-verified and reproducible.</p>
+        </div>
+
+        <div class="doc-section">
+          <div class="doc-section-title">§ 2 — Audit Checklist</div>
+          <div class="audit-fields">
+            <div class="field-row span-2">
+              <div class="field-key">Sending Domain</div>
+              <div class="field-val placeholder">[ awaiting submission ]</div>
+            </div>
+            <div class="field-row">
+              <div class="field-key">SPF Record</div>
+              <div class="field-val"><span class="status-pill pill-pending">⏳ Pending</span></div>
+            </div>
+            <div class="field-row">
+              <div class="field-key">DKIM Alignment</div>
+              <div class="field-val"><span class="status-pill pill-pending">⏳ Pending</span></div>
+            </div>
+            <div class="field-row">
+              <div class="field-key">DMARC Policy</div>
+              <div class="field-val"><span class="status-pill pill-pending">⏳ Pending</span></div>
+            </div>
+            <div class="field-row">
+              <div class="field-key">Blacklist (92 lists)</div>
+              <div class="field-val"><span class="status-pill pill-pending">⏳ Pending</span></div>
+            </div>
+            <div class="field-row">
+              <div class="field-key">Domain Age</div>
+              <div class="field-val"><span class="status-pill pill-pending">⏳ Pending</span></div>
+            </div>
+            <div class="field-row">
+              <div class="field-key">Reputation Score</div>
+              <div class="field-val"><span class="status-pill pill-pending">⏳ Pending</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <div class="doc-section-title">§ 3 — Submit Domain to Begin</div>
+          <div class="input-section">
+            <div class="stamp"><div class="stamp-text">Free<br>Assessment</div></div>
+            <div class="input-label">Client sending domain</div>
+            <div class="input-row">
+              <input class="domain-input" type="text" placeholder="yourfirm.com.au" />
+              <button class="btn-audit">Generate Report →</button>
+            </div>
+            <p class="input-note">No account required. Report generated in under 30 seconds.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-footer">
+        <span class="doc-foot-text">Emir One Infrastructure Services Pty Ltd · ABN 00 000 000 000 · emir-growth.com.au</span>
+        <span class="doc-foot-text">Page 1 of 1 (Preliminary)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

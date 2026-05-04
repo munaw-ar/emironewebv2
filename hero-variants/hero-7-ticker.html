@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero 7 — Ticker + Minimal Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:   #FAF8F3;
+  --paper-2: #F0EBE0;
+  --ink:     #0C0B09;
+  --ink-2:   #2A2820;
+  --mid:     #5C5648;
+  --light:   #9A9080;
+  --rule:    #D8D0C0;
+  --rule-2:  #EAE4D8;
+  --green:   #0D5C38;
+  --green-h: #3DD68C;
+  --red:     #7A1F10;
+  --serif:   "Fraunces", Georgia, serif;
+  --body:    "Inter Tight", sans-serif;
+  --mono:    "JetBrains Mono", Consolas, monospace;
+  --ease:    cubic-bezier(0.22, 1, 0.36, 1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100vh; background: var(--paper); font-family: var(--body); -webkit-font-smoothing: antialiased; }
+
+/* ── FT-STYLE HEADER ── */
+.ft-header {
+  border-bottom: 3px solid var(--ink);
+  padding: 0;
+}
+.ft-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 48px;
+  border-bottom: 1px solid var(--rule);
+}
+.ft-date {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--mid);
+  letter-spacing: 0.04em;
+}
+.ft-wordmark {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-align: center;
+}
+.ft-wordmark span {
+  font-style: italic;
+  opacity: 0.5;
+}
+.ft-tagline {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--mid);
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+
+/* ── SCROLLING TICKER ── */
+.ticker-outer {
+  background: var(--ink);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  overflow: hidden;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+.ticker-label {
+  background: var(--green);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 14px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.ticker-track-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.ticker-track-wrap::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 30px;
+  background: linear-gradient(90deg, var(--ink), transparent);
+  z-index: 1;
+}
+.ticker-track {
+  display: flex;
+  animation: ticker 32s linear infinite;
+  white-space: nowrap;
+}
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.tick-item {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  padding: 0 28px 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  height: 36px;
+}
+.tick-green { color: var(--green-h); }
+.tick-amber { color: #F5C86A; }
+.tick-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green-h); opacity: 0.6; }
+
+/* ── HERO BODY ── */
+.hero-body {
+  min-height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.overline {
+  font-family: var(--body);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.overline::before, .overline::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+  max-width: 60px;
+}
+
+/* The big number — FT style */
+.edition-rule {
+  width: 40px;
+  height: 3px;
+  background: var(--ink);
+  margin: 0 auto 24px;
+}
+
+.headline {
+  font-family: var(--serif);
+  font-size: clamp(42px, 6.5vw, 82px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+.headline em { font-style: italic; }
+.headline strong { font-weight: 400; }
+
+.deck {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--mid);
+  font-style: italic;
+  margin-bottom: 44px;
+  max-width: 560px;
+}
+
+/* Form */
+.form-row {
+  display: flex;
+  gap: 0;
+  width: 100%;
+  max-width: 480px;
+}
+.domain-input {
+  flex: 1;
+  font-family: var(--body);
+  font-size: 15px;
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  border-right: none;
+  padding: 14px 18px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.domain-input::placeholder { color: var(--light); }
+.domain-input:focus { border-color: var(--green); }
+.btn-score {
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 14px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-score:hover { background: var(--green); border-color: var(--green); }
+.form-note {
+  font-size: 12px;
+  color: var(--light);
+  font-style: italic;
+  margin-top: 12px;
+}
+
+/* ── STATS BAR ── */
+.stats-row {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-top: 56px;
+  width: 100%;
+}
+.stat-cell {
+  flex: 1;
+  text-align: center;
+  padding: 24px 16px;
+  border-right: 1px solid var(--rule);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-n {
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.stat-l {
+  font-size: 11px;
+  color: var(--mid);
+}
+
+/* ── BOTTOM COLUMNS ── (newspaper-style) */
+.newspaper-cols {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr;
+  gap: 28px;
+  border-top: 1px solid var(--rule);
+}
+.col-div { background: var(--rule); width: 1px; }
+.col-item {}
+.col-head {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--rule-2);
+  padding-bottom: 8px;
+}
+.col-body {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--mid);
+}
+</style>
+</head>
+<body>
+
+<!-- FT-style header -->
+<header class="ft-header">
+  <div class="ft-top">
+    <div class="ft-date">Sunday, 4 May 2026 · AU/NZ Edition</div>
+    <div class="ft-wordmark">Emir <span>One</span></div>
+    <div class="ft-tagline">Ethical Outbound Infrastructure</div>
+  </div>
+
+  <!-- Ticker -->
+  <div class="ticker-outer">
+    <div class="ticker-label">Live</div>
+    <div class="ticker-track-wrap">
+      <div class="ticker-track">
+        <div class="tick-item"><div class="tick-dot"></div> emir-growth.com.au &nbsp;<span class="tick-green">98.7% inbox</span></div>
+        <div class="tick-item">SPF &nbsp;<span class="tick-green">PASS</span></div>
+        <div class="tick-item">DKIM &nbsp;<span class="tick-green">PASS</span></div>
+        <div class="tick-item">DMARC &nbsp;<span class="tick-green">p=quarantine</span></div>
+        <div class="tick-item">Blacklists &nbsp;<span class="tick-green">0 / 92</span></div>
+        <div class="tick-item">Warmup &nbsp;<span class="tick-green">Active · Day 38</span></div>
+        <div class="tick-item">Reply Rate &nbsp;<span class="tick-green">6.2%</span></div>
+        <div class="tick-item">Spam Complaints &nbsp;<span class="tick-green">0.02%</span></div>
+        <div class="tick-item">Domain Age &nbsp;<span class="tick-green">4y 2m</span></div>
+        <div class="tick-item">Sending Volume &nbsp;<span class="tick-amber">42 / day</span></div>
+        <!-- duplicate for seamless loop -->
+        <div class="tick-item"><div class="tick-dot"></div> emir-growth.com.au &nbsp;<span class="tick-green">98.7% inbox</span></div>
+        <div class="tick-item">SPF &nbsp;<span class="tick-green">PASS</span></div>
+        <div class="tick-item">DKIM &nbsp;<span class="tick-green">PASS</span></div>
+        <div class="tick-item">DMARC &nbsp;<span class="tick-green">p=quarantine</span></div>
+        <div class="tick-item">Blacklists &nbsp;<span class="tick-green">0 / 92</span></div>
+        <div class="tick-item">Warmup &nbsp;<span class="tick-green">Active · Day 38</span></div>
+        <div class="tick-item">Reply Rate &nbsp;<span class="tick-green">6.2%</span></div>
+        <div class="tick-item">Spam Complaints &nbsp;<span class="tick-green">0.02%</span></div>
+        <div class="tick-item">Domain Age &nbsp;<span class="tick-green">4y 2m</span></div>
+        <div class="tick-item">Sending Volume &nbsp;<span class="tick-amber">42 / day</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Hero body — single-column, centered -->
+<div style="display:flex; flex-direction:column; align-items:center;">
+  <div class="hero-body">
+
+    <div class="overline">Free Deliverability Health Score</div>
+    <div class="edition-rule"></div>
+
+    <h1 class="headline">Your domain is either <em>silent</em><br>— or it's <strong>on fire.</strong></h1>
+    <p class="deck">We run a full SPF, DKIM, DMARC, blacklist, and reputation audit on your sending domain in under 30 seconds. No account. No email. Just the truth.</p>
+
+    <div class="form-row">
+      <input class="domain-input" type="text" placeholder="yourfirm.com.au" />
+      <button class="btn-score">Run audit →</button>
+    </div>
+    <p class="form-note">Free · No signup · Results in &lt; 30s</p>
+
+    <div class="stats-row">
+      <div class="stat-cell">
+        <div class="stat-n">98.7%</div>
+        <div class="stat-l">Avg inbox placement</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n">14 days</div>
+        <div class="stat-l">Full system build</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n">0 / 92</div>
+        <div class="stat-l">Blacklist entries</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3-column newspaper footer -->
+  <div class="newspaper-cols">
+    <div class="col-item">
+      <div class="col-head">Infrastructure First</div>
+      <div class="col-body">DNS records, warmup pools, and sending domains configured before a single email is written. We build the system your competitors skip.</div>
+    </div>
+    <div class="col-div"></div>
+    <div class="col-item">
+      <div class="col-head">Fully Verifiable</div>
+      <div class="col-body">Every claim we make is MXToolbox-checkable. If your CTO wants to verify our methodology, we publish it. No NDA. No email gate.</div>
+    </div>
+    <div class="col-div"></div>
+    <div class="col-item">
+      <div class="col-head">14-Day Sprint</div>
+      <div class="col-body">From zero to a warmed, authenticated, blacklist-clean sending system in 14 calendar days. One engineer. One invoice. AUD $6,000.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

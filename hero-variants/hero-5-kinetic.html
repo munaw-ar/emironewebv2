@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero 5 — Kinetic Typography</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,200;1,9..144,300;1,9..144,400;1,9..144,600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:   #FAF8F3;
+  --paper-2: #F3F0E8;
+  --ink:     #0C0B09;
+  --mid:     #5C5648;
+  --light:   #9A9080;
+  --rule:    #D8D0C0;
+  --green:   #0D5C38;
+  --red-dim: #5C1A0A;
+  --serif:   "Fraunces", Georgia, serif;
+  --body:    "Inter Tight", sans-serif;
+  --ease:    cubic-bezier(0.22, 1, 0.36, 1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100vh; background: var(--paper); font-family: var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 22px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--mid);
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo::before {
+  content: "E1";
+  font-size: 10px;
+  border: 1px solid var(--rule);
+  padding: 3px 5px;
+  color: var(--light);
+}
+.nav-cta {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  cursor: pointer;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 48px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── KINETIC STAGE ── */
+.kin-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 52px;
+}
+
+/* SILENT — huge, faded watermark on paper */
+.word-silent {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(72px, 14vw, 180px);
+  font-weight: 200;
+  font-style: italic;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  color: rgba(12,11,9,0.07);
+  animation: word1 3.5s var(--ease) forwards;
+  transform-origin: left center;
+}
+
+/* — or — */
+.word-or {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(18px, 3vw, 36px);
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.05em;
+  color: var(--light);
+  margin: 8px 0;
+  animation: word2 3.5s var(--ease) 0.18s forwards;
+  opacity: 0;
+}
+
+/* BURNING — heavy, dark red on paper */
+.word-burning {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(72px, 14vw, 180px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  color: var(--red-dim);
+  animation: word3 3.5s var(--ease) 0.36s forwards;
+  opacity: 0;
+}
+
+@keyframes word1 {
+  0%   { opacity: 0; transform: translateY(40px) skewX(-3deg); }
+  20%  { opacity: 1; transform: translateY(0) skewX(0); }
+  70%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.96); }
+}
+@keyframes word2 {
+  0%   { opacity: 0; transform: translateX(-20px); }
+  30%  { opacity: 1; transform: translateX(0); }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes word3 {
+  0%   { opacity: 0; transform: translateY(40px) skewX(3deg); }
+  20%  { opacity: 1; transform: translateY(0) skewX(0); }
+  70%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.96); }
+}
+
+/* ── PHASE 2: HEADLINE ── */
+.headline-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  animation: reveal-headline 1.2s var(--ease) 3s forwards;
+}
+@keyframes reveal-headline {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.pre-headline {
+  font-family: var(--body);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pre-headline::before, .pre-headline::after {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--rule);
+}
+
+.headline {
+  font-family: var(--serif);
+  font-size: clamp(40px, 6vw, 80px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  color: var(--ink);
+  max-width: 800px;
+  text-align: center;
+}
+.headline em { font-style: italic; color: var(--mid); }
+.headline strong { font-weight: 400; color: var(--ink); }
+
+/* ── FORM ── */
+.form-wrap {
+  width: 100%;
+  max-width: 480px;
+  opacity: 0;
+  animation: reveal-form 1s var(--ease) 3.5s forwards;
+}
+@keyframes reveal-form {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.form-inner {
+  display: flex;
+  gap: 0;
+}
+.domain-input {
+  flex: 1;
+  font-family: var(--body);
+  font-size: 15px;
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  border-right: none;
+  padding: 14px 18px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.domain-input::placeholder { color: var(--light); }
+.domain-input:focus { border-color: var(--green); }
+.btn-score {
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 14px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-score:hover { background: var(--green); border-color: var(--green); }
+.form-note {
+  font-size: 11.5px;
+  color: var(--light);
+  font-style: italic;
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* ── STATS ── */
+.stats {
+  display: flex;
+  gap: 48px;
+  margin-top: 52px;
+  opacity: 0;
+  animation: reveal-form 1s var(--ease) 3.8s forwards;
+}
+.stat { text-align: center; }
+.stat-n {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+}
+.stat-l {
+  font-size: 11px;
+  color: var(--mid);
+  letter-spacing: 0.04em;
+  margin-top: 5px;
+}
+.stat-div {
+  width: 1px;
+  background: var(--rule);
+  align-self: stretch;
+}
+
+/* ── BOTTOM RULE ── */
+.bottom-rule {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--rule);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Emir One</div>
+  <div class="nav-cta">Free Health Score →</div>
+</nav>
+
+<div class="hero">
+
+  <!-- Phase 1: kinetic words -->
+  <div class="kin-stage" style="height: clamp(280px, 40vh, 480px);">
+    <span class="word-silent">Silent.</span>
+    <span class="word-or">— or —</span>
+    <span class="word-burning">Burning.</span>
+
+    <!-- Phase 2: real headline -->
+    <div class="headline-wrap">
+      <div class="pre-headline">Deliverability Infrastructure</div>
+      <h1 class="headline">Your outbound is <em>one of two things.</em><br>We fix the one that's <strong>costing you.</strong></h1>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="form-wrap">
+    <div class="form-inner">
+      <input class="domain-input" type="text" placeholder="yourfirm.com.au" />
+      <button class="btn-score">Score my domain →</button>
+    </div>
+    <p class="form-note">Free audit. No signup. Results in &lt; 30 seconds.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-n">98.7%</div>
+      <div class="stat-l">Inbox placement</div>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">
+      <div class="stat-n">14 days</div>
+      <div class="stat-l">Full build time</div>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">
+      <div class="stat-n">0 / 92</div>
+      <div class="stat-l">Blacklists</div>
+    </div>
+  </div>
+
+  <div class="bottom-rule"></div>
+</div>
+
+</body>
+</html>

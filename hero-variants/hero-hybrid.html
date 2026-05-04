@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emir One — Hybrid Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,200;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:   #FAF8F3;
+  --paper-2: #F3F0E8;
+  --ink:     #0C0B09;
+  --ink-2:   #2A2820;
+  --mid:     #5C5648;
+  --light:   #9A9080;
+  --rule:    #D8D0C0;
+  --rule-2:  #EAE4D8;
+  --green:   #0D5C38;
+  --red-dim: #5C1A0A;
+  --serif:   "Fraunces", Georgia, serif;
+  --body:    "Inter Tight", sans-serif;
+  --mono:    "JetBrains Mono", Consolas, monospace;
+  --ease:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--body);
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ══ HEADER ══════════════════════════════════════════ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(250,248,243,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.hdr {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 48px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wordmark {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.wordmark::before {
+  content: "E1";
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  border: 1.5px solid var(--ink);
+  padding: 4px 5px;
+}
+.hdr-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  font-size: 12px;
+  color: var(--mid);
+}
+.hdr-nav a { color: var(--mid); text-decoration: none; transition: color 0.15s; }
+.hdr-nav a:hover { color: var(--ink); }
+.hdr-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--mid);
+}
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: breathe 2.5s ease-in-out infinite;
+}
+@keyframes breathe { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+/* ══ HERO ════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  overflow: hidden;
+  min-height: calc(100vh - 62px);
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 48px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══ PHASE 1: KINETIC STAGE ══════════════════════════ */
+/*
+  Sits in normal flow, same height as the content that replaces it.
+  Fades out at t=3.2s, content fades in at t=3.4s.
+*/
+.kin-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 88px 0 52px;
+  animation: stage-out 0.7s var(--ease) 3.2s forwards;
+}
+
+@keyframes stage-out {
+  to { opacity: 0; transform: translateY(-12px); pointer-events: none; }
+}
+
+.kin-pre {
+  font-family: var(--body);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fade-in-quick 0.5s var(--ease) 0.1s forwards;
+}
+@keyframes fade-in-quick { to { opacity: 1; } }
+
+.k-word {
+  display: block;
+  font-family: var(--serif);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  user-select: none;
+}
+
+/* SILENT — huge, faded, light weight */
+.k-silent {
+  font-size: clamp(80px, 13vw, 160px);
+  font-weight: 200;
+  font-style: italic;
+  color: rgba(12,11,9,0.09);
+  opacity: 0;
+  animation:
+    word-in  0.9s var(--ease) 0.3s forwards,
+    word-out 0.6s var(--ease) 2.6s forwards;
+}
+
+/* — or — */
+.k-or {
+  font-size: clamp(16px, 2.5vw, 28px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--light);
+  letter-spacing: 0.1em;
+  margin: 10px 0 12px;
+  opacity: 0;
+  animation:
+    word-in  0.7s var(--ease) 0.6s forwards,
+    word-out 0.6s var(--ease) 2.6s forwards;
+}
+
+/* BURNING — heavy, dark red, commanding */
+.k-burning {
+  font-size: clamp(80px, 13vw, 160px);
+  font-weight: 500;
+  color: var(--red-dim);
+  opacity: 0;
+  animation:
+    word-in  0.9s var(--ease) 0.9s forwards,
+    word-out 0.6s var(--ease) 2.6s forwards;
+}
+
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes word-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-16px); }
+}
+
+/* ══ PHASE 2: EDITORIAL CONTENT ══════════════════════ */
+.editorial-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  animation: content-in 1s var(--ease) 3.6s forwards;
+}
+@keyframes content-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; pointer-events: auto; }
+}
+
+.ed-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 48px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Pre-headline row */
+.pre-line {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 72px;
+  margin-bottom: 36px;
+}
+.pre-label {
+  font-family: var(--body);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  white-space: nowrap;
+}
+.pre-rule { flex: 1; height: 1px; background: var(--rule); }
+
+/* The headline */
+.headline {
+  font-family: var(--serif);
+  font-size: clamp(52px, 8vw, 104px);
+  font-weight: 200;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  color: var(--ink);
+  margin-bottom: 0;
+}
+.hl-1 { display: block; }
+.hl-2 { display: block; position: relative; }
+.hl-3 { display: block; font-style: italic; color: var(--mid); font-weight: 200; }
+
+/* Underline on "reaching the inbox" */
+.ul-wrap { position: relative; display: inline; }
+.ul-svg {
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 16px;
+  overflow: visible;
+  pointer-events: none;
+}
+.ul-path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  animation: draw-ul 1.6s var(--ease) 4.4s forwards;
+}
+@keyframes draw-ul { to { stroke-dashoffset: 0; } }
+
+/* Body row */
+.body-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  padding: 52px 0 56px;
+  border-top: 1px solid var(--rule);
+  margin-top: 52px;
+  align-items: start;
+  flex: 1;
+}
+
+.body-desc {
+  font-size: 17px;
+  line-height: 1.72;
+  color: var(--mid);
+}
+.body-desc p + p { margin-top: 14px; }
+
+/* Form */
+.form-group { display: flex; flex-direction: column; gap: 10px; }
+.domain-input {
+  font-family: var(--body);
+  font-size: 16px;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--ink);
+  padding: 12px 0;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.domain-input::placeholder { color: var(--light); }
+.domain-input:focus { border-bottom-color: var(--green); }
+
+.btn-submit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 16px 22px;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+  margin-top: 6px;
+}
+.btn-submit:hover { background: var(--green); border-color: var(--green); }
+.btn-arr { font-size: 18px; font-weight: 300; }
+.trust-note { font-size: 12px; color: var(--light); font-style: italic; }
+
+/* ══ STATS BAR ═══════════════════════════════════════ */
+.stats-bar {
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--paper-2);
+}
+.stat-cell {
+  padding: 24px 0 24px 28px;
+  border-right: 1px solid var(--rule);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-n {
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 5px;
+  display: block;
+}
+.stat-l { font-size: 11.5px; color: var(--mid); line-height: 1.4; }
+
+/* Stats bar also fades in with content */
+.stats-bar {
+  opacity: 0;
+  animation: content-in 1s var(--ease) 3.8s forwards;
+}
+
+/* ══ RESPONSIVE ══════════════════════════════════════ */
+@media (max-width: 780px) {
+  .hdr { padding: 0 24px; }
+  .hero-inner, .ed-inner { padding: 0 24px; }
+  .body-row { grid-template-columns: 1fr; gap: 36px; padding-top: 36px; }
+  .stats-bar { grid-template-columns: 1fr 1fr; }
+  .k-silent, .k-burning { font-size: clamp(60px, 14vw, 120px); }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="site-header">
+  <div class="hdr">
+    <a href="#" class="wordmark">Emir One</a>
+    <nav class="hdr-nav">
+      <a href="#">How we work</a>
+      <a href="#">The offer</a>
+      <a href="#">Proof</a>
+    </nav>
+    <div class="hdr-live">
+      <div class="live-dot"></div>
+      Infrastructure live
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+
+  <!-- PHASE 1: KINETIC -->
+  <div class="hero-inner">
+    <div class="kin-stage">
+      <div class="kin-pre">Deliverability Infrastructure · AU/NZ</div>
+      <span class="k-word k-silent">Silent.</span>
+      <span class="k-word k-or">— or —</span>
+      <span class="k-word k-burning">Burning.</span>
+    </div>
+  </div>
+
+  <!-- PHASE 2: EDITORIAL -->
+  <div class="editorial-content">
+    <div class="ed-inner">
+
+      <div class="pre-line">
+        <span class="pre-label">Ethical Outbound Infrastructure · AU/NZ</span>
+        <div class="pre-rule"></div>
+      </div>
+
+      <h1 class="headline">
+        <span class="hl-1">Your email is either</span>
+        <span class="hl-2">
+          <span class="ul-wrap">reaching the inbox
+            <svg class="ul-svg" viewBox="0 0 820 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="ul-path" d="M2,10 C120,4 280,13 420,8 C560,3 700,11 818,7"/>
+            </svg>
+          </span>
+        </span>
+        <span class="hl-3">— or it isn't.</span>
+      </h1>
+
+      <div class="body-row">
+        <div class="body-desc">
+          <p>There are two types of outbound email in 2026: infrastructure-led and reputation-destroying. Cold email that isn't built on verified DNS, properly warmed sending pools, and authenticated domains doesn't reach the inbox.</p>
+          <p>We build the system before the copy. Every record verifiable on MXToolbox. Every claim in writing.</p>
+        </div>
+        <div class="form-side">
+          <div class="form-group">
+            <input class="domain-input" type="text" placeholder="yourfirm.com.au" />
+            <button class="btn-submit">
+              Get your free health score
+              <span class="btn-arr">→</span>
+            </button>
+            <p class="trust-note">No account required. Results in &lt; 30 seconds. MXToolbox-verified.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STATS BAR — always at bottom, fades in with content -->
+  <div class="stats-bar">
+    <div class="stat-cell">
+      <span class="stat-n">98.7%</span>
+      <span class="stat-l">Average inbox<br>placement rate</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-n">14 days</span>
+      <span class="stat-l">Full system build,<br>warmed and live</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-n">0 / 92</span>
+      <span class="stat-l">Blacklist entries<br>across all registries</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-n">AUD $6k</span>
+      <span class="stat-l">Fixed price, one<br>invoice, one engineer</span>
+    </div>
+  </div>
+
+</section>
+
+</body>
+</html>
