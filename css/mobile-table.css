@@ -1,0 +1,68 @@
+/*
+  mobile-table.css
+  Compare table iPad fix (extend breakpoint to 860px).
+  Stats bar, villain cols, hero body row, pillar grid, health drawer adjustments.
+*/
+
+/* ── COMPARE TABLE — EXTEND TO IPAD ────────── */
+@media (max-width: 860px) {
+  .compare-table { display: none !important; }
+  .mobile-compare { display: flex !important; }
+}
+
+/* ── MOBILE COMPARE CARDS — TABLET 2-COL ───── */
+@media (min-width: 481px) and (max-width: 860px) {
+  .mobile-compare {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-compare { gap: 10px; }
+  .mob-col-head { padding: 10px 14px; }
+  .mob-col-items { padding: 10px 14px; gap: 8px; }
+  .mob-item { font-size: 13px; }
+}
+
+/* ── HERO BODY ROW ──────────────────────────── */
+@media (max-width: 600px) {
+  .hero-body-row {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 28px 0;
+  }
+}
+
+/* ── STATS BAR ──────────────────────────────── */
+@media (max-width: 480px) {
+  .stats-bar { grid-template-columns: 1fr 1fr; }
+  .stat-cell { padding: 18px 0 18px 16px; }
+  .stat-num { font-size: 30px; }
+}
+
+/* ── VILLAIN COLS ───────────────────────────── */
+@media (max-width: 480px) {
+  .villain-cols { grid-template-columns: 1fr; }
+  .v-col + .v-col { border-left: none; border-top: 1px solid var(--rule); }
+}
+
+/* ── GUIDE / DNS CODE ───────────────────────── */
+@media (max-width: 600px) {
+  .dns-code { font-size: 10.5px; padding: 16px 14px 18px; }
+}
+
+/* ── PILLAR GRID TABLET ─────────────────────── */
+@media (min-width: 641px) and (max-width: 860px) {
+  .pillar-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── HEALTH DRAWER MOBILE ───────────────────── */
+@media (max-width: 480px) {
+  .hd-inner { padding: 18px 16px 24px; }
+  .hd-score-num { font-size: 32px; }
+  .hd-commentary { font-size: 14px; }
+  .hd-check { font-size: 12.5px; padding: 10px 12px; }
+  .hd-cta { font-size: 12.5px; padding: 14px 16px; }
+}
