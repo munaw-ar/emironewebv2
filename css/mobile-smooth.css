@@ -1,0 +1,87 @@
+/*
+  mobile-smooth.css
+  Touch interaction quality: removes 300ms tap delay, kills tap highlight flash,
+  prevents overscroll bounce, GPU-accelerates key animated elements.
+*/
+
+/* ── KILL TAP DELAY + FLASH ─────────────────── */
+a,
+button,
+input,
+select,
+textarea,
+[role="button"],
+.btn-score,
+.btn-submit,
+.btn-reserve,
+.btn-cta-xl,
+.btn-primary,
+.hd-close,
+.hd-cta,
+.menu-btn,
+.mobile-nav-link,
+.mobile-nav-cta,
+.wordmark,
+.wordmark-link,
+.nav-cta {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ── PREVENT OVERSCROLL BOUNCE ──────────────── */
+html {
+  overscroll-behavior-y: none;
+}
+
+.dash-wrap,
+.dns-code,
+.health-drawer {
+  overscroll-behavior-x: contain;
+}
+
+/* ── GPU-ACCELERATE ANIMATED ELEMENTS ──────── */
+.health-drawer,
+.mobile-nav-drawer,
+.word-silent,
+.word-burning,
+.word-or,
+.headline-wrap,
+.form-wrap,
+.hero-stats,
+.site-header {
+  will-change: transform;
+}
+
+/* ── SMOOTH SCROLL CONTAINERS ON IOS ────────── */
+.health-drawer {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── PREVENT TEXT SIZE JUMP ON ROTATION ─────── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── FOCUS RING ON TOUCH ─────────────────────── */
+@media (hover: none) {
+  *:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+/* ── INPUT ZOOM PREVENTION ON IOS ───────────── */
+@media (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: max(16px, 1em);
+  }
+}
+
+/* ── BODY SCROLL LOCK ────────────────────────── */
+body.scroll-locked {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
