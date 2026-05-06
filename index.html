@@ -2745,5 +2745,26 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
     });
   })();
 </script>
+
+<!-- ─── DOMAIN HEALTH DRAWER ──────────── -->
+<div class="health-backdrop" id="healthBackdrop" role="presentation"></div>
+<div class="health-drawer" id="healthDrawer" role="dialog" aria-modal="true" aria-labelledby="hdDomainLabel">
+  <div class="hd-inner">
+    <div class="hd-header">
+      <span class="hd-domain-label" id="hdDomainLabel"></span>
+      <button class="hd-close" id="hdClose" aria-label="Close health report">&#10005; close</button>
+    </div>
+    <div class="hd-score-bar">
+      <div class="hd-score-num" id="hdScore"></div>
+      <div class="hd-commentary" id="hdCommentary"></div>
+    </div>
+    <div class="hd-checks" id="hdChecks"></div>
+    <a class="hd-cta" id="hdCta" href="book.html">
+      <span>Book a call &mdash; we&rsquo;ll fix this in the sprint</span>
+      <span class="hd-cta-arr" aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
+</div>
+
 </body>
 </html>
