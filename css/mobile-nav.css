@@ -1,0 +1,138 @@
+/*
+  mobile-nav.css
+  Hamburger button + slide-down mobile nav drawer.
+  On ≤768px: hides inline header links, shows hamburger toggle.
+*/
+
+/* ── HIDE DESKTOP NAV LINKS ON MOBILE ──────── */
+@media (max-width: 768px) {
+  .hdr-right > a {
+    display: none !important;
+  }
+  .hdr-right .live-dot,
+  .hdr-right span:not(.menu-btn-text):not(.menu-btn-icon) {
+    display: none !important;
+  }
+  .hdr-right {
+    gap: 0;
+  }
+}
+
+/* ── HAMBURGER BUTTON ──────────────────────── */
+.menu-btn {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1.5px solid var(--ink);
+  padding: 6px 12px;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.menu-btn:hover,
+.menu-btn[aria-expanded="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.menu-btn-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .menu-btn { display: flex; }
+}
+
+/* ── MOBILE NAV DRAWER ─────────────────────── */
+.mobile-nav-drawer {
+  position: fixed;
+  top: 62px;
+  left: 0;
+  right: 0;
+  z-index: 49;
+  background: var(--paper);
+  border-bottom: 2px solid var(--ink);
+  transform: translateY(-110%);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.mobile-nav-drawer.open {
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+}
+
+@media (min-width: 769px) {
+  .mobile-nav-drawer { display: none !important; }
+}
+
+/* ── DRAWER INNER ──────────────────────────── */
+.mobile-nav-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 18px 20px;
+  font-family: var(--body);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.12s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:active {
+  background: var(--paper-2);
+  text-decoration: none;
+}
+
+.mobile-nav-cta {
+  display: block;
+  padding: 18px 20px;
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background 0.15s;
+}
+
+.mobile-nav-cta:hover,
+.mobile-nav-cta:active {
+  background: var(--green);
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.mobile-nav-live {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  font-size: 12px;
+  color: var(--mid);
+}
