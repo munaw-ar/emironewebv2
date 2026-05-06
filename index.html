@@ -2725,8 +2725,11 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
     document.getElementById('healthDrawer').classList.remove('visible');
   }
 
-  document.getElementById('hdClose').addEventListener('click', closeHealthDrawer);
-  document.getElementById('healthBackdrop').addEventListener('click', closeHealthDrawer);
+  document.addEventListener('click', function(e) {
+    if (e.target && (e.target.id === 'hdClose' || e.target.id === 'healthBackdrop')) {
+      closeHealthDrawer();
+    }
+  });
 
   if(form){
     form.addEventListener('submit', async function(e){
