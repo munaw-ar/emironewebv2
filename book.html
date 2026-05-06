@@ -64,11 +64,30 @@ a {
 .wordmark {
   font-family: var(--serif);
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 500;
+  letter-spacing: -0.02em;
   color: var(--ink);
   text-decoration: none;
-  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
 }
+.wordmark::before {
+  content: "E1";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--ink);
+  font-family: var(--serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.wordmark:hover { text-decoration: none; color: var(--ink); }
 
 .back-link {
   font-size: 13px;
@@ -401,7 +420,7 @@ main {
 
 <!-- ── HEADER ──────────────────────────────────────────────── -->
 <header class="site-header">
-  <a href="index.html" class="wordmark">E1</a>
+  <a href="index.html" class="wordmark">Emir One</a>
   <a href="index.html" class="back-link">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M9 11L5 7l4-4"/>
