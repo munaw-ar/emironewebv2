@@ -14,7 +14,7 @@
     display: none !important;
   }
   .hdr-right {
-    gap: 0;
+    display: none;
   }
 }
 
