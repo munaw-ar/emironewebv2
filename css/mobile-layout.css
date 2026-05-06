@@ -1,0 +1,77 @@
+/*
+  mobile-layout.css
+  Container padding, section spacing, hero sizing for mobile/tablet.
+  Breakpoints: 860px (iPad landscape), 768px (iPad portrait), 600px, 480px (phone)
+*/
+
+/* ── CONTAINER ─────────────────────────────── */
+@media (max-width: 768px) {
+  .w { padding: 0 20px; }
+  .w--mid { padding: 0 20px; }
+  .w--narrow { padding: 0 20px; }
+}
+
+@media (max-width: 480px) {
+  .w { padding: 0 16px; }
+  .w--mid { padding: 0 16px; }
+  .w--narrow { padding: 0 16px; }
+}
+
+/* ── SECTION VERTICAL SPACING ──────────────── */
+@media (max-width: 768px) {
+  .section { padding: 56px 0; }
+  .section-header { gap: 16px; margin-bottom: 36px; }
+  .section-header .section-num { padding-top: 4px; }
+}
+
+@media (max-width: 480px) {
+  .section { padding: 44px 0; }
+  .section-header { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* ── HERO KINETIC PADDING ──────────────────── */
+@media (max-width: 768px) {
+  .hero-kinetic { padding: 60px 20px 60px; }
+}
+
+@media (max-width: 480px) {
+  .hero-kinetic { padding: 48px 16px 48px; }
+}
+
+/* ── HERO STATS ────────────────────────────── */
+@media (max-width: 480px) {
+  .hero-stats {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-stat { min-width: 80px; }
+  .hero-stat-div { display: none; }
+}
+
+/* ── OFFER DOC ─────────────────────────────── */
+@media (max-width: 600px) {
+  .offer-doc-head { padding: 20px; }
+  .offer-body { padding: 20px; }
+  .offer-doc-meta { text-align: left; }
+  .guarantee { padding: 20px 20px; }
+  .time-row { padding: 14px 16px; }
+  .bonus-list { margin-bottom: 24px; }
+  .del-list { margin-bottom: 24px; }
+}
+
+/* ── GUIDE / DNS PANEL ─────────────────────── */
+@media (max-width: 600px) {
+  .method-note { padding: 14px 16px; }
+}
+
+/* ── PROOF SECTION ─────────────────────────── */
+@media (max-width: 600px) {
+  .dash-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* ── FOOTER ────────────────────────────────── */
+@media (max-width: 600px) {
+  .footer-row { flex-direction: column; gap: 20px; align-items: flex-start; }
+  .subscribe-widget { max-width: 100%; }
+}
