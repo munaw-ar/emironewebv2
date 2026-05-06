@@ -1672,6 +1672,265 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
 .sub-success{font-size:13.5px;color:var(--green);font-style:italic;margin-top:8px;display:none;}
 .sub-success.visible{display:block;}
 
+/* ══════════════════════════════════════════
+   SHARIA-ALIGNED SECTION
+══════════════════════════════════════════ */
+.pillar-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--rule);
+  margin-bottom: 56px;
+}
+@media (max-width: 640px) { .pillar-grid { grid-template-columns: 1fr; } }
+
+.pillar-card {
+  padding: 28px 24px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.pillar-card:nth-child(even) { border-right: none; }
+.pillar-card:nth-last-child(-n+2) { border-bottom: none; }
+@media (max-width: 640px) {
+  .pillar-card { border-right: none; }
+  .pillar-card:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .pillar-card:last-child { border-bottom: none; }
+}
+
+.pillar-glyph {
+  font-size: 18px;
+  margin-bottom: 14px;
+  display: block;
+  color: var(--green);
+}
+.pillar-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.pillar-practice {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--mid);
+  margin-bottom: 10px;
+}
+.pillar-benefit {
+  font-size: 13.5px;
+  color: var(--green);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.islamic-blocks { display: flex; flex-direction: column; gap: 0; margin-bottom: 56px; }
+
+.islamic-block {
+  border: 1px solid var(--rule);
+  border-bottom: none;
+  background: var(--paper-2);
+  padding: 28px 32px;
+}
+.islamic-block:last-child { border-bottom: 1px solid var(--rule); }
+
+.arabic-text {
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.5;
+  margin-bottom: 8px;
+  text-align: right;
+  direction: rtl;
+}
+.islamic-transliteration {
+  font-size: 13px;
+  color: var(--light);
+  font-style: italic;
+  margin-bottom: 14px;
+}
+.islamic-practice {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--mid);
+}
+.islamic-practice strong { font-weight: 600; color: var(--ink-2); font-style: normal; }
+
+.sharia-outcomes {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 48px;
+  max-width: 600px;
+}
+.sharia-outcome {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule-2);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.sharia-outcome:last-child { border-bottom: none; }
+.sharia-check { color: var(--green); flex-shrink: 0; margin-top: 2px; font-size: 13px; }
+
+.fit-gate {
+  border: 1px solid var(--rule);
+  padding: 28px 32px;
+  max-width: 600px;
+  margin-bottom: 36px;
+}
+.fit-gate p { font-size: 15px; line-height: 1.65; color: var(--mid); }
+.fit-gate p + p { margin-top: 8px; }
+.fit-gate strong { color: var(--ink); font-weight: 600; }
+
+/* ══════════════════════════════════════════
+   DOMAIN HEALTH CHECK DRAWER
+══════════════════════════════════════════ */
+.health-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(12,11,9,0.4);
+  z-index: 98;
+  cursor: pointer;
+}
+.health-backdrop.visible { display: block; }
+
+.health-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: var(--paper);
+  border-top: 2px solid var(--ink);
+  max-height: 80vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  -webkit-overflow-scrolling: touch;
+}
+.health-drawer.visible { transform: translateY(0); }
+
+.hd-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 28px 32px 36px;
+}
+@media (max-width: 600px) { .hd-inner { padding: 20px 20px 28px; } }
+
+.hd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.hd-domain-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--mid);
+  letter-spacing: 0.02em;
+}
+.hd-close {
+  font-size: 12px;
+  color: var(--light);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-family: var(--body);
+  letter-spacing: 0.04em;
+  transition: color 0.15s;
+}
+.hd-close:hover { color: var(--ink); }
+
+.hd-score-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 18px 20px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  margin-bottom: 16px;
+}
+.hd-score-num {
+  font-family: var(--serif);
+  font-size: 40px;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+  flex-shrink: 0;
+}
+.hd-commentary {
+  font-size: 15px;
+  font-style: italic;
+  color: var(--mid);
+  line-height: 1.55;
+  padding-top: 4px;
+}
+
+.hd-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 20px;
+  border: 1px solid var(--rule);
+}
+.hd-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule-2);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--mid);
+}
+.hd-check:last-child { border-bottom: none; }
+.hd-check-glyph {
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  width: 16px;
+  text-align: center;
+}
+.hd-check--pass .hd-check-glyph { color: var(--green); }
+.hd-check--warn .hd-check-glyph { color: #B8860B; }
+.hd-check--fail .hd-check-glyph { color: var(--red-ed); }
+.hd-check--unknown .hd-check-glyph { color: var(--light); }
+.hd-check-label { font-weight: 600; color: var(--ink-2); }
+
+.hd-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--body);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 16px 22px;
+  text-decoration: none;
+  transition: background 0.18s, border-color 0.18s;
+  box-sizing: border-box;
+}
+.hd-cta:hover { background: var(--green); border-color: var(--green); color: var(--paper); text-decoration: none; }
+.hd-cta-arr { font-size: 18px; font-weight: 300; }
+
+/* Loading state for hero button */
+.btn-score.checking { opacity: 0.6; cursor: not-allowed; }
+
 </style>
 </head>
 <body>
