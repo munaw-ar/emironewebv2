@@ -736,8 +736,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 
   /* ── Config ─────────────────────────────── */
   const SUPABASE_URL  = 'https://yzogunnnrfkajmbkndfn.supabase.co';
-  const LOGS_ANON_KEY = 'REPLACE_WITH_ANON_KEY';  // REST fetch key
-  const SUB_ANON_KEY  = 'REPLACE_WITH_ANON_KEY';  // Subscribe key
+  const LOGS_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6b2d1bm5ucmZrYWptYmtuZGZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5MjYwMTAsImV4cCI6MjA4MTUwMjAxMH0.5-qJHLJlhz_KSitcWfpjQRe6-eZkIyHezDP5kKYwraY';  // REST fetch key
+  const SUB_ANON_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6b2d1bm5ucmZrYWptYmtuZGZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5MjYwMTAsImV4cCI6MjA4MTUwMjAxMH0.5-qJHLJlhz_KSitcWfpjQRe6-eZkIyHezDP5kKYwraY';  // Subscribe key
   const LOGS_ENDPOINT = `${SUPABASE_URL}/rest/v1/experiment_logs?is_published=eq.true&order=date_published.desc&select=*`;
   const SUB_ENDPOINT  = `${SUPABASE_URL}/functions/v1/subscribe-newsletter`;
 
