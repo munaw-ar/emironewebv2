@@ -2588,13 +2588,174 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
 
   // Form handler
   var form = document.getElementById('healthForm');
+
+  /* ── DOMAIN HEALTH CHECK ── */
+  var CF_DNS = 'https://cloudflare-dns.com/dns-query';
+  var DNS_H  = { 'Accept': 'application/dns-json' };
+
+  function dnsFetch(name, type) {
+    return fetch(CF_DNS + '?name=' + encodeURIComponent(name) + '&type=' + type, { headers: DNS_H })
+      .then(function(r){ return r.json(); });
+  }
+
+  async function checkDomain(domain) {
+    var dkimSelectors = ['google', 'mail', 'default', 'selector1', 'selector2'];
+    var allChecks = await Promise.allSettled([
+      dnsFetch(domain, 'TXT'),
+      dnsFetch('_dmarc.' + domain, 'TXT'),
+      dnsFetch(domain, 'MX')
+    ].concat(dkimSelectors.map(function(sel){
+      return dnsFetch(sel + '._domainkey.' + domain, 'TXT');
+    })));
+
+    var spf = { found: false, value: '' };
+    if (allChecks[0].status === 'fulfilled') {
+      var ans = (allChecks[0].value.Answer || []);
+      var rec = ans.find(function(a){ return a.data && a.data.includes('v=spf1'); });
+      if (rec) { spf.found = true; spf.value = rec.data.replace(/"/g, ''); }
+    }
+
+    var dmarc = { found: false, policy: 'none', value: '' };
+    if (allChecks[1].status === 'fulfilled') {
+      var dans = (allChecks[1].value.Answer || []);
+      var drec = dans.find(function(a){ return a.data && a.data.includes('v=DMARC1'); });
+      if (drec) {
+        dmarc.found = true;
+        dmarc.value = drec.data.replace(/"/g, '');
+        var pm = dmarc.value.match(/p=([a-z]+)/i);
+        dmarc.policy = pm ? pm[1].toLowerCase() : 'none';
+      }
+    }
+
+    var mx = { found: false, count: 0 };
+    if (allChecks[2].status === 'fulfilled') {
+      var mans = (allChecks[2].value.Answer || []);
+      if (mans.length > 0) { mx.found = true; mx.count = mans.length; }
+    }
+
+    var dkimFound = allChecks.slice(3).some(function(r){
+      return r.status === 'fulfilled' && r.value.Answer && r.value.Answer.length > 0;
+    });
+
+    var score = 0;
+    if (spf.found) score += 3;
+    if (dmarc.found) {
+      if (dmarc.policy === 'reject')          score += 3;
+      else if (dmarc.policy === 'quarantine') score += 2;
+      else                                    score += 1;
+    }
+    if (mx.found)   score += 2;
+    if (dkimFound)  score += 2;
+
+    return { spf: spf, dmarc: dmarc, mx: mx, dkim: { found: dkimFound }, score: score };
+  }
+
+  function getCommentary(score, r) {
+    if (score >= 9) return 'Excellent infrastructure. Your domain is inbox-ready.';
+    if (score >= 7) {
+      if (!r.dkim.found) return 'Close to inbox-ready. Add a DKIM record to complete your authentication stack.';
+      if (r.dmarc.policy === 'none') return 'Close to inbox-ready. Upgrade your DMARC policy from none to quarantine to close the gap.';
+      return 'Close to inbox-ready. One configuration gap to address.';
+    }
+    if (score >= 5) {
+      var gaps = [];
+      if (!r.spf.found) gaps.push('SPF');
+      if (!r.dmarc.found || r.dmarc.policy === 'none') gaps.push('DMARC');
+      if (!r.dkim.found) gaps.push('DKIM');
+      return 'Moderate risk. ' + gaps.join(' and ') + ' need attention before any cold sending.';
+    }
+    return 'High risk. Missing fundamentals — emails are likely landing in spam.';
+  }
+
+  function makeCheckRow(glyph, label, text, status) {
+    return '<div class="hd-check hd-check--' + status + '">' +
+      '<span class="hd-check-glyph" aria-hidden="true">' + glyph + '</span>' +
+      '<div><span class="hd-check-label">' + label + '</span> — ' + text + '</div>' +
+      '</div>';
+  }
+
+  function showHealthDrawer(domain, results) {
+    var score      = results ? results.score : null;
+    var scoreText  = score !== null ? score + '/10' : '—/10';
+    var commentary = results
+      ? getCommentary(score, results)
+      : 'Could not reach DNS — check your connection and try again.';
+
+    document.getElementById('hdDomainLabel').textContent = domain + ' — Health Report';
+    document.getElementById('hdScore').textContent       = scoreText;
+    document.getElementById('hdCommentary').textContent  = commentary;
+
+    var checks = '';
+    if (results) {
+      checks += makeCheckRow(
+        results.spf.found ? '✓' : '✗', 'SPF',
+        results.spf.found ? (results.spf.value || 'Record found') : 'No SPF record found',
+        results.spf.found ? 'pass' : 'fail'
+      );
+      var dg = results.dmarc.found ? (results.dmarc.policy === 'none' ? '⚠' : '✓') : '✗';
+      var ds = results.dmarc.found ? (results.dmarc.policy === 'none' ? 'warn' : 'pass') : 'fail';
+      var dt = results.dmarc.found
+        ? 'p=' + results.dmarc.policy + (results.dmarc.policy === 'none' ? ' — upgrade to quarantine or reject' : '')
+        : 'No DMARC record found';
+      checks += makeCheckRow(dg, 'DMARC', dt, ds);
+      checks += makeCheckRow(
+        results.mx.found ? '✓' : '✗', 'MX',
+        results.mx.found ? results.mx.count + ' record' + (results.mx.count !== 1 ? 's' : '') + ' found' : 'No MX records found',
+        results.mx.found ? 'pass' : 'fail'
+      );
+      checks += makeCheckRow(
+        results.dkim.found ? '✓' : '—', 'DKIM',
+        results.dkim.found ? 'Selector detected' : 'Selector not found — check manually',
+        results.dkim.found ? 'pass' : 'unknown'
+      );
+    }
+    document.getElementById('hdChecks').innerHTML = checks;
+
+    var ctaHref = 'book.html?domain=' + encodeURIComponent(domain) +
+      (score !== null ? '&score=' + score : '') + '&source=health_drawer';
+    document.getElementById('hdCta').href = ctaHref;
+
+    document.getElementById('healthBackdrop').classList.add('visible');
+    document.getElementById('healthDrawer').classList.add('visible');
+    document.getElementById('healthDrawer').scrollTop = 0;
+  }
+
+  function closeHealthDrawer() {
+    document.getElementById('healthBackdrop').classList.remove('visible');
+    document.getElementById('healthDrawer').classList.remove('visible');
+  }
+
+  document.getElementById('hdClose').addEventListener('click', closeHealthDrawer);
+  document.getElementById('healthBackdrop').addEventListener('click', closeHealthDrawer);
+
   if(form){
-    form.addEventListener('submit', function(e){
+    form.addEventListener('submit', async function(e){
       e.preventDefault();
-      var raw = (document.getElementById('domain').value || '').trim();
-      var domain = raw.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
+      var raw    = (document.getElementById('domain').value || '').trim();
+      var domain = raw.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').toLowerCase();
       if (!domain) { document.getElementById('domain').focus(); return; }
-      window.location.href = 'book.html?domain=' + encodeURIComponent(domain) + '&source=hero_score';
+
+      var btn = form.querySelector('.btn-score');
+      var inp = document.getElementById('domain');
+      btn.textContent = 'Checking…';
+      btn.classList.add('checking');
+      btn.disabled = true;
+      inp.disabled = true;
+
+      try {
+        var results = await Promise.race([
+          checkDomain(domain),
+          new Promise(function(_, rej){ setTimeout(function(){ rej(new Error('timeout')); }, 8000); })
+        ]);
+        showHealthDrawer(domain, results);
+      } catch(err) {
+        showHealthDrawer(domain, null);
+      } finally {
+        btn.textContent = 'Score my domain →';
+        btn.classList.remove('checking');
+        btn.disabled = false;
+        inp.disabled = false;
+      }
     });
   }
 
