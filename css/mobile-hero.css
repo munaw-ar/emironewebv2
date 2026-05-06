@@ -1,0 +1,62 @@
+/*
+  mobile-hero.css
+  Hero form stacking, kinetic word sizing, headline wrap adjustments.
+*/
+
+/* ── HERO FORM — STACK ON MOBILE ───────────── */
+@media (max-width: 520px) {
+  .form-wrap { max-width: 100%; padding: 0; }
+  .form-inner { flex-direction: column; }
+
+  .domain-input {
+    border-right: 1.5px solid var(--ink);
+    border-bottom: none;
+    width: 100%;
+    padding: 14px 16px;
+  }
+
+  .domain-input:focus {
+    border-color: var(--green);
+  }
+
+  .btn-score {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 16px;
+    border-top: none;
+  }
+}
+
+/* ── KINETIC WORDS — FLOOR AT TINY SCREENS ─── */
+@media (max-width: 380px) {
+  .word-silent,
+  .word-burning {
+    font-size: 52px;
+    letter-spacing: -0.03em;
+  }
+  .word-or { font-size: 16px; }
+}
+
+/* ── HEADLINE WRAP ──────────────────────────── */
+@media (max-width: 600px) {
+  .kin-headline {
+    font-size: clamp(26px, 7.5vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+  .pre-headline {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    margin-bottom: 14px;
+  }
+}
+
+/* ── KIN STAGE HEIGHT ───────────────────────── */
+@media (max-width: 600px) {
+  .kin-stage { height: clamp(220px, 55vw, 320px) !important; }
+}
+
+/* ── FORM NOTE ──────────────────────────────── */
+@media (max-width: 480px) {
+  .form-note { font-size: 11px; }
+}
