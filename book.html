@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FAF8F3">
+<title>Book a Strategy Call — Emir One</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FAF8F3'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='13' font-weight='700' text-anchor='middle' fill='%230C0B09'%3EE1%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:  #FAF8F3;
+  --paper-2:#F3F0E8;
+  --ink:    #0C0B09;
+  --mid:    #5C5648;
+  --light:  #9A9080;
+  --rule:   #D8D0C0;
+  --green:  #0D5C38;
+  --serif:  "Fraunces", Georgia, serif;
+  --body:   "Inter Tight", -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+a {
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wordmark {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.back-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mid);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s ease;
+}
+
+.back-link:hover {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.back-link svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ── MAIN ────────────────────────────────────────────────── */
+main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 64px 24px 80px;
+}
+
+/* ── PAGE INTRO ──────────────────────────────────────────── */
+.page-overline {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 16px;
+}
+
+.page-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 300;
+  line-height: 1.18;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.page-title em {
+  font-style: italic;
+}
+
+.desc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 32px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.desc-list li {
+  font-size: 15px;
+  color: var(--mid);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.desc-list li::before {
+  content: "—";
+  color: var(--rule);
+  flex-shrink: 0;
+  line-height: 1.65;
+}
+
+/* ── DOMAIN BADGE ────────────────────────────────────────── */
+.domain-badge {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 10px 14px;
+  margin-bottom: 32px;
+  font-size: 13px;
+  color: var(--mid);
+}
+
+.domain-badge.visible {
+  display: flex;
+}
+
+.domain-badge strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.domain-badge-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+/* ── FORM ────────────────────────────────────────────────── */
+.form-card {
+  border-top: 1px solid var(--rule);
+  padding-top: 32px;
+}
+
+.form-step-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 24px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 32px;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-field {
+  margin-bottom: 28px;
+}
+
+.form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 8px;
+}
+
+.form-label .req {
+  color: var(--green);
+  margin-left: 2px;
+}
+
+.form-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--rule);
+  border-radius: 0;
+  padding: 8px 0;
+  font-family: var(--body);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-input::placeholder {
+  color: var(--light);
+}
+
+.form-input:focus {
+  border-color: var(--ink);
+}
+
+.form-textarea {
+  width: 100%;
+  background: var(--paper-2);
+  border: 1.5px solid var(--rule);
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ink);
+  outline: none;
+  resize: vertical;
+  min-height: 96px;
+  transition: border-color 0.15s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-textarea::placeholder {
+  color: var(--light);
+}
+
+.form-textarea:focus {
+  border-color: var(--ink);
+}
+
+/* ── ERROR STATUS ────────────────────────────────────────── */
+.form-error {
+  display: none;
+  background: #FBE9E7;
+  border: 1px solid #EFC8C0;
+  color: #7A1F10;
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  grid-column: 1 / -1;
+}
+
+.form-error.visible {
+  display: block;
+}
+
+/* ── CONTINUE BUTTON ─────────────────────────────────────── */
+.btn-continue {
+  width: 100%;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: 4px;
+  padding: 15px 24px;
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.18s ease, opacity 0.18s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  grid-column: 1 / -1;
+}
+
+.btn-continue:hover:not(:disabled) {
+  background: var(--green);
+}
+
+.btn-continue:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* CSS spinner */
+.btn-spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(250, 248, 243, 0.3);
+  border-top-color: var(--paper);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.btn-continue.loading .btn-spinner {
+  display: block;
+}
+
+.btn-continue.loading .btn-label {
+  opacity: 0.8;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── CAL SECTION ─────────────────────────────────────────── */
+.cal-section {
+  display: none;
+  border-top: 1px solid var(--rule);
+  padding-top: 32px;
+  margin-top: 8px;
+}
+
+.cal-section.visible {
+  display: block;
+}
+
+.cal-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 20px;
+}
+
+.cal-frame {
+  width: 100%;
+  min-height: 640px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--paper-2);
+  display: block;
+}
+
+.cal-fallback {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--mid);
+  text-align: center;
+}
+
+.cal-fallback a {
+  color: var(--green);
+}
+
+/* ── DIVIDER ─────────────────────────────────────────────── */
+.rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 40px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────────── -->
+<header class="site-header">
+  <a href="index.html" class="wordmark">E1</a>
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 11L5 7l4-4"/>
+    </svg>
+    Back
+  </a>
+</header>
+
+<!-- ── MAIN ────────────────────────────────────────────────── -->
+<main>
+
+  <!-- Page intro -->
+  <p class="page-overline">Book a Strategy Call</p>
+  <h1 class="page-title">Tell us about your<br><em>revenue goal.</em></h1>
+
+  <ul class="desc-list">
+    <li>30-minute strategy call, no obligation</li>
+    <li>We audit your domain health before we speak</li>
+    <li>AU/NZ businesses only — ethical outbound, always</li>
+  </ul>
+
+  <!-- Domain context badge (shown via JS if ?domain= param present) -->
+  <div class="domain-badge" id="domainBadge">
+    <svg class="domain-badge-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8" cy="8" r="6.5"/>
+      <path d="M5.5 8.5l2 2 3-3.5"/>
+    </svg>
+    <span>Audit requested for: <strong id="domainBadgeText"></strong></span>
+  </div>
+
+  <!-- ── STEP 1: PRE-QUAL FORM ──────────────────────────────── -->
+  <section class="form-card" id="formSection">
+    <p class="form-step-label">Step 1 of 2 — Your details</p>
+
+    <form id="prequalForm" novalidate>
+      <div class="form-grid">
+
+        <!-- Error display -->
+        <div class="form-error" id="formError" role="alert"></div>
+
+        <!-- Work Email (required) -->
+        <div class="form-field">
+          <label class="form-label" for="fieldEmail">Work Email <span class="req">*</span></label>
+          <input
+            class="form-input"
+            type="email"
+            id="fieldEmail"
+            name="email"
+            autocomplete="email"
+            maxlength="255"
+            placeholder="you@yourfirm.com.au"
+            required
+          >
+        </div>
+
+        <!-- Full Name (required) -->
+        <div class="form-field">
+          <label class="form-label" for="fieldName">Full Name <span class="req">*</span></label>
+          <input
+            class="form-input"
+            type="text"
+            id="fieldName"
+            name="fullName"
+            autocomplete="name"
+            maxlength="200"
+            placeholder="Jane Smith"
+            required
+          >
+        </div>
+
+        <!-- Company (optional) -->
+        <div class="form-field">
+          <label class="form-label" for="fieldCompany">Company</label>
+          <input
+            class="form-input"
+            type="text"
+            id="fieldCompany"
+            name="companyName"
+            autocomplete="organization"
+            maxlength="200"
+            placeholder="Acme Pty Ltd"
+          >
+        </div>
+
+        <!-- Website (optional) -->
+        <div class="form-field">
+          <label class="form-label" for="fieldWebsite">Website</label>
+          <input
+            class="form-input"
+            type="text"
+            id="fieldWebsite"
+            name="website"
+            autocomplete="url"
+            maxlength="500"
+            placeholder="yourfirm.com.au"
+          >
+        </div>
+
+        <!-- Best Phone (optional) -->
+        <div class="form-field">
+          <label class="form-label" for="fieldPhone">Best Phone</label>
+          <input
+            class="form-input"
+            type="tel"
+            id="fieldPhone"
+            name="phone"
+            autocomplete="tel"
+            maxlength="30"
+            placeholder="+61 4XX XXX XXX"
+          >
+        </div>
+
+        <!-- Spacer on desktop so goal textarea spans full width below phone -->
+        <div class="form-field" style="visibility:hidden;" aria-hidden="true"></div>
+
+        <!-- Primary Revenue Goal (optional, full width) -->
+        <div class="form-field full-width">
+          <label class="form-label" for="fieldGoal">Primary Revenue Goal — 90-day</label>
+          <textarea
+            class="form-textarea"
+            id="fieldGoal"
+            name="goal"
+            maxlength="500"
+            placeholder="e.g. 20 qualified conversations/month, fix spam placement, launch outbound from scratch…"
+          ></textarea>
+        </div>
+
+        <!-- Continue button (full width) -->
+        <button class="btn-continue" type="submit" id="btnContinue" disabled>
+          <span class="btn-spinner" aria-hidden="true"></span>
+          <span class="btn-label">Continue to booking →</span>
+        </button>
+
+      </div>
+    </form>
+  </section>
+
+  <!-- ── STEP 2: CAL.COM BOOKING ───────────────────────────── -->
+  <section class="cal-section" id="calSection">
+    <p class="cal-label">Step 2 of 2 — Pick a time</p>
+    <iframe
+      id="calFrame"
+      class="cal-frame"
+      src="about:blank"
+      title="Book a 30-minute strategy call with Emir One"
+      frameborder="0"
+      allow="camera; microphone; payment"
+    ></iframe>
+    <p class="cal-fallback">
+      Iframe not loading?
+      <a id="calFallbackLink" href="https://cal.com/munawar-emirone/30min" target="_blank" rel="noopener">
+        Open booking page directly →
+      </a>
+    </p>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── CONFIG ─────────────────────────────────────────────── */
+  var CAL_URL      = 'https://cal.com/munawar-emirone/30min';
+  var EDGE_FN_URL  = 'https://yzogunnnrfkajmbkndfn.supabase.co/functions/v1/capture-lead';
+  var ANON_KEY     = 'REPLACE_WITH_ANON_KEY';
+  var EMAIL_RE     = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  /* ── DOM REFS ────────────────────────────────────────────── */
+  var fieldEmail    = document.getElementById('fieldEmail');
+  var fieldName     = document.getElementById('fieldName');
+  var fieldCompany  = document.getElementById('fieldCompany');
+  var fieldWebsite  = document.getElementById('fieldWebsite');
+  var fieldPhone    = document.getElementById('fieldPhone');
+  var fieldGoal     = document.getElementById('fieldGoal');
+  var btnContinue   = document.getElementById('btnContinue');
+  var formError     = document.getElementById('formError');
+  var formSection   = document.getElementById('formSection');
+  var calSection    = document.getElementById('calSection');
+  var calFrame      = document.getElementById('calFrame');
+  var calFallback   = document.getElementById('calFallbackLink');
+  var domainBadge   = document.getElementById('domainBadge');
+  var domainText    = document.getElementById('domainBadgeText');
+  var form          = document.getElementById('prequalForm');
+
+  /* ── URL PARAMS ──────────────────────────────────────────── */
+  var params   = new URLSearchParams(window.location.search);
+  var pDomain  = params.get('domain') || '';
+  var pEmail   = params.get('email')  || '';
+
+  // Domain badge
+  if (pDomain) {
+    domainText.textContent = pDomain;
+    domainBadge.classList.add('visible');
+  }
+
+  // Email pre-fill: URL param first, then localStorage fallback
+  var savedEmail = pEmail || localStorage.getItem('booking_email') || '';
+  if (savedEmail) {
+    fieldEmail.value = savedEmail;
+  }
+
+  // If website field is empty and domain param exists, pre-fill it
+  if (pDomain && !fieldWebsite.value) {
+    fieldWebsite.value = pDomain;
+  }
+
+  /* ── BUTTON ENABLE / DISABLE ─────────────────────────────── */
+  function checkReady() {
+    var emailVal = fieldEmail.value.trim();
+    var nameVal  = fieldName.value.trim();
+    var ready    = emailVal.length > 0 && nameVal.length > 0;
+    btnContinue.disabled = !ready;
+  }
+
+  fieldEmail.addEventListener('input', checkReady);
+  fieldName.addEventListener('input', checkReady);
+
+  // Run once in case pre-fill already satisfies conditions
+  checkReady();
+
+  /* ── FORM SUBMIT ─────────────────────────────────────────── */
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    hideError();
+
+    var email      = fieldEmail.value.trim();
+    var fullName   = fieldName.value.trim();
+    var companyName= fieldCompany.value.trim();
+    var website    = fieldWebsite.value.trim();
+    var phone      = fieldPhone.value.trim();
+    var goal       = fieldGoal.value.trim();
+
+    // Validate email
+    if (!EMAIL_RE.test(email)) {
+      showError('Please enter a valid email address.');
+      fieldEmail.focus();
+      return;
+    }
+
+    // Validate name
+    if (!fullName) {
+      showError('Please enter your full name.');
+      fieldName.focus();
+      return;
+    }
+
+    setLoading(true);
+
+    // Non-blocking edge function call
+    var payload = { email: email, fullName: fullName, companyName: companyName, website: website, phone: phone, goal: goal };
+    fetch(EDGE_FN_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': ANON_KEY
+      },
+      body: JSON.stringify(payload)
+    }).catch(function () {
+      // Silently ignore errors — proceed regardless
+    });
+
+    // Save email
+    try {
+      localStorage.setItem('booking_email', email);
+    } catch (err) {
+      // localStorage may be blocked in some contexts
+    }
+
+    // Build Cal.com URL
+    var cp = new URLSearchParams({
+      embed: 'true',
+      layout: 'month_view',
+      name: fullName,
+      email: email
+    });
+
+    // Build notes param from optional fields
+    var noteParts = [];
+    if (companyName) noteParts.push('Company: ' + companyName);
+    if (website)     noteParts.push('Website: ' + website);
+    if (goal)        noteParts.push('Goal: ' + goal);
+    if (noteParts.length) cp.set('notes', noteParts.join(' | '));
+
+    var calSrc = CAL_URL + '?' + cp.toString();
+
+    // Update fallback link
+    calFallback.href = CAL_URL;
+
+    // Set iframe src
+    calFrame.src = calSrc;
+
+    // Transition to step 2
+    setLoading(false);
+    formSection.style.display = 'none';
+    calSection.classList.add('visible');
+    calSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  /* ── HELPERS ─────────────────────────────────────────────── */
+  function setLoading(state) {
+    if (state) {
+      btnContinue.classList.add('loading');
+      btnContinue.disabled = true;
+    } else {
+      btnContinue.classList.remove('loading');
+      btnContinue.disabled = false;
+    }
+  }
+
+  function showError(msg) {
+    formError.textContent = msg;
+    formError.classList.add('visible');
+  }
+
+  function hideError() {
+    formError.textContent = '';
+    formError.classList.remove('visible');
+  }
+
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Emir One Experiment Logs — Real outbound email tests for AU/NZ businesses. Hypothesis, setup, results, and conclusions published openly.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#FAF8F3">
+<title>Experiment Logs — Emir One</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FAF8F3'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='13' font-weight='700' text-anchor='middle' fill='%230C0B09'%3EE1%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/*
+  EMIR ONE — Research / Experiment Logs
+  Aesthetic: Editorial / Field Intelligence
+*/
+
+:root {
+  --paper:   #FAF8F3;
+  --paper-2: #F3F0E8;
+  --ink:     #0C0B09;
+  --ink-2:   #2A2820;
+  --mid:     #5C5648;
+  --light:   #9A9080;
+  --rule:    #D8D0C0;
+  --rule-2:  #EAE4D8;
+  --green:   #0D5C38;
+  --green-h: #0A4A2D;
+
+  --serif:   "Fraunces", Georgia, serif;
+  --body:    "Inter Tight", -apple-system, sans-serif;
+  --mono:    "JetBrains Mono", Consolas, monospace;
+
+  --max:     1120px;
+  --ease:    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+a { color: var(--green); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: var(--green-h); }
+a:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+
+/* ─── LAYOUT ─────────────────────────────── */
+.w {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ─── LABEL / OVERLINE ───────────────────── */
+.label {
+  display: inline-block;
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(250,248,243,0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 62px;
+}
+
+.wordmark {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.wordmark::before {
+  content: "E1";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--ink);
+  font-family: var(--serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+.wordmark:hover { text-decoration: none; color: var(--ink); }
+
+.back-link {
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mid);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.18s var(--ease);
+}
+
+.back-link:hover { color: var(--ink); text-decoration: none; }
+
+.back-link::before {
+  content: "←";
+  font-size: 14px;
+}
+
+/* ══════════════════════════════════════════
+   PAGE HERO
+══════════════════════════════════════════ */
+.page-hero {
+  padding-top: 72px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.page-hero .overline {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 20px;
+}
+
+.page-hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(36px, 5.5vw, 72px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.page-hero .subtitle {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(16px, 1.8vw, 19px);
+  font-weight: 300;
+  color: var(--mid);
+  max-width: 600px;
+  line-height: 1.55;
+}
+
+/* ══════════════════════════════════════════
+   FILTER BAR
+══════════════════════════════════════════ */
+.filter-bar {
+  border-bottom: 1px solid var(--rule);
+  padding: 14px 0;
+}
+
+.filter-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.filter-label {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--light);
+  flex-shrink: 0;
+}
+
+.filter-select {
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 6px 28px 6px 10px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235C5648'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color 0.15s;
+}
+
+.filter-select:hover { border-color: var(--mid); }
+
+/* ══════════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════════ */
+.main-content {
+  padding: 48px 0 80px;
+}
+
+/* ─── LOADING STATE ──────────────────────── */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 96px 0;
+}
+
+.spinner-ring {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--rule-2);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--light);
+  letter-spacing: 0.05em;
+}
+
+/* ─── EMPTY STATE ────────────────────────── */
+.empty-state {
+  display: none;
+  text-align: center;
+  padding: 96px 0;
+}
+
+.empty-state p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--light);
+}
+
+/* ─── EXPERIMENTS LIST ───────────────────── */
+.experiments-list {
+  display: none;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ══════════════════════════════════════════
+   EXPERIMENT CARD
+══════════════════════════════════════════ */
+.experiment-card {
+  border-bottom: 1px solid var(--rule);
+  padding: 48px 0;
+}
+
+.experiment-card:first-child {
+  padding-top: 0;
+}
+
+/* Meta row */
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.card-date {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--light);
+  letter-spacing: 0.04em;
+}
+
+.card-industry {
+  display: inline-block;
+  font-family: var(--body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+  background: var(--paper-2);
+  padding: 3px 9px;
+  border: 1px solid var(--rule);
+}
+
+/* Card title */
+.card-title {
+  font-family: var(--serif);
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 32px;
+  max-width: 840px;
+}
+
+/* 2×2 grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+  margin-bottom: 0;
+}
+
+.grid-cell {
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 20px 24px 22px;
+}
+
+.grid-cell-label {
+  display: block;
+  font-family: var(--body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 8px;
+}
+
+.grid-cell-body {
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.grid-cell-body.empty {
+  color: var(--light);
+  font-style: italic;
+}
+
+/* Conclusion block */
+.card-conclusion {
+  background: var(--paper-2);
+  border-left: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 20px 24px 22px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.conclusion-label-col {
+  flex-shrink: 0;
+  width: 100px;
+  padding-top: 3px;
+}
+
+.conclusion-label-col .grid-cell-label {
+  margin-bottom: 0;
+}
+
+.conclusion-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--ink-2);
+  flex: 1;
+}
+
+/* Next test callout */
+.card-next-test {
+  margin-top: 20px;
+  margin-left: 24px;
+  padding: 14px 20px;
+  border-left: 2px solid var(--rule);
+}
+
+.next-test-label {
+  display: block;
+  font-family: var(--body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 6px;
+}
+
+.next-test-body {
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mid);
+}
+
+/* ══════════════════════════════════════════
+   SUBSCRIBE SECTION
+══════════════════════════════════════════ */
+.subscribe-section {
+  background: var(--paper-2);
+  border-top: 1px solid var(--rule);
+  padding: 80px 0;
+}
+
+.subscribe-inner {
+  max-width: 600px;
+}
+
+.subscribe-h2 {
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+.subscribe-desc {
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--mid);
+  margin-bottom: 28px;
+  max-width: 480px;
+}
+
+.subscribe-form {
+  display: flex;
+  gap: 0;
+  margin-bottom: 12px;
+}
+
+.subscribe-input {
+  flex: 1;
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-right: none;
+  padding: 0 16px;
+  height: 44px;
+  border-radius: 0;
+  transition: border-color 0.15s;
+  min-width: 0;
+}
+
+.subscribe-input::placeholder { color: var(--light); }
+.subscribe-input:hover { border-color: var(--mid); }
+.subscribe-input:focus { border-color: var(--green); outline: none; }
+.subscribe-input:focus + .subscribe-btn { border-left-color: var(--green); }
+
+.subscribe-btn {
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 0 22px;
+  height: 44px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.subscribe-btn:hover:not(:disabled) {
+  background: var(--ink-2);
+  border-color: var(--ink-2);
+}
+
+.subscribe-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.subscribe-note {
+  font-family: var(--body);
+  font-size: 12px;
+  color: var(--light);
+}
+
+.subscribe-success {
+  display: none;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--green);
+  margin-top: 12px;
+}
+
+.subscribe-error {
+  display: none;
+  font-family: var(--body);
+  font-size: 13px;
+  color: #7A1F10;
+  margin-top: 10px;
+}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.site-footer {
+  border-top: 1px solid var(--rule);
+  padding: 28px 0;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-copy {
+  font-family: var(--body);
+  font-size: 12px;
+  color: var(--light);
+}
+
+.footer-back {
+  font-family: var(--body);
+  font-size: 12px;
+  color: var(--mid);
+  text-decoration: none;
+}
+
+.footer-back:hover { color: var(--ink); text-decoration: underline; }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .w { padding: 0 20px; }
+
+  .page-hero { padding-top: 48px; padding-bottom: 40px; }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-conclusion {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .conclusion-label-col {
+    width: auto;
+  }
+
+  .subscribe-form {
+    flex-direction: column;
+  }
+
+  .subscribe-input {
+    border-right: 1px solid var(--rule);
+    border-bottom: none;
+  }
+
+  .subscribe-input:hover { border-bottom: none; }
+
+  .subscribe-btn {
+    width: 100%;
+    border-left: 1px solid var(--ink);
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="w">
+    <nav class="hdr">
+      <a href="index.html" class="wordmark">Emir One</a>
+      <a href="index.html" class="back-link">Back to main</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     PAGE HERO
+══════════════════════════════════════════ -->
+<section class="page-hero">
+  <div class="w">
+    <p class="overline">Field Intelligence · AU/NZ</p>
+    <h1>Experiment Logs</h1>
+    <p class="subtitle">Real tests. Real results. Real learning — including the ones that fail spectacularly.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     FILTER BAR
+══════════════════════════════════════════ -->
+<div class="filter-bar">
+  <div class="w">
+    <div class="filter-inner">
+      <span class="filter-label">Filter</span>
+      <select class="filter-select" id="industryFilter" aria-label="Filter by industry">
+        <option value="">All industries</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════ -->
+<main class="main-content">
+  <div class="w">
+
+    <!-- Loading state -->
+    <div class="loading-state" id="loadingState" aria-live="polite">
+      <div class="spinner-ring" role="status" aria-label="Loading"></div>
+      <p>Fetching experiment logs…</p>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" id="emptyState" aria-live="polite">
+      <p>No experiment logs published yet. Check back soon.</p>
+    </div>
+
+    <!-- Experiments list -->
+    <div class="experiments-list" id="experimentsList" aria-label="Experiment logs"></div>
+
+  </div>
+</main>
+
+<!-- ══════════════════════════════════════════
+     SUBSCRIBE SECTION
+══════════════════════════════════════════ -->
+<section class="subscribe-section">
+  <div class="w">
+    <div class="subscribe-inner">
+      <h2 class="subscribe-h2">Get Research Updates</h2>
+      <p class="subscribe-desc">New experiments and quarterly benchmarks delivered to your inbox. Four emails a year, maximum.</p>
+      <form class="subscribe-form" id="subscribeForm" novalidate>
+        <input
+          type="email"
+          class="subscribe-input"
+          id="subscribeEmail"
+          placeholder="your@email.com"
+          autocomplete="email"
+          required
+          aria-label="Email address"
+        >
+        <button type="submit" class="subscribe-btn" id="subscribeBtn">Subscribe</button>
+      </form>
+      <p class="subscribe-note">No spam. Unsubscribe anytime.</p>
+      <p class="subscribe-success" id="subscribeSuccess" role="status">
+        You're on the list. Expect the next dispatch when there's something worth sending.
+      </p>
+      <p class="subscribe-error" id="subscribeError" role="alert"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="w">
+    <div class="footer-inner">
+      <span class="footer-copy">&copy; <span id="footerYear"></span> Emir One. All rights reserved.</span>
+      <a href="index.html" class="footer-back">← Back to emirone.com.au</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── Config ─────────────────────────────── */
+  const SUPABASE_URL  = 'https://yzogunnnrfkajmbkndfn.supabase.co';
+  const LOGS_ANON_KEY = 'REPLACE_WITH_ANON_KEY';  // REST fetch key
+  const SUB_ANON_KEY  = 'REPLACE_WITH_ANON_KEY';  // Subscribe key
+  const LOGS_ENDPOINT = `${SUPABASE_URL}/rest/v1/experiment_logs?is_published=eq.true&order=date_published.desc&select=*`;
+  const SUB_ENDPOINT  = `${SUPABASE_URL}/functions/v1/subscribe-newsletter`;
+
+  /* ── DOM refs ────────────────────────────── */
+  const loadingState   = document.getElementById('loadingState');
+  const emptyState     = document.getElementById('emptyState');
+  const experimentsList = document.getElementById('experimentsList');
+  const industryFilter  = document.getElementById('industryFilter');
+  const subscribeForm   = document.getElementById('subscribeForm');
+  const subscribeEmail  = document.getElementById('subscribeEmail');
+  const subscribeBtn    = document.getElementById('subscribeBtn');
+  const subscribeSuccess = document.getElementById('subscribeSuccess');
+  const subscribeError  = document.getElementById('subscribeError');
+
+  /* ── Footer year ─────────────────────────── */
+  document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+  /* ── XSS-safe escape ─────────────────────── */
+  function esc(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  /* ── Date formatter ──────────────────────── */
+  function formatDate(iso) {
+    if (!iso) return '';
+    try {
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch (e) {
+      return esc(iso);
+    }
+  }
+
+  /* ── State ───────────────────────────────── */
+  let allExperiments = [];
+  let activeIndustry = '';
+
+  /* ── Show / hide states ──────────────────── */
+  function showLoading() {
+    loadingState.style.display   = 'flex';
+    emptyState.style.display     = 'none';
+    experimentsList.style.display = 'none';
+  }
+
+  function showEmpty() {
+    loadingState.style.display    = 'none';
+    emptyState.style.display      = 'block';
+    experimentsList.style.display = 'none';
+  }
+
+  function showList() {
+    loadingState.style.display    = 'none';
+    emptyState.style.display      = 'none';
+    experimentsList.style.display = 'flex';
+  }
+
+  /* ── Build industry options ──────────────── */
+  function populateFilter(experiments) {
+    const industries = [...new Set(
+      experiments
+        .map(e => e.industry)
+        .filter(Boolean)
+        .sort()
+    )];
+
+    // Remove existing non-default options
+    while (industryFilter.options.length > 1) {
+      industryFilter.remove(1);
+    }
+
+    industries.forEach(function (ind) {
+      const opt = document.createElement('option');
+      opt.value       = ind;
+      opt.textContent = ind;
+      industryFilter.appendChild(opt);
+    });
+  }
+
+  /* ── Render a single card ────────────────── */
+  function renderCard(exp) {
+    const sampleLabel = exp.sample_size
+      ? `<span class="grid-cell-label">Sample Size</span><p class="grid-cell-body">${esc(exp.sample_size)}</p>`
+      : `<span class="grid-cell-label">Sample Size</span><p class="grid-cell-body empty">—</p>`;
+
+    const nextTestBlock = exp.next_test
+      ? `<div class="card-next-test">
+           <span class="next-test-label">Next Test</span>
+           <p class="next-test-body">${esc(exp.next_test)}</p>
+         </div>`
+      : '';
+
+    const card = document.createElement('article');
+    card.className = 'experiment-card';
+    card.dataset.industry = exp.industry || '';
+
+    card.innerHTML = `
+      <div class="card-meta">
+        <span class="card-date">${esc(formatDate(exp.date_published))}</span>
+        ${exp.industry ? `<span class="card-industry">${esc(exp.industry)}</span>` : ''}
+      </div>
+      <h2 class="card-title">${esc(exp.title)}</h2>
+      <div class="card-grid">
+        <div class="grid-cell">
+          <span class="grid-cell-label">Hypothesis</span>
+          <p class="grid-cell-body">${esc(exp.hypothesis)}</p>
+        </div>
+        <div class="grid-cell">
+          <span class="grid-cell-label">Test Setup</span>
+          <p class="grid-cell-body">${esc(exp.test_setup)}</p>
+        </div>
+        <div class="grid-cell">
+          <span class="grid-cell-label">Results</span>
+          <p class="grid-cell-body">${esc(exp.results)}</p>
+        </div>
+        <div class="grid-cell">
+          ${sampleLabel}
+        </div>
+      </div>
+      <div class="card-conclusion">
+        <div class="conclusion-label-col">
+          <span class="grid-cell-label">Conclusion</span>
+        </div>
+        <p class="conclusion-quote">${esc(exp.conclusion)}</p>
+      </div>
+      ${nextTestBlock}
+    `;
+
+    return card;
+  }
+
+  /* ── Filter and render list ──────────────── */
+  function renderList(industry) {
+    const filtered = industry
+      ? allExperiments.filter(e => e.industry === industry)
+      : allExperiments;
+
+    experimentsList.innerHTML = '';
+
+    if (filtered.length === 0) {
+      showEmpty();
+      return;
+    }
+
+    filtered.forEach(function (exp) {
+      experimentsList.appendChild(renderCard(exp));
+    });
+
+    showList();
+  }
+
+  /* ── Industry filter change handler ─────── */
+  industryFilter.addEventListener('change', function () {
+    activeIndustry = this.value;
+    renderList(activeIndustry);
+  });
+
+  /* ── Fetch experiment logs ───────────────── */
+  function fetchLogs() {
+    showLoading();
+
+    fetch(LOGS_ENDPOINT, {
+      method: 'GET',
+      headers: {
+        'apikey':        LOGS_ANON_KEY,
+        'Authorization': 'Bearer ' + LOGS_ANON_KEY,
+        'Content-Type':  'application/json'
+      }
+    })
+    .then(function (res) {
+      if (!res.ok) {
+        throw new Error('HTTP ' + res.status);
+      }
+      return res.json();
+    })
+    .then(function (data) {
+      if (!Array.isArray(data) || data.length === 0) {
+        showEmpty();
+        return;
+      }
+
+      allExperiments = data;
+      populateFilter(allExperiments);
+      renderList(activeIndustry);
+    })
+    .catch(function (err) {
+      console.error('[Emir One] Failed to fetch experiment logs:', err);
+      experimentsList.innerHTML = '';
+      showEmpty();
+    });
+  }
+
+  /* ── Subscribe form ──────────────────────── */
+  let lastSubAttempt = 0;
+
+  subscribeForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const now   = Date.now();
+    const email = subscribeEmail.value.trim();
+
+    /* Client-side rate limit: 5000ms */
+    if (now - lastSubAttempt < 5000) {
+      return;
+    }
+
+    /* Basic email validation */
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      subscribeError.textContent = 'Please enter a valid email address.';
+      subscribeError.style.display = 'block';
+      subscribeSuccess.style.display = 'none';
+      return;
+    }
+
+    lastSubAttempt = now;
+
+    /* Disable button while submitting */
+    subscribeBtn.disabled    = true;
+    subscribeBtn.textContent = 'Sending…';
+    subscribeError.style.display   = 'none';
+    subscribeSuccess.style.display = 'none';
+
+    fetch(SUB_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey':       SUB_ANON_KEY
+      },
+      body: JSON.stringify({ email: email, source: 'research_page' })
+    })
+    .then(function (res) {
+      if (res.ok) {
+        /* Success */
+        subscribeSuccess.style.display = 'block';
+        subscribeError.style.display   = 'none';
+        subscribeForm.style.display    = 'none';
+        subscribeEmail.value = '';
+      } else {
+        throw new Error('HTTP ' + res.status);
+      }
+    })
+    .catch(function () {
+      subscribeBtn.disabled    = false;
+      subscribeBtn.textContent = 'Retry';
+      subscribeError.textContent = 'Something went wrong. Please try again.';
+      subscribeError.style.display   = 'block';
+      subscribeSuccess.style.display = 'none';
+    });
+  });
+
+  /* ── Init ────────────────────────────────── */
+  fetchLogs();
+
+}());
+</script>
+</body>
+</html>

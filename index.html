@@ -1657,6 +1657,21 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
   .word-silent, .word-or, .word-burning { display: none; }
 }
 
+/* ── FOOTER SUBSCRIBE WIDGET ── */
+.subscribe-widget{border-top:1px solid rgba(255,255,255,0.08);padding-top:28px;margin-top:28px;max-width:400px;}
+.sub-label{font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--light);margin-bottom:10px;}
+.sub-desc{font-size:13px;color:var(--light);font-style:italic;margin-bottom:16px;line-height:1.5;}
+.sub-row{display:flex;gap:0;}
+.sub-email{flex:1;font-family:var(--body);font-size:14px;color:var(--paper);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-right:none;padding:10px 14px;outline:none;transition:border-color 0.2s;}
+.sub-email::placeholder{color:var(--light);}
+.sub-email:focus{border-color:var(--green);}
+.sub-btn{font-family:var(--body);font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);background:var(--paper);border:1px solid var(--paper);padding:10px 16px;cursor:pointer;white-space:nowrap;transition:background 0.15s;}
+.sub-btn:hover{background:var(--paper-2);}
+.sub-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.sub-note{font-size:11.5px;color:var(--light);font-style:italic;margin-top:8px;opacity:0.7;}
+.sub-success{font-size:13.5px;color:var(--green);font-style:italic;margin-top:8px;display:none;}
+.sub-success.visible{display:block;}
+
 </style>
 </head>
 <body>
@@ -1703,6 +1718,7 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
 </svg>
     </a>
     <div class="hdr-right">
+      <a href="research.html" style="font-size:12.5px;color:var(--mid);text-decoration:none;margin-right:20px;letter-spacing:0.01em;transition:color 0.15s;" onmouseover="this.style.color='var(--ink)'" onmouseout="this.style.color='var(--mid)'">Research</a>
       <span class="live-dot" aria-hidden="true"></span>
     </div>
   </div>
@@ -2213,6 +2229,16 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
     </a>
     <span class="footer-ar">&ldquo;Bismillah. Ship.&rdquo;</span>
     <span id="fy">&copy; 2026 &middot; Emir One LLC &middot; Phase 0 / v3.0</span>
+    <div class="subscribe-widget">
+      <div class="sub-label">Research Updates</div>
+      <p class="sub-desc">Field experiments, deliverability benchmarks, and quarterly reports. Four emails a year, maximum.</p>
+      <div class="sub-row">
+        <input class="sub-email" type="email" id="subEmail" placeholder="your@email.com" maxlength="255" autocomplete="email">
+        <button class="sub-btn" id="subBtn" type="button">Subscribe</button>
+      </div>
+      <p class="sub-note">No spam. Unsubscribe anytime.</p>
+      <p class="sub-success" id="subSuccess">You're subscribed. Quarterly updates incoming.</p>
+    </div>
   </div>
 </footer>
 
@@ -2225,25 +2251,21 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
   if(form){
     form.addEventListener('submit', function(e){
       e.preventDefault();
-      var d=(document.getElementById('domain').value||'').trim();
-      alert('Demo — Emir One v3.0\nIn production this triggers the n8n webhook for the Free Health Score.'+(d?'\n\nDomain: '+d:''));
+      var raw = (document.getElementById('domain').value || '').trim();
+      var domain = raw.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
+      if (!domain) { document.getElementById('domain').focus(); return; }
+      window.location.href = 'book.html?domain=' + encodeURIComponent(domain) + '&source=hero_score';
     });
   }
 
-  // Final CTA → hero form
+  // Final CTA → book
   document.getElementById('finalCtaBtn').addEventListener('click', function(){
-    var inp = document.getElementById('domain');
-    if (inp) {
-      var l = window.__lenis;
-      if (l) { l.scrollTo(inp, { offset: -window.innerHeight * 0.35, duration: 1.6 }); }
-      else { inp.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-      setTimeout(function(){ inp.focus({ preventScroll: true }); }, 1100);
-    }
+    window.location.href = 'book.html';
   });
 
   // Reserve
-  document.getElementById('reserveBtn').addEventListener('click',function(){
-    alert('Demo — Emir One v3.0\nIn production this opens the Cal.com 15-minute fit-call flow.');
+  document.getElementById('reserveBtn').addEventListener('click', function(){
+    window.location.href = 'book.html';
   });
 
   // Timestamp
@@ -2350,6 +2372,38 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
     });
 
   });
+</script>
+
+<script>
+  // Newsletter subscribe (footer widget)
+  (function(){
+    var SB_URL = 'https://yzogunnnrfkajmbkndfn.supabase.co';
+    var SB_KEY = 'REPLACE_WITH_ANON_KEY';
+    var btn = document.getElementById('subBtn');
+    var inp = document.getElementById('subEmail');
+    var suc = document.getElementById('subSuccess');
+    if (!btn) return;
+    var last = 0;
+    btn.addEventListener('click', async function(){
+      var email = (inp.value||'').trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { inp.focus(); return; }
+      var now = Date.now();
+      if (now - last < 5000) return;
+      last = now;
+      btn.disabled = true; btn.textContent = '…';
+      try {
+        var r = await fetch(SB_URL+'/functions/v1/subscribe-newsletter',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','apikey':SB_KEY},
+          body:JSON.stringify({email:email,source:'footer_widget'})
+        });
+        if (r.ok) {
+          inp.style.display='none'; btn.style.display='none';
+          suc.classList.add('visible');
+        } else { btn.disabled=false; btn.textContent='Retry'; }
+      } catch(e){ btn.disabled=false; btn.textContent='Retry'; }
+    });
+  })();
 </script>
 </body>
 </html>
