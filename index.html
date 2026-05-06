@@ -31,6 +31,7 @@
   --green:     #0D5C38;
   --green-h:   #0A4A2D;
   --red-ed:    #7A1F10;
+  --warn:      #B8860B;
 
   --serif:     "Fraunces", "Libre Baskerville", Georgia, serif;
   --body:      "Inter Tight", -apple-system, sans-serif;
@@ -1811,7 +1812,7 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
   max-height: 80vh;
   overflow-y: auto;
   transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  transition: transform 0.4s var(--ease);
   -webkit-overflow-scrolling: touch;
 }
 .health-drawer.visible { transform: translateY(0); }
@@ -1902,7 +1903,7 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
   text-align: center;
 }
 .hd-check--pass .hd-check-glyph { color: var(--green); }
-.hd-check--warn .hd-check-glyph { color: #B8860B; }
+.hd-check--warn .hd-check-glyph { color: var(--warn); }
 .hd-check--fail .hd-check-glyph { color: var(--red-ed); }
 .hd-check--unknown .hd-check-glyph { color: var(--light); }
 .hd-check-label { font-weight: 600; color: var(--ink-2); }
