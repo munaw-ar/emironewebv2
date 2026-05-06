@@ -2864,7 +2864,9 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
   /* expose lenis to outer scope for finalCtaBtn scroll */
   window.__lenis = null;
 
-  const lenis = new Lenis({
+  const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+  const lenis = isTouch ? null : new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
@@ -2872,12 +2874,14 @@ html.lenis.lenis-scrolling iframe { pointer-events: none; }
     wheelMultiplier: 1.0,
     touchMultiplier: 1.4,
   });
+
   window.__lenis = lenis;
 
-  function rafLenis(time) { lenis.raf(time); requestAnimationFrame(rafLenis); }
-  requestAnimationFrame(rafLenis);
-
-  lenis.on('scroll', () => { window.dispatchEvent(new Event('scroll')); });
+  if (lenis) {
+    function rafLenis(time) { lenis.raf(time); requestAnimationFrame(rafLenis); }
+    requestAnimationFrame(rafLenis);
+    lenis.on('scroll', () => { window.dispatchEvent(new Event('scroll')); });
+  }
 
   document.documentElement.classList.add('js-ready');
 
