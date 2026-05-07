@@ -21,8 +21,8 @@
     --accent-foreground: 36 14% 4%;
     --destructive:  0 84% 60%;
     --destructive-foreground: 44 40% 97%;
-    --border:       37 15% 80%;     /* #D8D0C0 rule       */
-    --input:        37 15% 80%;
+    --border:       40 24% 80%;     /* #D8D0C0 rule       */
+    --input:        40 24% 80%;
     --ring:         151 75% 21%;
     --radius:       0.25rem;
 
@@ -33,7 +33,7 @@
     --sidebar-primary-foreground: 44 40% 97%;
     --sidebar-accent:            43 32% 93%;
     --sidebar-accent-foreground: 36 14% 4%;
-    --sidebar-border:            37 15% 80%;
+    --sidebar-border:            40 24% 80%;
     --sidebar-ring:              151 75% 21%;
 
     /* v2.0 named aliases (used in inline styles / legacy CSS) */
@@ -43,7 +43,7 @@
     --ink-2:   hsl(38 14% 14%);
     --mid:     hsl(38 12% 32%);
     --light:   hsl(36 9% 55%);
-    --rule:    hsl(37 15% 80%);
+    --rule:    hsl(40 24% 80%);
     --rule-2:  hsl(40 21% 88%);
     --green:   hsl(151 75% 21%);
     --green-h: hsl(151 77% 16%);

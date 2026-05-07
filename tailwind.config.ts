@@ -60,6 +60,14 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // v2.0 editorial token utilities
+        paper: "hsl(var(--background))",
+        ink: "hsl(var(--foreground))",
+        "ink-2": "hsl(var(--muted-foreground))",
+        green: "hsl(var(--primary))",
+        rule: "hsl(var(--border))",
+        mid: "hsl(var(--muted-foreground))",
+        light: "var(--light)",
       },
       fontFamily: {
         serif: ["Fraunces", "Georgia", "serif"],
