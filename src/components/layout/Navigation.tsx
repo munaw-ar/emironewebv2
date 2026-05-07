@@ -18,11 +18,19 @@ export default function Navigation() {
     { href: '/how-we-make-it', label: 'How We Make It' },
   ];
 
-  const nowAEST = new Date().toLocaleTimeString('en-AU', {
-    timeZone: 'Australia/Sydney',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const getAEST = () =>
+    new Date().toLocaleTimeString('en-AU', {
+      timeZone: 'Australia/Sydney',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+  const [nowAEST, setNowAEST] = useState(getAEST);
+
+  useEffect(() => {
+    const id = setInterval(() => setNowAEST(getAEST()), 60_000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <>
