@@ -135,7 +135,7 @@ const ExperimentLogs = () => {
                   results={exp.results}
                   conclusion={exp.conclusion}
                   nextTest={exp.next_test || undefined}
-                  slug={exp.slug}
+                  slug={exp.slug ?? ''}
                   delay={index * 0.1}
                 />
               ))}

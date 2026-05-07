@@ -4,13 +4,11 @@ import { motion } from 'framer-motion';
 import {
   Building2,
   FlaskConical,
-  FileText,
   Mail,
   Download,
   Plus,
   ArrowUpRight,
   Clock,
-  TrendingUp,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -34,7 +32,7 @@ interface ActivityItem {
 }
 
 const AdminDashboard: React.FC = () => {
-  const { user } = useAdminAuth();
+  useAdminAuth();
   const [stats, setStats] = useState<StatsData>({
     industryResearchCount: 0,
     experimentsCount: 0,
@@ -43,7 +41,7 @@ const AdminDashboard: React.FC = () => {
     recentSubscribers: 0,
   });
   const [activities, setActivities] = useState<ActivityItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [_isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,7 +77,7 @@ const AdminDashboard: React.FC = () => {
           recentSubscribers: recentSubs?.length || 0,
         });
 
-        setActivities(activityData || []);
+        setActivities((activityData || []).map(a => ({ ...a, created_at: a.created_at ?? '' })));
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {

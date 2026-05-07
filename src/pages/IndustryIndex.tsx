@@ -30,7 +30,7 @@ const IndustryIndex = () => {
         .order("created_at", { ascending: false });
 
       if (!error && data) {
-        setIndustries(data);
+        setIndustries(data.map(r => ({ ...r, is_published: r.is_published ?? false })));
       }
       setLoading(false);
     };

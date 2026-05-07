@@ -4,10 +4,6 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Shield,
-  Mail,
-  MessageSquare,
-  BarChart3,
   ArrowRight,
   Smile,
   Clock,

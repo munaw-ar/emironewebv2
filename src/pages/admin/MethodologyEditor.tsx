@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Save, ArrowLeft, Loader2, Check, Clock, Eye } from 'lucide-react';
+import { Save, Loader2, Check, Clock, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import RichTextEditor from '@/components/admin/RichTextEditor';
@@ -11,7 +11,7 @@ import { format } from 'date-fns';
 import { sanitizeHtml } from '@/lib/sanitize';
 
 const MethodologyPage: React.FC = () => {
-  const navigate = useNavigate();
+  useNavigate();
   const { toast } = useToast();
 
   const [content, setContent] = useState('');

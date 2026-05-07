@@ -6,7 +6,6 @@ import Placeholder from '@tiptap/extension-placeholder';
 import {
   Bold,
   Italic,
-  Underline,
   List,
   ListOrdered,
   Link as LinkIcon,

@@ -5,7 +5,6 @@ import {
   Download,
   TrendingUp,
   FileText,
-  BarChart3,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -45,7 +44,7 @@ const COLORS = ['#038C7F', '#0B1224', '#F39C12', '#2ECC71', '#9CA3AF'];
 
 const AnalyticsPage: React.FC = () => {
   const [dateRange, setDateRange] = useState('30');
-  const [isLoading, setIsLoading] = useState(true);
+  const [_isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<AnalyticsData>({
     totalViews: 0,
     totalDownloads: 0,

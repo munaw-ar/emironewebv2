@@ -10,7 +10,6 @@ import {
   ExternalLink,
   Check,
   X,
-  Download,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -41,7 +40,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { formatDistanceToNow, format } from 'date-fns';
+import { format } from 'date-fns';
 
 interface ExperimentLog {
   id: string;
@@ -78,7 +77,7 @@ const ExperimentLogsList: React.FC = () => {
       const { data, error } = await query;
 
       if (error) throw error;
-      setExperiments(data || []);
+      setExperiments((data || []).map(e => ({ ...e, is_published: e.is_published ?? false, updated_at: e.updated_at ?? '' })));
     } catch (error) {
       console.error('Error fetching experiments:', error);
       toast({

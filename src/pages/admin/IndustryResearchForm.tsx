@@ -8,7 +8,6 @@ import {
   Loader2,
   Plus,
   Trash2,
-  GripVertical,
   Check,
   Clock,
 } from 'lucide-react';
@@ -104,7 +103,7 @@ const IndustryResearchForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(isEditing);
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'unsaved'>('saved');
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [_lastSaved, setLastSaved] = useState<Date | null>(null);
 
   useEffect(() => {
     if (isEditing) {
@@ -117,7 +116,7 @@ const IndustryResearchForm: React.FC = () => {
       const { data, error } = await supabase
         .from('industry_research')
         .select('*')
-        .eq('id', id)
+        .eq('id', id!)
         .single();
 
       if (error) throw error;
@@ -196,7 +195,7 @@ const IndustryResearchForm: React.FC = () => {
         const { error } = await supabase
           .from('industry_research')
           .update(dataToSave)
-          .eq('id', id);
+          .eq('id', id!);
 
         if (error) throw error;
       } else {

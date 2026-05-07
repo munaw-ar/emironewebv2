@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -81,7 +81,7 @@ const QuarterlyReportForm: React.FC = () => {
       const { data, error } = await supabase
         .from('quarterly_reports')
         .select('*')
-        .eq('id', id)
+        .eq('id', id!)
         .single();
 
       if (error) throw error;
@@ -287,7 +287,7 @@ const QuarterlyReportForm: React.FC = () => {
         const { error } = await supabase
           .from('quarterly_reports')
           .update(dataToSave)
-          .eq('id', id);
+          .eq('id', id!);
 
         if (error) throw error;
       } else {

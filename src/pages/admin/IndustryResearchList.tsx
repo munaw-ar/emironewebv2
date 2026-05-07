@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import {
   Plus,
   Search,
-  Eye,
   Pencil,
   Trash2,
   Copy,
@@ -79,7 +78,7 @@ const IndustryResearchList: React.FC = () => {
       const { data, error } = await query;
 
       if (error) throw error;
-      setResearch(data || []);
+      setResearch((data || []).map(r => ({ ...r, is_published: r.is_published ?? false, updated_at: r.updated_at ?? '' })));
     } catch (error) {
       console.error('Error fetching research:', error);
       toast({

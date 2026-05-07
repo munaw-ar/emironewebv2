@@ -10,7 +10,7 @@ export default function Footer() {
     const trimmed = email.trim();
     if (!trimmed || !trimmed.includes('@')) return;
     setStatus('loading');
-    const { error } = await supabase.from('subscribers').insert({ email: trimmed });
+    const { error } = await supabase.from('newsletter_subscribers').insert({ email: trimmed });
     setStatus(error ? 'error' : 'success');
   };
 

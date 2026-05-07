@@ -10,7 +10,7 @@ interface ExperimentCardProps {
   testSetup: string;
   results: string;
   conclusion: string;
-  nextTest: string;
+  nextTest?: string;
   slug?: string;
   delay?: number;
 }

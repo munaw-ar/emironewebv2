@@ -116,7 +116,7 @@ const QuarterlyReports = () => {
           ) : (
             /* Report Cards */
             <div className="space-y-8 mb-16">
-              {reports.map((report, index) => {
+              {reports.map((report) => {
                 const isNew = isNewReport(report.published_date);
                 return (
                   <motion.article

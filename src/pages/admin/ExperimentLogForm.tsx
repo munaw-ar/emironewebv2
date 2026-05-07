@@ -77,7 +77,7 @@ const ExperimentLogForm: React.FC = () => {
       const { data, error } = await supabase
         .from('experiment_logs')
         .select('*')
-        .eq('id', id)
+        .eq('id', id!)
         .single();
 
       if (error) throw error;
@@ -175,7 +175,7 @@ const ExperimentLogForm: React.FC = () => {
         const { error } = await supabase
           .from('experiment_logs')
           .update(dataToSave)
-          .eq('id', id);
+          .eq('id', id!);
 
         if (error) throw error;
       } else {
