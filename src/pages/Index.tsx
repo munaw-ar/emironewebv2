@@ -12,23 +12,26 @@ import SectionCTA from '@/components/sections/SectionCTA';
 
 export default function Index() {
   useEffect(() => {
-    // Mark body ready so .reveal CSS kicks in only after JS is running
-    document.body.classList.add('js-reveal-ready');
+    const reveal = (el: Element) => el.classList.add('is-visible');
 
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-visible');
-          observer.unobserve(e.target);
-        }
+        if (e.isIntersecting) { reveal(e.target); observer.unobserve(e.target); }
       }),
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0 }
     );
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    return () => {
-      observer.disconnect();
-      document.body.classList.remove('js-reveal-ready');
-    };
+
+    document.querySelectorAll<Element>('.reveal').forEach(el => {
+      const { top, bottom } = el.getBoundingClientRect();
+      // Already on screen — mark visible immediately so nothing flashes blank
+      if (top < window.innerHeight && bottom > 0) {
+        reveal(el);
+      } else {
+        observer.observe(el);
+      }
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (

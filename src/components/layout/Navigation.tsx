@@ -4,11 +4,11 @@ import { wavePaths } from '@/data/wavePaths';
 
 const lwStyle: React.CSSProperties = {
   fill: 'none',
-  stroke: 'rgba(61,214,140,0.55)',
+  stroke: '#0D5C38',
   strokeWidth: 0.65,
   strokeLinecap: 'round',
   vectorEffect: 'non-scaling-stroke',
-  opacity: 0.35,
+  opacity: 0.45,
 };
 
 export default function Navigation() {
