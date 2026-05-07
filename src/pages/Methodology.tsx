@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { sanitizeHtml } from "@/lib/sanitize";
 import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
 
 interface MethodologyData {
   id: string;
@@ -137,14 +138,7 @@ const Methodology = () => {
         </motion.div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-foreground text-primary-foreground py-8">
-        <div className="container-wide text-center">
-          <p className="text-body-sm text-primary-foreground/60">
-            © 2025 Emir One. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
 
       <BackToTop />
     </div>

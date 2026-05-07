@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { sanitizeHtml } from "@/lib/sanitize";
 import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
 
 interface IndustryResearchData {
   id: string;
@@ -418,14 +419,7 @@ const IndustryResearch = () => {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-foreground text-primary-foreground py-6 sm:py-8">
-        <div className="container-wide text-center">
-          <p className="text-xs sm:text-sm text-primary-foreground/60">
-            © 2025 Emir One. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
 
       <BackToTop />
     </div>

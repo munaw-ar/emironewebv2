@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Loader2 } from "lucide-react";
 import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
 import { supabase } from "@/integrations/supabase/client";
 
 interface IndustryResearch {
@@ -123,14 +124,7 @@ const IndustryIndex = () => {
         </motion.div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-foreground text-primary-foreground py-8">
-        <div className="container-wide text-center">
-          <p className="text-body-sm text-primary-foreground/60">
-            © 2025 Emir One. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
