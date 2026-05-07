@@ -1,255 +1,124 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight } from "lucide-react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import logoMain from "@/assets/logo-main.png";
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-const Navigation = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
+export default function Navigation() {
+  const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
-  const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
+  useEffect(() => { setMobileOpen(false); }, [location]);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 80);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
 
-  useEffect(() => {
-    closeMobileMenu();
-  }, [closeMobileMenu, location]);
+  const navLinks = [
+    { href: '/research', label: 'Research' },
+    { href: '/sharia-aligned', label: 'Sharia-Aligned' },
+    { href: '/how-we-make-it', label: 'How We Make It' },
+  ];
 
-  useEffect(() => {
-    if (location.pathname === "/" && location.hash) {
-      setTimeout(() => {
-        const element = document.querySelector(location.hash);
-        if (element) {
-          const offset = 80;
-          const targetPosition = element.getBoundingClientRect().top + window.scrollY - offset;
-          window.scrollTo({ top: targetPosition, behavior: "smooth" });
-        }
-      }, 100);
-    }
-  }, [location]);
-
-  // Primary nav links (conversion-ordered)
-  const primaryLinks = [
-  { label: "How It Works", href: "/", isRoute: true, isAnchor: true, anchor: "#how-it-works" },
-  { label: "How We Make It", href: "/how-we-make-it", isRoute: true },
-  { label: "Fit", href: "/fit", isRoute: true }];
-
-
-  // Utility link (visible but secondary)
-  const utilityLinks = [
-  { label: "Sharia-Aligned", href: "/sharia-aligned", isRoute: true }];
-
-
-  // Mobile-only footer links
-  const mobileFooterLinks = [
-  { label: "Privacy Policy", href: "/privacy-policy", isRoute: true },
-  { label: "Terms of Service", href: "/terms-of-service", isRoute: true }];
-
-
-  const isActivePath = (link: {href: string;isAnchor?: boolean;anchor?: string;}) => {
-    if (link.isAnchor) {
-      return location.pathname === "/" && !location.hash;
-    }
-    return location.pathname === link.href;
-  };
-
-  const handleNavClick = (link: {href: string;isRoute?: boolean;isAnchor?: boolean;anchor?: string;}) => {
-    closeMobileMenu();
-    if (link.isAnchor) {
-      if (location.pathname === "/") {
-        const element = document.querySelector(link.anchor!);
-        if (element) {
-          const offset = 80;
-          const targetPosition = element.getBoundingClientRect().top + window.scrollY - offset;
-          window.scrollTo({ top: targetPosition, behavior: "smooth" });
-        }
-      } else {
-        navigate("/" + link.anchor);
-      }
-    } else if (link.isRoute) {
-      window.scrollTo({ top: 0, behavior: "instant" });
-      navigate(link.href);
-    }
-  };
-
-  const handleCTAClick = useCallback(() => {
-    closeMobileMenu();
-    navigate("/book");
-  }, [closeMobileMenu, navigate]);
+  const nowAEST = new Date().toLocaleTimeString('en-AU', {
+    timeZone: 'Australia/Sydney',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
   return (
     <>
-      <motion.header
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background/95 backdrop-blur-md border-b border-border" : "bg-transparent"}`
-        }>
+      <header style={{
+        position: 'sticky', top: 0, zIndex: 100,
+        background: 'var(--paper)', borderBottom: '1px solid var(--rule)',
+        WebkitBackdropFilter: 'blur(8px)', backdropFilter: 'blur(8px)',
+      }}>
+        <div className="w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 }}>
+          <Link to="/" aria-label="Emir One home" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+            <svg viewBox="0 0 340 56" xmlns="http://www.w3.org/2000/svg" style={{ height: 28, width: 'auto' }} role="img" aria-label="Emir One">
+              <path style={{ fill: 'none', stroke: 'var(--ink)', strokeWidth: 2, strokeLinecap: 'round' }}
+                d="M 4,34 C 18,34 18,22 32,22 C 46,22 46,34 60,34 C 74,34 74,22 88,18 C 98,15 106,14 112,14" />
+              <rect x="126" y="6" width="40" height="44" rx="2"
+                style={{ fill: 'none', stroke: 'var(--ink)', strokeWidth: 1.5 }} />
+              <text x="146" y="34" fontFamily="Georgia, serif" fontSize="18" fontWeight="700"
+                textAnchor="middle" fill="var(--ink)">E1</text>
+              <text x="178" y="34" fontFamily="Inter Tight, sans-serif" fontSize="16" fontWeight="500"
+                fill="var(--ink)">Emir One</text>
+            </svg>
+          </Link>
 
-        <nav className="max-w-[1200px] mx-auto px-6">
-          <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo - left */}
-            <Link
-              to="/"
-              className="flex h-full items-center px-1 flex-shrink-0 hover:opacity-80 transition-opacity">
-
-              <img src={logoMain} alt="Emir One" className="h-10 md:h-12 w-auto object-contain" />
+          <nav aria-label="Main navigation" style={{ display: 'flex', alignItems: 'center', gap: 28 }}
+            className="hidden md:flex">
+            {navLinks.map(link => (
+              <Link key={link.href} to={link.href} style={{
+                fontFamily: 'var(--body)', fontSize: 13, fontWeight: 500,
+                letterSpacing: '0.04em', textDecoration: 'none',
+                color: location.pathname.startsWith(link.href) ? 'var(--green)' : 'var(--ink)',
+              }}>
+                {link.label}
+              </Link>
+            ))}
+            <Link to="/book" style={{
+              fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600,
+              letterSpacing: '0.12em', textTransform: 'uppercase',
+              color: 'var(--paper)', background: 'var(--green)',
+              padding: '7px 16px', borderRadius: 3, textDecoration: 'none',
+            }}>
+              Book a Call
             </Link>
+          </nav>
 
-            {/* Desktop: Centered nav links */}
-            <div className="hidden lg:flex items-center gap-6">
-              {primaryLinks.map((link) =>
-              <button
-                key={link.href + link.label}
-                onClick={() => handleNavClick(link)}
-                className={`text-[14px] font-medium leading-[1.2] transition-colors whitespace-nowrap relative py-1 ${
-                isActivePath(link) ?
-                "text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-primary after:rounded-full" :
-                "text-muted-foreground hover:text-foreground"}`
-                }>
-
-                  {link.label}
-                </button>
-              )}
-
-              {/* Utility link inline, slightly muted */}
-              {utilityLinks.map((link) =>
-              <button
-                key={link.href}
-                onClick={() => handleNavClick(link)}
-                className={`text-[13px] font-normal leading-[1.2] transition-colors whitespace-nowrap relative py-1 ${
-                isActivePath(link) ?
-                "text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-primary after:rounded-full" :
-                "text-muted-foreground/70 hover:text-muted-foreground"}`
-                }>
-
-                  {link.label}
-                </button>
-              )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div className="hidden md:flex" style={{ alignItems: 'center', gap: 6 }}>
+              <span className="animate-breathe" style={{
+                display: 'inline-block', width: 6, height: 6,
+                borderRadius: '50%', background: 'var(--green)',
+              }} />
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--mid)' }}>
+                Live · {nowAEST} AEST
+              </span>
             </div>
-
-            {/* Desktop: Research button - right */}
             <button
-              onClick={() => {navigate("/research");window.scrollTo({ top: 0, behavior: "instant" });}}
-              className="hidden lg:flex items-center gap-2 px-5 h-11 text-[14px] font-semibold leading-[1.2] text-foreground border border-border/60 rounded-md transition-all duration-300 relative overflow-hidden group hover:border-primary/40 hover:shadow-[0_0_12px_hsl(var(--primary)/0.1)]">
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/[0.06] to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700 ease-in-out" />
-              <span className="relative z-10">Our Research</span>
-              <span className="relative z-10 w-1.5 h-1.5 rounded-full bg-primary/60 group-hover:bg-primary transition-colors duration-300 group-hover:shadow-[0_0_6px_hsl(var(--primary)/0.5)]" />
+              className="md:hidden"
+              onClick={() => setMobileOpen(o => !o)}
+              aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
+              aria-expanded={mobileOpen}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
+            >
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round">
+                {mobileOpen
+                  ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
+                  : <><line x1="3" y1="7" x2="21" y2="7" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="17" x2="21" y2="17" /></>
+                }
+              </svg>
             </button>
-
-            {/* Mobile: CTA + Hamburger */}
-            <div className="lg:hidden flex items-center gap-2 ml-auto">
-              <button
-                onClick={() => {navigate("/research");window.scrollTo({ top: 0, behavior: "instant" });closeMobileMenu();}}
-                className="flex items-center gap-1.5 px-3.5 h-9 text-[13px] font-semibold text-foreground border border-border/60 rounded-md transition-all duration-300 relative overflow-hidden group hover:border-primary/40 hover:shadow-[0_0_12px_hsl(var(--primary)/0.1)]">
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/[0.06] to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700 ease-in-out" />
-                <span className="relative z-10">Research</span>
-                <span className="relative z-10 w-1.5 h-1.5 rounded-full bg-primary/60 group-hover:bg-primary transition-colors duration-300 group-hover:shadow-[0_0_6px_hsl(var(--primary)/0.5)]" />
-              </button>
-              {!isMobileMenuOpen &&
-              <button
-                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-foreground"
-                onClick={() => setIsMobileMenuOpen(true)}
-                aria-label="Open menu">
-
-                  <Menu size={24} />
-                </button>
-              }
-            </div>
           </div>
+        </div>
+      </header>
+
+      {mobileOpen && (
+        <nav aria-label="Mobile navigation" style={{
+          position: 'fixed', top: 60, left: 0, right: 0, bottom: 0,
+          background: 'var(--paper)', zIndex: 99, padding: '32px 20px',
+          borderTop: '1px solid var(--rule)', overflowY: 'auto',
+        }}>
+          {navLinks.map(link => (
+            <Link key={link.href} to={link.href} style={{
+              display: 'block', fontFamily: 'var(--body)', fontSize: 18, fontWeight: 500,
+              color: 'var(--ink)', textDecoration: 'none', padding: '14px 0',
+              borderBottom: '1px solid var(--rule-2)',
+            }}>
+              {link.label}
+            </Link>
+          ))}
+          <Link to="/book" style={{
+            display: 'block', marginTop: 32, fontFamily: 'var(--body)', fontSize: 13,
+            fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase',
+            color: 'var(--paper)', background: 'var(--green)',
+            padding: '14px 0', borderRadius: 3, textDecoration: 'none', textAlign: 'center',
+          }}>
+            Book a Call
+          </Link>
         </nav>
-      </motion.header>
-
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen &&
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-50 bg-foreground/50 lg:hidden"
-          onClick={closeMobileMenu}>
-
-            <motion.nav
-            className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-background"
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
-            onClick={(e) => e.stopPropagation()}>
-
-              <div className="flex flex-col h-full">
-                <div className="flex justify-end p-4">
-                  <button onClick={closeMobileMenu} className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close menu">
-                    <X size={24} />
-                  </button>
-                </div>
-
-                <div className="px-6 pb-6 pt-2 flex flex-col flex-1">
-                  {/* Primary links */}
-                  {primaryLinks.map((link, index) =>
-                <motion.button
-                  key={link.href + link.label}
-                  onClick={() => handleNavClick(link)}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className={`py-4 text-lg font-medium leading-none transition-colors text-left min-h-[56px] border-b border-border/30 ${
-                  isActivePath(link) ? "text-primary" : "text-foreground hover:text-primary"}`
-                  }>
-
-                      {link.label}
-                    </motion.button>
-                )}
-
-                  {/* Utility links */}
-                  {utilityLinks.map((link, index) =>
-                <motion.button
-                  key={link.href}
-                  onClick={() => handleNavClick(link)}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: (primaryLinks.length + index) * 0.05 }}
-                  className={`py-4 text-base font-normal leading-none transition-colors text-left min-h-[56px] border-b border-border/30 ${
-                  isActivePath(link) ? "text-primary" : "text-muted-foreground hover:text-foreground"}`
-                  }>
-
-                      {link.label}
-                    </motion.button>
-                )}
-
-                  {/* Spacer */}
-                  <div className="flex-1" />
-
-                  {/* Footer links */}
-                  <div className="pt-4 border-t border-border/30 flex flex-col gap-1">
-                    {mobileFooterLinks.map((link) =>
-                  <button
-                    key={link.href}
-                    onClick={() => handleNavClick(link)}
-                    className="py-2 text-sm text-muted-foreground/60 hover:text-muted-foreground transition-colors text-left">
-
-                        {link.label}
-                      </button>
-                  )}
-                  </div>
-                </div>
-              </div>
-            </motion.nav>
-          </motion.div>
-        }
-      </AnimatePresence>
-    </>);
-
-};
-
-export default Navigation;
+      )}
+    </>
+  );
+}
