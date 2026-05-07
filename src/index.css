@@ -107,15 +107,15 @@
   .w { padding: 0 20px; }
 }
 
-/* Scroll-reveal */
-.reveal {
+/* Scroll-reveal — only hides content when JS has initialised the observer */
+.js-reveal-ready .reveal {
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
 }
-.reveal.is-visible {
+.js-reveal-ready .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
-.reveal-delay-1 { transition-delay: 0.12s; }
-.reveal-delay-2 { transition-delay: 0.24s; }
+.js-reveal-ready .reveal-delay-1 { transition-delay: 0.12s; }
+.js-reveal-ready .reveal-delay-2 { transition-delay: 0.24s; }

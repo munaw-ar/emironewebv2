@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { wavePaths } from '@/data/wavePaths';
+
+const lwStyle: React.CSSProperties = {
+  fill: 'none',
+  stroke: 'rgba(61,214,140,0.55)',
+  strokeWidth: 0.65,
+  strokeLinecap: 'round',
+  vectorEffect: 'non-scaling-stroke',
+  opacity: 0.35,
+};
 
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -40,16 +50,38 @@ export default function Navigation() {
         WebkitBackdropFilter: 'blur(8px)', backdropFilter: 'blur(8px)',
       }}>
         <div className="w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 }}>
-          <Link to="/" aria-label="Emir One home" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-            <svg viewBox="0 0 340 56" xmlns="http://www.w3.org/2000/svg" style={{ height: 28, width: 'auto' }} role="img" aria-label="Emir One">
-              <path style={{ fill: 'none', stroke: 'var(--ink)', strokeWidth: 2, strokeLinecap: 'round' }}
-                d="M 4,34 C 18,34 18,22 32,22 C 46,22 46,34 60,34 C 74,34 74,22 88,18 C 98,15 106,14 112,14" />
-              <rect x="126" y="6" width="40" height="44" rx="2"
-                style={{ fill: 'none', stroke: 'var(--ink)', strokeWidth: 1.5 }} />
-              <text x="146" y="34" fontFamily="Georgia, serif" fontSize="18" fontWeight="700"
-                textAnchor="middle" fill="var(--ink)">E1</text>
-              <text x="178" y="34" fontFamily="Inter Tight, sans-serif" fontSize="16" fontWeight="500"
-                fill="var(--ink)">Emir One</text>
+          <Link to="/" aria-label="Emir One home" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+            <svg
+              viewBox="0 0 280 95"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ height: 44, width: 'auto', overflow: 'visible' }}
+              role="img"
+              aria-label="Emir One"
+            >
+              <g id="logo-wave">
+                {wavePaths.map((d, i) => (
+                  <path key={i} style={lwStyle} d={d} />
+                ))}
+              </g>
+              <line
+                x1="14" y1="49" x2="182" y2="49"
+                stroke="var(--ink)" strokeWidth="0.85"
+                style={{ fill: 'none' }}
+              />
+              <text
+                x="168" y="68"
+                fontFamily="'Great Vibes',cursive"
+                fontSize="32"
+                fill="var(--ink)"
+              >one</text>
+              <text
+                x="14" y="38"
+                fontFamily="'Libre Baskerville',Georgia,serif"
+                fontSize="36"
+                fontWeight="400"
+                letterSpacing="10"
+                fill="var(--ink)"
+              >EMIR</text>
             </svg>
           </Link>
 

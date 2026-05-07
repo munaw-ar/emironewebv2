@@ -12,6 +12,9 @@ import SectionCTA from '@/components/sections/SectionCTA';
 
 export default function Index() {
   useEffect(() => {
+    // Mark body ready so .reveal CSS kicks in only after JS is running
+    document.body.classList.add('js-reveal-ready');
+
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => {
         if (e.isIntersecting) {
@@ -19,10 +22,13 @@ export default function Index() {
           observer.unobserve(e.target);
         }
       }),
-      { threshold: 0.15 }
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     );
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.body.classList.remove('js-reveal-ready');
+    };
   }, []);
 
   return (
