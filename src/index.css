@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* v2.0 editorial tokens mapped to HSL for shadcn compatibility */
+    --background:   44 40% 97%;     /* #FAF8F3 paper      */
+    --foreground:   36 14% 4%;      /* #0C0B09 ink        */
+    --card:         44 40% 97%;
+    --card-foreground: 36 14% 4%;
+    --popover:      44 40% 97%;
+    --popover-foreground: 36 14% 4%;
+    --primary:      151 75% 21%;    /* #0D5C38 green      */
+    --primary-foreground: 44 40% 97%;
+    --secondary:    43 32% 93%;     /* #F3F0E8 paper-2    */
+    --secondary-foreground: 36 14% 4%;
+    --muted:        43 32% 93%;
+    --muted-foreground: 38 12% 32%; /* #5C5648 mid        */
+    --accent:       43 32% 93%;
+    --accent-foreground: 36 14% 4%;
+    --destructive:  0 84% 60%;
+    --destructive-foreground: 44 40% 97%;
+    --border:       37 15% 80%;     /* #D8D0C0 rule       */
+    --input:        37 15% 80%;
+    --ring:         151 75% 21%;
+    --radius:       0.25rem;
+
+    /* Sidebar tokens */
+    --sidebar-background:        44 40% 97%;
+    --sidebar-foreground:        36 14% 4%;
+    --sidebar-primary:           151 75% 21%;
+    --sidebar-primary-foreground: 44 40% 97%;
+    --sidebar-accent:            43 32% 93%;
+    --sidebar-accent-foreground: 36 14% 4%;
+    --sidebar-border:            37 15% 80%;
+    --sidebar-ring:              151 75% 21%;
+
+    /* v2.0 named aliases (used in inline styles / legacy CSS) */
+    --paper:   hsl(44 40% 97%);
+    --paper-2: hsl(43 32% 93%);
+    --ink:     hsl(36 14% 4%);
+    --ink-2:   hsl(38 14% 14%);
+    --mid:     hsl(38 12% 32%);
+    --light:   hsl(36 9% 55%);
+    --rule:    hsl(37 15% 80%);
+    --rule-2:  hsl(40 21% 88%);
+    --green:   hsl(151 75% 21%);
+    --green-h: hsl(151 77% 16%);
+
+    /* Typography */
+    --serif: "Fraunces", Georgia, serif;
+    --body:  "Inter Tight", -apple-system, sans-serif;
+    --mono:  "JetBrains Mono", Consolas, monospace;
+
+    /* Layout */
+    --max:  1120px;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  a {
+    color: var(--green);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  a:hover { color: var(--green-h); }
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+  }
+}
+
+/* Layout utility */
+.w {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+@media (max-width: 640px) {
+  .w { padding: 0 20px; }
+}
+
+/* Scroll-reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.reveal-delay-1 { transition-delay: 0.12s; }
+.reveal-delay-2 { transition-delay: 0.24s; }
