@@ -1,85 +1,103 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import logoMain from "@/assets/logo-main.png";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
-const Footer = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  const handleLinkClick = (href: string, isRoute: boolean) => {
-    if (isRoute) {
-      window.scrollTo({ top: 0, behavior: 'instant' });
-      navigate(href);
-    } else {
-      if (location.pathname === '/') {
-        const element = document.querySelector(href);
-        if (element) {
-          const offset = 80;
-          const targetPosition = element.getBoundingClientRect().top + window.scrollY - offset;
-          window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-        }
-      } else {
-        navigate('/' + href);
-      }
-    }
+  const handleSubscribe = async () => {
+    const trimmed = email.trim();
+    if (!trimmed || !trimmed.includes('@')) return;
+    setStatus('loading');
+    const { error } = await supabase.from('subscribers').insert({ email: trimmed });
+    setStatus(error ? 'error' : 'success');
   };
 
-  const quickLinks = [
-    { label: "How It Works", href: "#how-it-works", isRoute: false },
-    { label: "How We Make It", href: "/how-we-make-it", isRoute: true },
-    { label: "Fit", href: "/fit", isRoute: true },
-    { label: "Sharia-Aligned", href: "/sharia-aligned", isRoute: true },
-    { label: "Research", href: "/research", isRoute: true },
-  ];
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-foreground text-primary-foreground py-12 md:py-16">
-      <div className="max-w-[1200px] mx-auto px-6">
-        <div className="grid md:grid-cols-3 gap-10 md:gap-8 mb-10">
-          <div>
-            <Link to="/" className="block mb-3 hover:opacity-80 transition-opacity">
-              <img src={logoMain} alt="Emir One" className="h-10 w-auto object-contain brightness-0 invert" />
-            </Link>
-            <p className="text-primary-foreground/60 text-[14px] leading-relaxed max-w-[280px]">
-              Predictable outbound systems for ethical B2B growth.
-            </p>
+    <footer style={{ background: 'var(--ink)', color: 'var(--paper)', padding: '64px 0 40px' }}>
+      <div className="w" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
+        <div>
+          <div style={{ fontFamily: 'var(--serif)', fontSize: 20, fontWeight: 300, marginBottom: 12 }}>
+            Emir One
           </div>
-
-          <div>
-            <h4 className="font-semibold text-primary-foreground/90 mb-4 text-[13px] uppercase tracking-wider">Quick Links</h4>
-            <nav className="flex flex-col gap-2">
-              {quickLinks.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => handleLinkClick(link.href, link.isRoute)}
-                  className="text-[14px] text-primary-foreground/60 hover:text-primary-foreground transition-colors text-left"
-                >
-                  {link.label}
-                </button>
-              ))}
-            </nav>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-primary-foreground/90 mb-4 text-[13px] uppercase tracking-wider">Legal</h4>
-            <nav className="flex flex-col gap-2">
-              <Link to="/privacy-policy" className="text-[14px] text-primary-foreground/60 hover:text-primary-foreground transition-colors">
-                Privacy Policy
+          <p style={{ fontFamily: 'var(--body)', fontSize: 13, color: 'var(--light)', lineHeight: 1.7, maxWidth: 280 }}>
+            Ethical cold email infrastructure for B2B firms that measure what matters.
+          </p>
+          <div style={{ marginTop: 24, display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+            {[
+              { to: '/privacy-policy', label: 'Privacy' },
+              { to: '/terms-of-service', label: 'Terms' },
+              { to: '/research', label: 'Research' },
+              { to: '/sharia-aligned', label: 'Ethics' },
+            ].map(l => (
+              <Link key={l.to} to={l.to} style={{
+                fontFamily: 'var(--body)', fontSize: 12, color: 'var(--light)',
+                textDecoration: 'none', letterSpacing: '0.04em',
+              }}>
+                {l.label}
               </Link>
-              <Link to="/terms-of-service" className="text-[14px] text-primary-foreground/60 hover:text-primary-foreground transition-colors">
-                Terms of Service
-              </Link>
-            </nav>
+            ))}
           </div>
         </div>
 
-        <div className="pt-8 border-t border-primary-foreground/10">
-          <p className="text-center text-[13px] text-primary-foreground/40">
-            © 2025 Emir One. All rights reserved.
+        <div>
+          <div style={{ fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--light)', marginBottom: 12 }}>
+            Quarterly Intelligence
+          </div>
+          <p style={{ fontFamily: 'var(--body)', fontSize: 13, color: 'var(--light)', marginBottom: 16 }}>
+            Deliverability benchmarks and experiment results — once a quarter.
+          </p>
+          {status === 'success' ? (
+            <p style={{ fontFamily: 'var(--body)', fontSize: 13, color: 'var(--green)' }}>
+              You're subscribed. Quarterly updates incoming.
+            </p>
+          ) : (
+            <div style={{ display: 'flex', gap: 8 }}>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSubscribe()}
+                placeholder="your@email.com"
+                style={{
+                  flex: 1, fontFamily: 'var(--body)', fontSize: 13,
+                  padding: '9px 12px', background: 'rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.15)', borderRadius: 3,
+                  color: 'var(--paper)', outline: 'none',
+                }}
+              />
+              <button
+                onClick={handleSubscribe}
+                disabled={status === 'loading'}
+                style={{
+                  fontFamily: 'var(--body)', fontSize: 12, fontWeight: 600,
+                  letterSpacing: '0.08em', padding: '9px 18px',
+                  background: 'var(--green)', color: 'var(--paper)',
+                  border: 'none', borderRadius: 3, cursor: 'pointer',
+                  opacity: status === 'loading' ? 0.6 : 1,
+                }}
+              >
+                {status === 'loading' ? '…' : 'Subscribe'}
+              </button>
+            </div>
+          )}
+          <p style={{ fontFamily: 'var(--body)', fontSize: 11, color: 'var(--light)', marginTop: 8 }}>
+            No spam. Unsubscribe anytime.
           </p>
         </div>
       </div>
+
+      <div className="w" style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--light)' }}>
+          © {year} Emir One. All rights reserved.
+        </span>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--light)' }}>
+          ABN: Available on request
+        </span>
+      </div>
     </footer>
   );
-};
-
-export default Footer;
+}
