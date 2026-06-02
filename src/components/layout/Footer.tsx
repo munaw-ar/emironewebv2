@@ -18,11 +18,10 @@ export default function Footer() {
 
   return (
     <footer style={{
-      background: 'linear-gradient(180deg, #0A0B0E, #08090C)',
+      background: 'var(--paper-2)',
       color: 'var(--ink)',
       padding: '64px 0 40px',
-      borderTop: '1px solid rgba(255,255,255,0.08)',
-      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
+      borderTop: '1px solid var(--rule)',
     }}>
       <div className="w grid-2" style={{ gap: 48 }}>
         <div>
@@ -75,9 +74,9 @@ export default function Footer() {
                   placeholder="your@email.com"
                   style={{
                     flex: 1, fontFamily: 'var(--body)', fontSize: 16,
-                    padding: '9px 12px', minHeight: 44, background: 'rgba(255,255,255,0.07)',
-                    border: '1px solid rgba(255,255,255,0.18)', borderRadius: 3,
-                    color: 'var(--paper)',
+                    padding: '9px 12px', minHeight: 44, background: 'var(--paper)',
+                    border: '1px solid var(--rule)', borderRadius: 6,
+                    color: 'var(--ink)',
                   }}
                 />
                 <button
@@ -98,7 +97,7 @@ export default function Footer() {
             )}
           </div>
           {status === 'error' && (
-            <p style={{ fontFamily: 'var(--body)', fontSize: 11, color: '#F0A0A0', marginTop: 8 }}>
+            <p style={{ fontFamily: 'var(--body)', fontSize: 11, color: '#DC2626', marginTop: 8 }}>
               Something went wrong — please try again.
             </p>
           )}

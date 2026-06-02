@@ -4,56 +4,57 @@
 
 @layer base {
   :root {
-    /* v2.2 dark-glass tokens mapped to HSL for shadcn compatibility */
-    --background:   228 18% 5%;     /* #0B0C10 charcoal   */
-    --foreground:   0 0% 96%;       /* near-white         */
-    --card:         225 14% 9%;
-    --card-foreground: 0 0% 96%;
-    --popover:      225 14% 9%;
-    --popover-foreground: 0 0% 96%;
-    --primary:      158 67% 50%;    /* emerald accent     */
-    --primary-foreground: 228 18% 5%;
-    --secondary:    225 12% 11%;
-    --secondary-foreground: 0 0% 96%;
-    --muted:        225 12% 11%;
-    --muted-foreground: 0 0% 64%;
-    --accent:       225 12% 13%;
-    --accent-foreground: 0 0% 96%;
-    --destructive:  0 72% 55%;
-    --destructive-foreground: 0 0% 96%;
-    --border:       225 9% 18%;
-    --input:        225 9% 18%;
-    --ring:         158 67% 50%;
-    --radius:       0.5rem;
+    /* v2.3 luminous light tokens mapped to HSL for shadcn compatibility */
+    --background:   0 0% 100%;      /* #FFFFFF white      */
+    --foreground:   222 47% 11%;    /* #111827 ink        */
+    --card:         0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover:      0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary:      151 75% 21%;    /* #0D5C38 green      */
+    --primary-foreground: 0 0% 100%;
+    --secondary:    220 14% 96%;    /* #F3F4F6            */
+    --secondary-foreground: 222 47% 11%;
+    --muted:        220 14% 96%;
+    --muted-foreground: 220 9% 40%;
+    --accent:       220 14% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive:  0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border:       220 13% 91%;    /* #E5E7EB            */
+    --input:        220 13% 91%;
+    --ring:         151 75% 21%;
+    --radius:       0.625rem;
 
     /* Sidebar tokens */
-    --sidebar-background:        228 18% 5%;
-    --sidebar-foreground:        0 0% 96%;
-    --sidebar-primary:           158 67% 50%;
-    --sidebar-primary-foreground: 228 18% 5%;
-    --sidebar-accent:            225 12% 13%;
-    --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border:            225 9% 18%;
-    --sidebar-ring:              158 67% 50%;
+    --sidebar-background:        0 0% 100%;
+    --sidebar-foreground:        222 47% 11%;
+    --sidebar-primary:           151 75% 21%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent:            220 14% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border:            220 13% 91%;
+    --sidebar-ring:              151 75% 21%;
 
-    /* v2.2 named aliases (dark glassmorphism, green-brand accent) */
-    --paper:   #0B0C10;             /* page background    */
-    --paper-2: #111319;             /* alt section        */
-    --ink:     #F3F4F6;             /* primary text       */
-    --ink-2:   #E5E7EB;
-    --mid:     rgba(243,244,246,0.62);
-    --light:   rgba(243,244,246,0.42);
-    --rule:    rgba(255,255,255,0.10);
-    --rule-2:  rgba(255,255,255,0.06);
-    --green:   #2FD27F;             /* bright emerald (on dark) */
-    --green-h: #57e09a;
-    --green-deep: #0D5C38;          /* brand forest green */
-    --green-grad: linear-gradient(135deg, #0D5C38, #2FD27F);
-    --paper-dim: rgba(243,244,246,0.55);
+    /* v2.3 named aliases (luminous light, fresh green accent) */
+    --paper:   #FFFFFF;             /* page background    */
+    --paper-2: #F9FAFB;             /* alt section        */
+    --ink:     #111827;             /* headlines          */
+    --ink-2:   #1F2937;
+    --mid:     #4B5563;             /* body text          */
+    --light:   #9CA3AF;             /* muted              */
+    --rule:    #E5E7EB;
+    --rule-2:  #F3F4F6;
+    --green:   #0D5C38;             /* brand green (AAA on white) */
+    --green-h: #0a4a2d;
+    --green-deep: #0D5C38;
+    --green-grad: linear-gradient(135deg, #0D5C38, #34D399);
+    --green-wash: rgba(52,211,153,0.10);
+    --paper-dim: #6B7280;
 
-    /* Glass */
-    --glass-bg: rgba(255,255,255,0.035);
-    --glass-border: rgba(255,255,255,0.10);
+    /* Glass (frosted white) */
+    --glass-bg: rgba(255,255,255,0.72);
+    --glass-border: #E5E7EB;
 
     /* Typography — Space Grotesk display + Inter body */
     --serif:   "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -109,14 +110,13 @@
     --dur-reveal: 0.65s;
     --dur-micro:  0.2s;
 
-    /* Dark shadows + hairline ring */
-    --shadow-sm: 0 0 0 1px rgba(255,255,255,0.05),
-                 0 1px 2px rgba(0,0,0,0.40),
-                 0 2px 8px rgba(0,0,0,0.35);
-    --shadow-md: 0 0 0 1px rgba(255,255,255,0.06),
-                 0 8px 24px rgba(0,0,0,0.45);
-    --shadow-lg: 0 0 0 1px rgba(255,255,255,0.07),
-                 0 24px 64px rgba(0,0,0,0.55);
+    /* Ethereal light shadows */
+    --shadow-sm: 0 1px 2px rgba(16,24,40,0.04),
+                 0 1px 3px rgba(16,24,40,0.06);
+    --shadow-md: 0 4px 12px rgba(16,24,40,0.07),
+                 0 2px 4px rgba(16,24,40,0.04);
+    --shadow-lg: 0 12px 32px rgba(16,24,40,0.10),
+                 0 4px 8px rgba(16,24,40,0.05);
   }
 
   /* Admin portal keeps a clean LIGHT theme (better for content editing).
@@ -267,7 +267,7 @@
               background var(--dur-micro) var(--ease-micro);
 }
 .cta:hover {
-  box-shadow: 0 0 28px rgba(47,210,127,0.40);
+  box-shadow: 0 8px 22px rgba(13,92,56,0.22);
   transform: translateY(-1px);
 }
 
