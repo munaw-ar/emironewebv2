@@ -121,11 +121,13 @@ export default function HeroStory() {
               </div>
             )}
             {s.key === 'hardened' && (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 8 }}>
                 {['SPF', 'DKIM', 'DMARC'].map(c => (
-                  <span key={c} style={{ fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 600, color: GREEN, border: `1px solid ${GREEN}`, borderRadius: 999, padding: '4px 11px' }}>{c} ✓</span>
+                  <span key={c} style={{ flex: '1 1 0', maxWidth: 108, display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 4, fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 600, letterSpacing: '0.02em', color: GREEN, border: `1px solid ${GREEN}`, background: 'rgba(13,92,56,0.06)', borderRadius: 12, padding: '12px 6px' }}>
+                    <ShieldCheck size={16} strokeWidth={2} />
+                    {c}
+                  </span>
                 ))}
-                <span style={node(true)}><ShieldCheck size={22} strokeWidth={2} /></span>
               </div>
             )}
             {s.key === 'warmed' && (
