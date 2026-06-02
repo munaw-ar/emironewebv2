@@ -13,7 +13,7 @@ export default function SectionProblem() {
     <section aria-labelledby="villain-h" style={{ padding: 'var(--section-y) 0', background: 'var(--paper)' }}>
       <div className="w section-grid">
         <div className="section-eyebrow">
-          01 — The Problem
+          <span className="sec-num">01</span>The Problem
         </div>
         <div>
           <h2 id="villain-h" className="reveal h-section" style={{ marginBottom: 'var(--s4)' }}>

@@ -10,7 +10,7 @@ export default function SectionProof() {
     <section aria-labelledby="proof-h" style={{ padding: 'var(--section-y) 0', background: 'var(--paper)' }}>
       <div className="w section-grid">
         <div className="section-eyebrow">
-          06 — Proof of Work
+          <span className="sec-num">06</span>Proof of Work
         </div>
         <div>
           <h2 id="proof-h" className="reveal h-section" style={{ marginBottom: 'var(--s4)' }}>

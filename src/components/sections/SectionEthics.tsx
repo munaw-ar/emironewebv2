@@ -11,7 +11,7 @@ export default function SectionEthics() {
     <section id="sharia" aria-labelledby="sharia-h" style={{ padding: 'var(--section-y) 0', background: 'var(--paper)' }}>
       <div className="w section-grid">
         <div className="section-eyebrow">
-          03 — Ethics &amp; Transparency
+          <span className="sec-num">03</span>Ethics &amp; Transparency
         </div>
         <div>
           <h2 id="sharia-h" className="reveal h-section" style={{ marginBottom: 'var(--s4)' }}>

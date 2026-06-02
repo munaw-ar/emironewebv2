@@ -20,7 +20,7 @@ export default function SectionHowWeWork() {
     <section aria-labelledby="guide-h" style={{ padding: 'var(--section-y) 0', background: 'var(--paper-2)' }}>
       <div className="w section-grid">
         <div className="section-eyebrow">
-          02 — How We Work
+          <span className="sec-num">02</span>How We Work
         </div>
         <div>
           <h2 id="guide-h" className="reveal h-section" style={{ marginBottom: 'var(--s4)' }}>
