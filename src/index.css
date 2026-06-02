@@ -270,6 +270,21 @@
   box-shadow: 0 8px 22px rgba(13,92,56,0.22);
   transform: translateY(-1px);
 }
+.cta:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgba(13,92,56,0.18);
+}
+.cta:disabled,
+.cta[disabled],
+.cta[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta:hover, .cta:active { transform: none; }
+}
 
 /* Layout utility */
 .w {
