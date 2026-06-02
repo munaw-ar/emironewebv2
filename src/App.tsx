@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -6,41 +6,58 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Index from './pages/Index';
-import BookPage from './pages/BookPage';
-import ShariaAligned from './pages/ShariaAligned';
-import HowWeMakeIt from './pages/HowWeMakeIt';
-import FitPage from './pages/FitPage';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsOfService from './pages/TermsOfService';
-import ResearchHub from './pages/ResearchHub';
-import IndustryIndex from './pages/IndustryIndex';
-import IndustryResearch from './pages/IndustryResearch';
-import ExperimentLogs from './pages/ExperimentLogs';
-import QuarterlyReports from './pages/QuarterlyReports';
-import Methodology from './pages/Methodology';
 import NotFound from './pages/NotFound';
 import { AdminAuthProvider } from './contexts/AdminAuthContext';
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminLayout from './components/admin/AdminLayout';
-import ProtectedAdminRoute from './components/admin/ProtectedAdminRoute';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import IndustryResearchList from './pages/admin/IndustryResearchList';
-import IndustryResearchForm from './pages/admin/IndustryResearchForm';
-import ExperimentLogsList from './pages/admin/ExperimentLogsList';
-import ExperimentLogForm from './pages/admin/ExperimentLogForm';
-import QuarterlyReportsList from './pages/admin/QuarterlyReportsList';
-import QuarterlyReportForm from './pages/admin/QuarterlyReportForm';
-import MethodologyEditor from './pages/admin/MethodologyEditor';
-import SubscribersPage from './pages/admin/SubscribersPage';
-import AnalyticsPage from './pages/admin/AnalyticsPage';
-import SettingsPage from './pages/admin/SettingsPage';
+
+// Marketing/secondary pages — split out of the homepage's first paint.
+const BookPage = lazy(() => import('./pages/BookPage'));
+const ShariaAligned = lazy(() => import('./pages/ShariaAligned'));
+const HowWeMakeIt = lazy(() => import('./pages/HowWeMakeIt'));
+const FitPage = lazy(() => import('./pages/FitPage'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+
+// Research hub.
+const ResearchHub = lazy(() => import('./pages/ResearchHub'));
+const IndustryIndex = lazy(() => import('./pages/IndustryIndex'));
+const IndustryResearch = lazy(() => import('./pages/IndustryResearch'));
+const ExperimentLogs = lazy(() => import('./pages/ExperimentLogs'));
+const QuarterlyReports = lazy(() => import('./pages/QuarterlyReports'));
+const Methodology = lazy(() => import('./pages/Methodology'));
+
+// Admin CMS (Tiptap, dashboards) — never shipped to public visitors.
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const AdminLayout = lazy(() => import('./components/admin/AdminLayout'));
+const ProtectedAdminRoute = lazy(() => import('./components/admin/ProtectedAdminRoute'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const IndustryResearchList = lazy(() => import('./pages/admin/IndustryResearchList'));
+const IndustryResearchForm = lazy(() => import('./pages/admin/IndustryResearchForm'));
+const ExperimentLogsList = lazy(() => import('./pages/admin/ExperimentLogsList'));
+const ExperimentLogForm = lazy(() => import('./pages/admin/ExperimentLogForm'));
+const QuarterlyReportsList = lazy(() => import('./pages/admin/QuarterlyReportsList'));
+const QuarterlyReportForm = lazy(() => import('./pages/admin/QuarterlyReportForm'));
+const MethodologyEditor = lazy(() => import('./pages/admin/MethodologyEditor'));
+const SubscribersPage = lazy(() => import('./pages/admin/SubscribersPage'));
+const AnalyticsPage = lazy(() => import('./pages/admin/AnalyticsPage'));
+const SettingsPage = lazy(() => import('./pages/admin/SettingsPage'));
 
 const queryClient = new QueryClient();
+
+function RouteFallback() {
+  return (
+    <div style={{ minHeight: '60vh', display: 'grid', placeItems: 'center', color: 'var(--mid)', fontFamily: 'var(--mono)', fontSize: 13 }}>
+      Loading…
+    </div>
+  );
+}
 
 function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
-    if (isTouchDevice()) return;
+    const prefersReducedMotion = () =>
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Smooth-scroll hijacking is a vestibular trigger — skip it for these users.
+    if (isTouchDevice() || prefersReducedMotion()) return;
 
     let lenis: any;
     import('lenis').then(({ default: Lenis }) => {
@@ -67,6 +84,7 @@ const App = () => (
         <LenisProvider>
           <ScrollToTop />
           <AdminAuthProvider>
+            <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/book" element={<BookPage />} />
@@ -100,6 +118,7 @@ const App = () => (
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
+            </Suspense>
           </AdminAuthProvider>
         </LenisProvider>
       </BrowserRouter>

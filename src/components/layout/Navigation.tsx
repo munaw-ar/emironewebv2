@@ -112,7 +112,7 @@ export default function Navigation() {
                 display: 'inline-block', width: 6, height: 6,
                 borderRadius: '50%', background: 'var(--green)',
               }} />
-              <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--mid)' }}>
+              <span className="tnum" style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--mid)' }}>
                 Live · {nowAEST} AEST
               </span>
             </div>
@@ -121,7 +121,7 @@ export default function Navigation() {
               onClick={() => setMobileOpen(o => !o)}
               aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
               aria-expanded={mobileOpen}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, minWidth: 44, minHeight: 44, marginRight: -10, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
             >
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round">
                 {mobileOpen

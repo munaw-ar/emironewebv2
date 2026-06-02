@@ -1,46 +1,71 @@
+type Rating = 'yes' | 'partial' | 'no';
+
+interface Row {
+  feature: string;
+  emir: Rating;
+  agency: Rating;
+  inhouse: Rating;
+}
+
 export default function SectionDistinction() {
-  const rows = [
-    { feature: 'SPF/DKIM/DMARC setup', emirOne: true, agency: false, inhouse: false },
-    { feature: 'Domain warm-up protocol', emirOne: true, agency: false, inhouse: false },
-    { feature: 'Secondary domain strategy', emirOne: true, agency: false, inhouse: false },
-    { feature: 'Third-party verified scores', emirOne: true, agency: false, inhouse: false },
-    { feature: 'Sharia-aligned practices', emirOne: true, agency: false, inhouse: false },
-    { feature: 'Live campaign dashboard', emirOne: true, agency: false, inhouse: true },
-    { feature: 'ICP-scored target list', emirOne: true, agency: true, inhouse: false },
+  // Honest, research-backed capability map. Emir One is deliberately "Partial"
+  // where the reality is partial (warm-up, ICP) — that is what makes it credible.
+  const rows: Row[] = [
+    { feature: 'SPF / DKIM / DMARC alignment', emir: 'yes', agency: 'yes', inhouse: 'partial' },
+    { feature: 'Secondary domain architecture', emir: 'yes', agency: 'yes', inhouse: 'partial' },
+    { feature: 'Warm-up protocol', emir: 'partial', agency: 'partial', inhouse: 'partial' },
+    { feature: 'Third-party verified scores', emir: 'yes', agency: 'partial', inhouse: 'no' },
+    { feature: 'ICP list scoring', emir: 'partial', agency: 'partial', inhouse: 'yes' },
+    { feature: 'Live campaign dashboard', emir: 'yes', agency: 'partial', inhouse: 'no' },
+    { feature: 'You own the domains & data', emir: 'yes', agency: 'no', inhouse: 'yes' },
+    { feature: 'Sharia-aligned / consent ethics', emir: 'yes', agency: 'no', inhouse: 'no' },
   ];
-  const tick = (v: boolean) => (
-    <span style={{ color: v ? 'var(--green)' : 'var(--rule)', fontSize: 16 }}>{v ? '✓' : '—'}</span>
-  );
+
+  const cell = (v: Rating) => {
+    if (v === 'yes') return <span style={{ color: 'var(--green)', fontSize: 15, fontWeight: 600 }}>✓</span>;
+    if (v === 'partial') return <span style={{ color: 'var(--mid)', fontSize: 12 }}>Partial</span>;
+    return <span style={{ color: 'var(--rule)', fontSize: 15 }} aria-label="no">—</span>;
+  };
+
   return (
-    <section aria-labelledby="compare-h" style={{ padding: 'clamp(64px, 8vw, 104px) 0', background: 'var(--paper-2)' }}>
-      <div className="w" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,180px) 1fr', gap: 48, alignItems: 'start' }}>
-        <div style={{ fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--mid)', paddingTop: 8 }}>
+    <section aria-labelledby="compare-h" style={{ padding: 'var(--section-y) 0', background: 'var(--paper-2)' }}>
+      <div className="w section-grid">
+        <div className="section-eyebrow">
           05 — The Distinction
         </div>
         <div>
-          <h2 id="compare-h" className="reveal" style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(26px, 3.5vw, 44px)', fontWeight: 300, lineHeight: 1.2, letterSpacing: '-0.02em', color: 'var(--ink)', marginBottom: 40 }}>
-            What you actually get that <em>you can't buy anywhere else.</em>
+          <h2 id="compare-h" className="reveal" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-3)', fontWeight: 300, lineHeight: 'var(--lh-h2)', letterSpacing: 'var(--track-h2)', color: 'var(--ink)', marginBottom: 'var(--s4)', textWrap: 'balance' }}>
+            An honest look at <em>who does what.</em>
           </h2>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--body)', fontSize: 13 }}>
+          <p className="reveal reveal-delay-1 measure" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-0)', color: 'var(--mid)', lineHeight: 'var(--lh-body)', marginBottom: 'var(--s6)' }}>
+            We're not the answer to everything. Where in-house or a generalist agency genuinely wins, we say so.
+          </p>
+          <table className="stack-table" style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--body)', fontSize: 13 }}>
+            <caption style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>
+              Capability comparison between Emir One, a typical generalist agency, and an in-house team
+            </caption>
             <thead>
               <tr style={{ borderBottom: '2px solid var(--rule)' }}>
-                <th style={{ textAlign: 'left', padding: '10px 0', color: 'var(--mid)', fontWeight: 500 }}>Feature</th>
-                <th style={{ textAlign: 'center', padding: '10px 16px', color: 'var(--green)', fontWeight: 600 }}>Emir One</th>
-                <th style={{ textAlign: 'center', padding: '10px 16px', color: 'var(--mid)', fontWeight: 500 }}>Agency</th>
-                <th style={{ textAlign: 'center', padding: '10px 16px', color: 'var(--mid)', fontWeight: 500 }}>In-house</th>
+                <th scope="col" style={{ textAlign: 'left', padding: '10px 0', color: 'var(--mid)', fontWeight: 500 }}>Capability</th>
+                <th scope="col" style={{ textAlign: 'center', padding: '10px 16px', color: 'var(--green)', fontWeight: 600 }}>Emir One</th>
+                <th scope="col" style={{ textAlign: 'center', padding: '10px 16px', color: 'var(--mid)', fontWeight: 500 }}>Typical agency</th>
+                <th scope="col" style={{ textAlign: 'center', padding: '10px 16px', color: 'var(--mid)', fontWeight: 500 }}>In-house</th>
               </tr>
             </thead>
             <tbody>
               {rows.map(row => (
                 <tr key={row.feature} style={{ borderBottom: '1px solid var(--rule-2)' }}>
-                  <td style={{ padding: '12px 0', color: 'var(--ink)' }}>{row.feature}</td>
-                  <td style={{ textAlign: 'center', padding: '12px 16px' }}>{tick(row.emirOne)}</td>
-                  <td style={{ textAlign: 'center', padding: '12px 16px' }}>{tick(row.agency)}</td>
-                  <td style={{ textAlign: 'center', padding: '12px 16px' }}>{tick(row.inhouse)}</td>
+                  <td data-label="Capability" style={{ padding: '12px 0', color: 'var(--ink)' }}>{row.feature}</td>
+                  <td data-label="Emir One" style={{ textAlign: 'center', padding: '12px 16px' }}>{cell(row.emir)}</td>
+                  <td data-label="Typical agency" style={{ textAlign: 'center', padding: '12px 16px' }}>{cell(row.agency)}</td>
+                  <td data-label="In-house" style={{ textAlign: 'center', padding: '12px 16px' }}>{cell(row.inhouse)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <p className="measure" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--mid)', lineHeight: 'var(--lh-caption)', marginTop: 'var(--s4)' }}>
+            “Partial” means honestly partial. Warm-up, for instance, is partial for everyone — bot warm-up is increasingly filter-detected, so no provider should claim it as solved. Where we differ is ownership and ethics: your domains are registered to you from day one, and consent-first, Sharia-aligned outreach isn't standard anywhere else.
+          </p>
         </div>
       </div>
     </section>

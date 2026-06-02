@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDomainHealth, getCommentary, type DnsResult } from '@/hooks/useDomainHealth';
 
@@ -24,6 +24,13 @@ function HealthDrawer({ domain, results, onClose }: {
   domain: string; results: DnsResult | null; onClose: () => void;
 }) {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
   const score = results?.score ?? null;
   const commentary = results
     ? getCommentary(score!, results)
@@ -47,8 +54,8 @@ function HealthDrawer({ domain, results, onClose }: {
         aria-label={`DNS Health Report for ${domain}`}
         style={{
           position: 'fixed', top: 0, right: 0, bottom: 0, width: '100%', maxWidth: 480,
-          background: 'var(--paper)', zIndex: 201, overflowY: 'auto', padding: '32px 28px',
-          boxShadow: '-4px 0 32px rgba(0,0,0,0.12)',
+          background: 'var(--paper)', zIndex: 201, overflowY: 'auto', padding: 'var(--s5)',
+          boxShadow: 'var(--shadow-lg)',
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
@@ -63,14 +70,14 @@ function HealthDrawer({ domain, results, onClose }: {
           <button
             onClick={onClose}
             aria-label="Close health report"
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--mid)', fontSize: 24, lineHeight: 1, padding: 4 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--mid)', fontSize: 24, lineHeight: 1, minWidth: 44, minHeight: 44, marginRight: -10, marginTop: -10, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
           >
             ×
           </button>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, margin: '24px 0 8px' }}>
-          <span style={{ fontFamily: 'var(--serif)', fontSize: 56, fontWeight: 300, lineHeight: 1, color: 'var(--ink)' }}>
+          <span className="tnum" style={{ fontFamily: 'var(--serif)', fontSize: 56, fontWeight: 300, lineHeight: 1, color: 'var(--ink)' }}>
             {score !== null ? score : '—'}
           </span>
           <span style={{ fontFamily: 'var(--body)', fontSize: 18, color: 'var(--mid)' }}>/10</span>
@@ -116,7 +123,7 @@ function HealthDrawer({ domain, results, onClose }: {
           onClick={goToBook}
           style={{
             width: '100%', fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600,
-            letterSpacing: '0.08em', padding: '14px 0',
+            letterSpacing: '0.08em', padding: '14px 0', minHeight: 44,
             background: 'var(--green)', color: 'var(--paper)',
             border: 'none', borderRadius: 3, cursor: 'pointer',
           }}
@@ -139,7 +146,7 @@ export default function DomainHealthChecker() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', gap: 0, maxWidth: 440 }}>
+      <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', gap: 0, width: '100%', maxWidth: 440 }}>
         <input
           type="text"
           value={input}
@@ -150,10 +157,10 @@ export default function DomainHealthChecker() {
           aria-label="Your domain"
           disabled={isChecking}
           style={{
-            flex: 1, fontFamily: 'var(--mono)', fontSize: 14,
+            flex: 1, minWidth: 0, fontFamily: 'var(--mono)', fontSize: 16, minHeight: 44,
             padding: '12px 16px', background: 'var(--paper)',
             border: '1px solid var(--rule)', borderRight: 'none',
-            borderRadius: '3px 0 0 3px', color: 'var(--ink)', outline: 'none',
+            borderRadius: '3px 0 0 3px', color: 'var(--ink)',
           }}
         />
         <button
@@ -161,7 +168,7 @@ export default function DomainHealthChecker() {
           disabled={isChecking}
           style={{
             fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600,
-            letterSpacing: '0.06em', padding: '12px 20px',
+            letterSpacing: '0.06em', padding: '12px 20px', minHeight: 44,
             background: isChecking ? 'var(--mid)' : 'var(--green)',
             color: 'var(--paper)', border: 'none',
             borderRadius: '0 3px 3px 0', cursor: isChecking ? 'not-allowed' : 'pointer',

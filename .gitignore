@@ -25,3 +25,13 @@ npm-debug.log*
 
 # macOS
 .DS_Store
+.vercel
+
+# TypeScript incremental build info
+*.tsbuildinfo
+
+# Tooling / local agent dirs
+.claude/
+.superpowers/
+.playwright-mcp/
+supabase/.temp/

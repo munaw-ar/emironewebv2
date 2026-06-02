@@ -17,25 +17,25 @@ export default function SectionHowWeWork() {
     },
   ];
   return (
-    <section aria-labelledby="guide-h" style={{ padding: 'clamp(64px, 8vw, 104px) 0', background: 'var(--paper-2)' }}>
-      <div className="w" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,180px) 1fr', gap: 48, alignItems: 'start' }}>
-        <div style={{ fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--mid)', paddingTop: 8 }}>
+    <section aria-labelledby="guide-h" style={{ padding: 'var(--section-y) 0', background: 'var(--paper-2)' }}>
+      <div className="w section-grid">
+        <div className="section-eyebrow">
           02 — How We Work
         </div>
         <div>
-          <h2 id="guide-h" className="reveal" style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(26px, 3.5vw, 44px)', fontWeight: 300, lineHeight: 1.2, letterSpacing: '-0.02em', color: 'var(--ink)', marginBottom: 20 }}>
+          <h2 id="guide-h" className="reveal" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-3)', fontWeight: 300, lineHeight: 'var(--lh-h2)', letterSpacing: 'var(--track-h2)', color: 'var(--ink)', marginBottom: 'var(--s4)', textWrap: 'balance' }}>
             Infrastructure first. Copy second. <em>Claims always verifiable.</em>
           </h2>
-          <p className="reveal reveal-delay-1" style={{ fontFamily: 'var(--body)', fontSize: 16, color: 'var(--mid)', lineHeight: 1.7, marginBottom: 40 }}>
+          <p className="reveal reveal-delay-1 measure" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-0)', color: 'var(--mid)', lineHeight: 'var(--lh-body)', marginBottom: 'var(--s6)' }}>
             Three operating principles. No marketing philosophy.
           </p>
-          <div style={{ display: 'grid', gap: 28 }}>
+          <div style={{ display: 'grid', gap: 'var(--s5)' }}>
             {principles.map(p => (
-              <div key={p.num} style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: 20 }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--mid)', paddingTop: 3 }}>{p.num}</div>
+              <div key={p.num} className="reveal" style={{ display: 'grid', gridTemplateColumns: '48px 1fr', gap: 'var(--s4)' }}>
+                <div className="tnum" style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--green)', paddingTop: 4 }}>{p.num}</div>
                 <div>
-                  <div style={{ fontFamily: 'var(--serif)', fontSize: 18, fontWeight: 400, color: 'var(--ink)', marginBottom: 8 }}>{p.title}</div>
-                  <p style={{ fontFamily: 'var(--body)', fontSize: 14, color: 'var(--mid)', lineHeight: 1.7 }}>{p.body}</p>
+                  <div style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-1)', fontWeight: 400, color: 'var(--ink)', marginBottom: 'var(--s2)' }}>{p.title}</div>
+                  <p className="measure" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-0)', color: 'var(--mid)', lineHeight: 'var(--lh-body)' }}>{p.body}</p>
                 </div>
               </div>
             ))}

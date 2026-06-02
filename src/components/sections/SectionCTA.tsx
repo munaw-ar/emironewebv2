@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 export default function SectionCTA() {
   const navigate = useNavigate();
   return (
-    <section aria-label="Call to action" style={{ padding: 'clamp(80px, 10vw, 128px) 0', background: 'var(--ink)', color: 'var(--paper)' }}>
+    <section aria-label="Call to action" style={{ padding: 'var(--section-y-lg) 0', background: 'var(--ink)', color: 'var(--paper)' }}>
       <div className="w" style={{ maxWidth: 720 }}>
         <div style={{ fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--light)', marginBottom: 20 }}>
           Ready to build?
@@ -18,7 +18,7 @@ export default function SectionCTA() {
           onClick={() => navigate('/book')}
           style={{
             fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600, letterSpacing: '0.1em',
-            textTransform: 'uppercase', padding: '16px 32px',
+            textTransform: 'uppercase', padding: '16px 32px', minHeight: 44,
             background: 'var(--green)', color: 'var(--paper)',
             border: 'none', borderRadius: 3, cursor: 'pointer',
           }}

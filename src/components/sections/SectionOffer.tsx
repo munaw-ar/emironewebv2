@@ -9,37 +9,63 @@ export default function SectionOffer() {
     'Sequenced copy — 3 touches, written for your ICP, reviewed against deliverability rules.',
     'A live campaign dashboard with reply tracking and domain health scores.',
   ];
+  const tiers = [
+    { name: 'Diagnostic', price: 'Free', scope: '30-min call — we score your setup live.' },
+    { name: 'Sprint', price: 'From $1,000', scope: '2–3 domains, full build, warmed and verified.' },
+    { name: 'Ongoing', price: 'Scoped', scope: 'Monitoring & maintenance after the Sprint.' },
+  ];
   return (
-    <section id="sprint" aria-labelledby="offer-h" style={{ padding: 'clamp(64px, 8vw, 104px) 0', background: 'var(--paper)' }}>
-      <div className="w" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,180px) 1fr', gap: 48, alignItems: 'start' }}>
-        <div style={{ fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--mid)', paddingTop: 8 }}>
+    <section id="sprint" aria-labelledby="offer-h" style={{ padding: 'var(--section-y) 0', background: 'var(--paper)' }}>
+      <div className="w section-grid">
+        <div className="section-eyebrow">
           04 — The Offer
         </div>
         <div>
-          <h2 id="offer-h" className="reveal" style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(26px, 3.5vw, 44px)', fontWeight: 300, lineHeight: 1.2, letterSpacing: '-0.02em', color: 'var(--ink)', marginBottom: 20 }}>
+          <h2 id="offer-h" className="reveal" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-3)', fontWeight: 300, lineHeight: 'var(--lh-h2)', letterSpacing: 'var(--track-h2)', color: 'var(--ink)', marginBottom: 'var(--s4)', textWrap: 'balance' }}>
             For firms ready to <em>build the system</em>, not just audit it.
           </h2>
-          <div style={{ border: '1px solid var(--rule)', borderRadius: 4, padding: '32px', marginTop: 32, marginBottom: 32 }}>
-            <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--mid)', marginBottom: 16 }}>
+          <div style={{ border: '1px solid var(--rule)', borderRadius: 4, padding: 'var(--s5)', marginTop: 'var(--s5)', marginBottom: 'var(--s5)', boxShadow: 'var(--shadow-sm)' }}>
+            <div className="section-eyebrow" style={{ paddingTop: 0, marginBottom: 'var(--s3)', fontFamily: 'var(--mono)', letterSpacing: '0.12em' }}>
               The Sprint — Deliverables
             </div>
-            <div style={{ display: 'grid', gap: 14 }}>
+            <div style={{ display: 'grid', gap: 'var(--s3)' }}>
               {deliverables.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-                  <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--green)', marginTop: 1, flexShrink: 0 }}>—</span>
-                  <span style={{ fontFamily: 'var(--body)', fontSize: 14, color: 'var(--ink)', lineHeight: 1.6 }}>{item}</span>
+                  <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--green)', marginTop: 3, flexShrink: 0 }}>—</span>
+                  <span style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-0)', color: 'var(--ink)', lineHeight: 'var(--lh-body)' }}>{item}</span>
                 </div>
               ))}
             </div>
-            <div style={{ marginTop: 28, paddingTop: 24, borderTop: '1px solid var(--rule-2)', fontFamily: 'var(--body)', fontSize: 13, color: 'var(--mid)', lineHeight: 1.6 }}>
-              <strong style={{ color: 'var(--ink)' }}>Guarantee:</strong> If at Day 14 your domain health score is below 9.5/10 (verified via MXToolbox), we work free until fixed — or you get a full refund.
+
+            {/* Transparent price ladder */}
+            <div style={{ marginTop: 'var(--s5)', paddingTop: 'var(--s4)', borderTop: '1px solid var(--rule-2)', display: 'grid', gap: 'var(--s3)' }}>
+              {tiers.map(t => (
+                <div key={t.name} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--s2)' }}>
+                  <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--mid)', minWidth: 88 }}>{t.name}</span>
+                  <span style={{ flex: 1, fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--mid)' }}>{t.scope}</span>
+                  <span className="tnum" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-1)', fontWeight: 300, color: 'var(--ink)' }}>{t.price}</span>
+                </div>
+              ))}
+              <p style={{ fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--mid)', marginTop: 'var(--s1)' }}>
+                — final scope set on the call.
+              </p>
+            </div>
+
+            {/* Named, falsifiable guarantee */}
+            <div style={{ marginTop: 'var(--s5)', paddingTop: 'var(--s4)', borderTop: '1px solid var(--rule-2)' }}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--green)', marginBottom: 'var(--s2)' }}>
+                The Day-14 Standard
+              </div>
+              <p className="measure" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-1)', fontWeight: 300, lineHeight: 'var(--lh-lead)', color: 'var(--ink)' }}>
+                9.5/10 on MXToolbox by Day 14 — or we work free until it clears, or full refund. Your choice.
+              </p>
             </div>
           </div>
           <button
             onClick={() => navigate('/book')}
             style={{
               fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600, letterSpacing: '0.08em',
-              padding: '14px 28px', background: 'var(--green)', color: 'var(--paper)',
+              padding: '14px 28px', minHeight: 44, background: 'var(--green)', color: 'var(--paper)',
               border: 'none', borderRadius: 3, cursor: 'pointer',
             }}
           >
