@@ -90,14 +90,26 @@ const HowWeMakeIt = () => {
               <p className="reveal reveal-delay-1 measure" style={{ ...leadStyle, marginBottom: "var(--s6)" }}>
                 We start small on purpose, then scale only when inbox placement is proven.
               </p>
-              <div style={{ display: "grid", gap: "var(--s3)", marginBottom: "var(--s6)" }}>
+              <div style={{ marginBottom: "var(--s6)" }}>
                 {rampSteps.map((step, i) => (
-                  <div key={i} className="reveal glass" style={{ display: "flex", alignItems: "flex-start", gap: "var(--s4)", padding: "var(--s4)" }}>
-                    <span className="tnum" style={{ fontFamily: "var(--mono)", fontSize: 12, fontWeight: 500, color: "var(--green)", marginTop: 2, flexShrink: 0, width: 64 }}>{step.day}</span>
-                    <div>
-                      <p style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--ink)" }}>{step.emails}</p>
-                      <p style={bodyStyle}>{step.desc}</p>
+                  <div
+                    key={i}
+                    className="glass ramp-card"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "var(--s5)",
+                      padding: "var(--s5)",
+                      top: `calc(var(--nav-h) + 24px + ${i * 14}px)`,
+                      zIndex: i + 1,
+                    }}
+                  >
+                    <span className="tnum" style={{ fontFamily: "var(--mono)", fontSize: 12, fontWeight: 600, letterSpacing: "0.04em", color: "var(--green)", flexShrink: 0, width: 72 }}>{step.day}</span>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", fontWeight: 400, color: "var(--ink)", lineHeight: 1.2 }}>{step.emails}</p>
+                      <p style={{ ...bodyStyle, marginTop: 4 }}>{step.desc}</p>
                     </div>
+                    <span className="tnum" style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--light)", flexShrink: 0 }}>0{i + 1}</span>
                   </div>
                 ))}
               </div>

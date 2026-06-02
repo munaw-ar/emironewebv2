@@ -497,6 +497,23 @@
   .reveal { opacity: 1; transform: none; }
 }
 
+/* Sticky stacking cards — each box scrolls up and rests into the previous */
+.ramp-card {
+  position: sticky;
+  box-shadow: var(--shadow-md);
+  background: #fff;
+  transition: box-shadow 0.3s var(--ease-out);
+}
+.ramp-card:not(:last-child) { margin-bottom: 22vh; }
+@media (max-width: 640px) {
+  .ramp-card:not(:last-child) { margin-bottom: 14vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* fall back to a simple flow list (no pin/overlap) */
+  .ramp-card { position: static; }
+  .ramp-card:not(:last-child) { margin-bottom: var(--s3); }
+}
+
 /* Auto-scrolling marquee (ColdIQ / Social Square style) */
 .marquee {
   overflow: hidden;
