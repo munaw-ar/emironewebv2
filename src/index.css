@@ -119,6 +119,55 @@
                  0 24px 64px rgba(0,0,0,0.55);
   }
 
+  /* Admin portal keeps a clean LIGHT theme (better for content editing).
+     Applied to <body> while admin routes are mounted, so Radix portals
+     (dropdowns/dialogs/selects) inherit it too. */
+  body.admin-theme {
+    --background:   0 0% 100%;
+    --foreground:   222 30% 11%;
+    --card:         0 0% 100%;
+    --card-foreground: 222 30% 11%;
+    --popover:      0 0% 100%;
+    --popover-foreground: 222 30% 11%;
+    --primary:      151 75% 21%;
+    --primary-foreground: 0 0% 100%;
+    --secondary:    220 14% 96%;
+    --secondary-foreground: 222 30% 11%;
+    --muted:        220 14% 96%;
+    --muted-foreground: 220 9% 40%;
+    --accent:       220 14% 96%;
+    --accent-foreground: 222 30% 11%;
+    --destructive:  0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border:       220 13% 91%;
+    --input:        220 13% 91%;
+    --ring:         151 75% 21%;
+
+    --sidebar-background:        0 0% 100%;
+    --sidebar-foreground:        222 30% 11%;
+    --sidebar-primary:           151 75% 21%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent:            220 14% 96%;
+    --sidebar-accent-foreground: 222 30% 11%;
+    --sidebar-border:            220 13% 91%;
+    --sidebar-ring:              151 75% 21%;
+
+    --paper:   #ffffff;
+    --paper-2: #F7F8FA;
+    --ink:     #111827;
+    --ink-2:   #1F2937;
+    --mid:     #6B7280;
+    --light:   #9CA3AF;
+    --rule:    #E5E7EB;
+    --rule-2:  #F0F1F3;
+    --green:   #0D5C38;
+    --green-h: #0a4a2d;
+    --paper-dim: #6B7280;
+
+    background: #ffffff;
+    color: #111827;
+  }
+
   *, *::before, *::after { box-sizing: border-box; }
 
   html {

@@ -21,6 +21,12 @@ const AdminLogin: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Admin portal uses a light theme (better for content editing).
+  useEffect(() => {
+    document.body.classList.add('admin-theme');
+    return () => document.body.classList.remove('admin-theme');
+  }, []);
+
   useEffect(() => {
     if (!isLoading && user && isAdmin) {
       navigate('/admin');

@@ -15,7 +15,7 @@ export default function Hero() {
           Your cold email is failing. <em>We fix the infrastructure,</em> not the copy.
         </h1>
         <p className="measure-lead" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-1)', color: 'var(--mid)', lineHeight: 'var(--lh-lead)', marginBottom: 'var(--s6)' }}>
-          Score your domain free — see exactly what's killing your deliverability before we talk. Sprints start at $1,000.
+          Score your domain free — see exactly what's killing your deliverability before we talk.
         </p>
         <DomainHealthChecker />
         <div style={{ display: 'flex', gap: 'var(--s5)', marginTop: 'var(--s6)', paddingTop: 'var(--s4)', borderTop: '1px solid var(--rule)', flexWrap: 'wrap' }}>

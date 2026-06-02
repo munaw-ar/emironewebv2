@@ -9,11 +9,6 @@ export default function SectionOffer() {
     'Sequenced copy — 3 touches, written for your ICP, reviewed against deliverability rules.',
     'A live campaign dashboard with reply tracking and domain health scores.',
   ];
-  const tiers = [
-    { name: 'Diagnostic', price: 'Free', scope: '30-min call — we score your setup live.' },
-    { name: 'Sprint', price: 'From $1,000', scope: '2–3 domains, full build, warmed and verified.' },
-    { name: 'Ongoing', price: 'Scoped', scope: 'Monitoring & maintenance after the Sprint.' },
-  ];
   return (
     <section id="sprint" aria-labelledby="offer-h" style={{ padding: 'var(--section-y) 0', background: 'var(--paper)' }}>
       <div className="w section-grid">
@@ -35,20 +30,6 @@ export default function SectionOffer() {
                   <span style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-0)', color: 'var(--ink)', lineHeight: 'var(--lh-body)' }}>{item}</span>
                 </div>
               ))}
-            </div>
-
-            {/* Transparent price ladder */}
-            <div style={{ marginTop: 'var(--s5)', paddingTop: 'var(--s4)', borderTop: '1px solid var(--rule-2)', display: 'grid', gap: 'var(--s3)' }}>
-              {tiers.map(t => (
-                <div key={t.name} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--s2)' }}>
-                  <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--mid)', minWidth: 88 }}>{t.name}</span>
-                  <span style={{ flex: 1, fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--mid)' }}>{t.scope}</span>
-                  <span className="tnum" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-1)', fontWeight: 300, color: 'var(--ink)' }}>{t.price}</span>
-                </div>
-              ))}
-              <p style={{ fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--mid)', marginTop: 'var(--s1)' }}>
-                — final scope set on the call.
-              </p>
             </div>
 
             {/* Named, falsifiable guarantee */}
