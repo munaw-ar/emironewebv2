@@ -31,7 +31,7 @@ export default function SectionDistinction() {
     <section aria-labelledby="compare-h" style={{ padding: 'var(--section-y) 0', background: 'var(--paper-2)' }}>
       <div className="w section-grid">
         <div className="section-eyebrow">
-          <span className="sec-num">05</span>The Distinction
+          <span className="sec-num">03</span>The Distinction
         </div>
         <div>
           <h2 id="compare-h" className="reveal h-section" style={{ marginBottom: 'var(--s4)' }}>

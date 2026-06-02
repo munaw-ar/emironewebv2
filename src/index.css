@@ -497,6 +497,36 @@
   .reveal { opacity: 1; transform: none; }
 }
 
+/* Auto-scrolling marquee (ColdIQ / Social Square style) */
+.marquee {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  animation: marquee 38s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding-right: 28px;
+  font-family: var(--display);
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; transform: none; }
+}
+
 /* Hero word-by-word reveal (Intelligent-Lab style) */
 .word-reveal .w-word {
   display: inline-block;

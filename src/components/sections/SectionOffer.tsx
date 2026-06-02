@@ -13,7 +13,7 @@ export default function SectionOffer() {
     <section id="sprint" aria-labelledby="offer-h" style={{ padding: 'var(--section-y) 0', background: 'var(--paper)' }}>
       <div className="w section-grid">
         <div className="section-eyebrow">
-          <span className="sec-num">04</span>The Offer
+          <span className="sec-num">02</span>The Offer
         </div>
         <div>
           <h2 id="offer-h" className="reveal h-section" style={{ marginBottom: 'var(--s4)' }}>
