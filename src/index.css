@@ -4,58 +4,57 @@
 
 @layer base {
   :root {
-    /* v2.0 editorial tokens mapped to HSL for shadcn compatibility */
-    --background:   44 40% 97%;     /* #FAF8F3 paper      */
-    --foreground:   36 14% 4%;      /* #0C0B09 ink        */
-    --card:         44 40% 97%;
-    --card-foreground: 36 14% 4%;
-    --popover:      44 40% 97%;
-    --popover-foreground: 36 14% 4%;
+    /* v2.1 clean-modern tokens mapped to HSL for shadcn compatibility */
+    --background:   0 0% 100%;      /* #FFFFFF white      */
+    --foreground:   0 0% 7%;        /* #121212 ink        */
+    --card:         0 0% 100%;
+    --card-foreground: 0 0% 7%;
+    --popover:      0 0% 100%;
+    --popover-foreground: 0 0% 7%;
     --primary:      151 75% 21%;    /* #0D5C38 green      */
-    --primary-foreground: 44 40% 97%;
-    --secondary:    43 32% 93%;     /* #F3F0E8 paper-2    */
-    --secondary-foreground: 36 14% 4%;
-    --muted:        43 32% 93%;
-    --muted-foreground: 38 12% 32%; /* #5C5648 mid        */
-    --accent:       43 32% 93%;
-    --accent-foreground: 36 14% 4%;
+    --primary-foreground: 0 0% 100%;
+    --secondary:    0 0% 97%;       /* #F7F7F7 alt        */
+    --secondary-foreground: 0 0% 7%;
+    --muted:        0 0% 97%;
+    --muted-foreground: 0 0% 34%;   /* #575757 mid        */
+    --accent:       0 0% 97%;
+    --accent-foreground: 0 0% 7%;
     --destructive:  0 84% 60%;
-    --destructive-foreground: 44 40% 97%;
-    --border:       40 24% 80%;     /* #D8D0C0 rule       */
-    --input:        40 24% 80%;
+    --destructive-foreground: 0 0% 100%;
+    --border:       0 0% 89%;       /* #E3E3E3 rule       */
+    --input:        0 0% 89%;
     --ring:         151 75% 21%;
     --radius:       0.25rem;
 
     /* Sidebar tokens */
-    --sidebar-background:        44 40% 97%;
-    --sidebar-foreground:        36 14% 4%;
+    --sidebar-background:        0 0% 100%;
+    --sidebar-foreground:        0 0% 7%;
     --sidebar-primary:           151 75% 21%;
-    --sidebar-primary-foreground: 44 40% 97%;
-    --sidebar-accent:            43 32% 93%;
-    --sidebar-accent-foreground: 36 14% 4%;
-    --sidebar-border:            40 24% 80%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent:            0 0% 97%;
+    --sidebar-accent-foreground: 0 0% 7%;
+    --sidebar-border:            0 0% 89%;
     --sidebar-ring:              151 75% 21%;
 
-    /* v2.0 named aliases (used in inline styles / legacy CSS) */
-    --paper:   hsl(44 40% 97%);
-    --paper-2: hsl(43 32% 93%);
-    --ink:     hsl(36 14% 4%);
-    --ink-2:   hsl(38 14% 14%);
-    --mid:     hsl(38 12% 32%);
-    --light:   hsl(36 9% 55%);
-    --rule:    hsl(40 24% 80%);
-    --rule-2:  hsl(40 21% 88%);
-    --green:   hsl(151 75% 21%);
-    --green-h: hsl(151 77% 16%);
+    /* v2.1 named aliases (used in inline styles / legacy CSS) */
+    --paper:   #ffffff;
+    --paper-2: hsl(0 0% 97.5%);
+    --ink:     hsl(0 0% 7%);
+    --ink-2:   hsl(0 0% 14%);
+    --mid:     hsl(0 0% 34%);
+    --light:   hsl(0 0% 62%);
+    --rule:    hsl(0 0% 89%);
+    --rule-2:  hsl(0 0% 94%);
+    --green:   #0D5C38;
+    --green-h: #0a4a2d;
     --green-deep: #0a4a2d;          /* CTA hover */
-    /* warm footer text (paper, slightly dimmed — passes AA on ink) */
-    --paper-dim: hsl(44 30% 86%);
+    --paper-dim: hsl(0 0% 78%);     /* dimmed text on dark sections */
 
-    /* Typography */
-    --serif: "Fraunces", Georgia, serif;
-    --display: "Fraunces", Georgia, serif;
-    --body:  "Inter Tight", -apple-system, sans-serif;
-    --mono:  "JetBrains Mono", Consolas, monospace;
+    /* Typography — clean modern, sans-serif throughout */
+    --serif:   "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+    --display: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+    --body:    "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:    "JetBrains Mono", Consolas, monospace;
 
     /* Type scale — Major Third 1.25; Perfect Fourth reserved for hero H1 */
     --step--1: clamp(0.80rem, 0.78rem + 0.10vw, 0.875rem); /* 13→14 caption/label */
@@ -136,17 +135,6 @@
     overflow-wrap: anywhere;
   }
 
-  /* Near-invisible paper grain — the cheapest premium cue */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  /* keep app content above the grain */
   #root { position: relative; z-index: 1; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -174,6 +162,41 @@
 
   td, .mono, [data-mono] { overflow-wrap: anywhere; }
 }
+
+/* Clean-modern heading system (sans-serif display) */
+.h-hero {
+  font-family: var(--display);
+  font-size: var(--step-5);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.038em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.h-section {
+  font-family: var(--display);
+  font-size: var(--step-3);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.h-cta {
+  font-family: var(--display);
+  font-size: var(--step-4);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.032em;
+  color: var(--paper);
+  text-wrap: balance;
+}
+/* Headline emphasis → green accent (replaces the old serif italic) */
+.h-hero em, .h-section em, .h-cta em {
+  font-style: normal;
+  color: var(--green);
+}
+.h-cta em { color: #6fd39f; }
 
 /* Layout utility */
 .w {

@@ -8,7 +8,7 @@ export default function SectionCTA() {
         <div style={{ fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--light)', marginBottom: 20 }}>
           Ready to build?
         </div>
-        <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(32px, 5vw, 60px)', fontWeight: 300, lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--paper)', marginBottom: 24 }}>
+        <h2 className="h-cta" style={{ marginBottom: 24 }}>
           Your domain health score in 30 seconds. <em>Your outbound fixed in a sprint.</em>
         </h2>
         <p style={{ fontFamily: 'var(--body)', fontSize: 16, color: 'var(--light)', lineHeight: 1.7, marginBottom: 40, maxWidth: 520 }}>

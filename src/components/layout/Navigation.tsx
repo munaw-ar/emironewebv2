@@ -86,7 +86,7 @@ export default function Navigation() {
     <>
       <header style={{
         position: 'sticky', top: 0, zIndex: 100,
-        background: 'rgba(250,248,243,0.85)', borderBottom: '1px solid var(--rule)',
+        background: 'rgba(255,255,255,0.8)', borderBottom: '1px solid var(--rule)',
         WebkitBackdropFilter: 'blur(10px)', backdropFilter: 'blur(10px)',
       }}>
         <div className="w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 'var(--nav-h)' }}>

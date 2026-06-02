@@ -34,7 +34,7 @@ export default function SectionDistinction() {
           05 — The Distinction
         </div>
         <div>
-          <h2 id="compare-h" className="reveal" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-3)', fontWeight: 300, lineHeight: 'var(--lh-h2)', letterSpacing: 'var(--track-h2)', color: 'var(--ink)', marginBottom: 'var(--s4)', textWrap: 'balance' }}>
+          <h2 id="compare-h" className="reveal h-section" style={{ marginBottom: 'var(--s4)' }}>
             An honest look at <em>who does what.</em>
           </h2>
           <p className="reveal reveal-delay-1 measure" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-0)', color: 'var(--mid)', lineHeight: 'var(--lh-body)', marginBottom: 'var(--s6)' }}>

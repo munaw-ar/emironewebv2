@@ -21,7 +21,7 @@ export default function SectionOffer() {
           04 — The Offer
         </div>
         <div>
-          <h2 id="offer-h" className="reveal" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-3)', fontWeight: 300, lineHeight: 'var(--lh-h2)', letterSpacing: 'var(--track-h2)', color: 'var(--ink)', marginBottom: 'var(--s4)', textWrap: 'balance' }}>
+          <h2 id="offer-h" className="reveal h-section" style={{ marginBottom: 'var(--s4)' }}>
             For firms ready to <em>build the system</em>, not just audit it.
           </h2>
           <div style={{ border: '1px solid var(--rule)', borderRadius: 4, padding: 'var(--s5)', marginTop: 'var(--s5)', marginBottom: 'var(--s5)', boxShadow: 'var(--shadow-sm)' }}>

@@ -10,7 +10,7 @@ export default function Hero() {
         <div className="section-eyebrow" style={{ paddingTop: 0, color: 'var(--green)', marginBottom: 'var(--s4)' }}>
           <a href="#sharia" style={{ color: 'inherit', textDecoration: 'none' }}>Sharia-Aligned</a>{' '}· Ethical Cold Email Infrastructure
         </div>
-        <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-5)', fontWeight: 300, lineHeight: 'var(--lh-display)', letterSpacing: 'var(--track-display)', color: 'var(--ink)', maxWidth: 820, marginBottom: 'var(--s5)', textWrap: 'balance' }}>
+        <h1 className="h-hero" style={{ maxWidth: 900, marginBottom: 'var(--s5)' }}>
           Your cold email is failing. <em>We fix the infrastructure,</em> not the copy.
         </h1>
         <p className="measure-lead" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-1)', color: 'var(--mid)', lineHeight: 'var(--lh-lead)', marginBottom: 'var(--s6)' }}>
@@ -24,7 +24,7 @@ export default function Hero() {
             { n: 'SPF·DKIM·DMARC', l: 'Hardened on every domain' },
           ].map(stat => (
             <div key={stat.l}>
-              <div className="tnum" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-2)', fontWeight: 300, color: 'var(--ink)', lineHeight: 1.2 }}>{stat.n}</div>
+              <div className="tnum" style={{ fontFamily: 'var(--display)', fontSize: 'var(--step-2)', fontWeight: 500, letterSpacing: '-0.02em', color: 'var(--ink)', lineHeight: 1.2 }}>{stat.n}</div>
               <div style={{ fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--mid)', marginTop: 2 }}>{stat.l}</div>
             </div>
           ))}

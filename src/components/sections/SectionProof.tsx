@@ -13,7 +13,7 @@ export default function SectionProof() {
           06 — Proof of Work
         </div>
         <div>
-          <h2 id="proof-h" className="reveal" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-3)', fontWeight: 300, lineHeight: 'var(--lh-h2)', letterSpacing: 'var(--track-h2)', color: 'var(--ink)', marginBottom: 'var(--s4)', textWrap: 'balance' }}>
+          <h2 id="proof-h" className="reveal h-section" style={{ marginBottom: 'var(--s4)' }}>
             Public infrastructure verification. <em>Check it yourself.</em>
           </h2>
           <p className="reveal reveal-delay-1 measure" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-0)', color: 'var(--mid)', lineHeight: 'var(--lh-body)', marginBottom: 'var(--s5)' }}>
