@@ -86,13 +86,6 @@ export default function HeroStory() {
 
   return (
     <div className="glass hero-story" ref={root} style={{ padding: 'var(--s5)', maxWidth: 420, marginLeft: 'auto', boxShadow: 'var(--shadow-lg)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--s3)' }}>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--mid)' }}>The path to the inbox</span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--green)' }}>
-          <span className="animate-breathe" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--green)' }} /> Live
-        </span>
-      </div>
-
       {/* story progress segments */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 'var(--s4)' }}>
         {STAGES.map((_, i) => (
