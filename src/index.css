@@ -381,32 +381,18 @@
   .hero-story { margin: 0 auto !important; }
 }
 
-/* Oversized ghost section numerals (editorial rhythm) */
-.sec-num {
-  display: block;
-  font-family: var(--display);
-  font-variation-settings: "opsz" 144;
-  font-size: clamp(48px, 5vw, 76px);
-  font-weight: 400;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  color: var(--rule);
-  text-transform: none;
-  margin-bottom: var(--s3);
-}
-@media (max-width: 820px) {
-  .sec-num { display: none; }
-}
+/* Section numbering removed — no ghost numerals */
+.sec-num { display: none; }
 
-/* Editorial label-gutter grid */
-.section-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 200px) 1fr;
-  gap: clamp(28px, 4vw, 64px);
-  align-items: start;
-}
+/* Section header — editorial chapter divider: brand marker · label · rule.
+   Content flows full-width beneath (no gutter, no numbers). */
+.section-grid { display: block; }
 .section-grid > .section-eyebrow {
-  padding-top: var(--label-offset);
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-bottom: var(--s6);
+  padding-top: 0;
   font-family: var(--body);
   font-size: var(--step--1);
   font-weight: 600;
@@ -414,14 +400,20 @@
   text-transform: uppercase;
   color: var(--mid);
 }
-@media (max-width: 820px) {
-  .section-grid { grid-template-columns: 1fr; gap: var(--s3); }
-  .section-grid > .section-eyebrow {
-    padding-top: 0;
-    padding-bottom: var(--s1);
-    border-bottom: 1px solid var(--rule-2);
-    margin-bottom: var(--s1);
-  }
+.section-grid > .section-eyebrow::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  background: var(--green);
+  transform: rotate(45deg);
+}
+.section-grid > .section-eyebrow::after {
+  content: '';
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--rule);
 }
 
 /* Two-column content grid that collapses on phones */
