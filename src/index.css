@@ -489,6 +489,19 @@
   opacity: 1;
   transform: none;
 }
+/* Directional reveals — slide in from a given side */
+.reveal.dir-left   { transform: translateX(-72px); }
+.reveal.dir-right  { transform: translateX(72px); }
+.reveal.dir-top    { transform: translateY(-72px); }
+.reveal.dir-bottom { transform: translateY(72px); }
+.reveal.dir-left.is-visible,
+.reveal.dir-right.is-visible,
+.reveal.dir-top.is-visible,
+.reveal.dir-bottom.is-visible { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal.dir-left, .reveal.dir-right, .reveal.dir-top, .reveal.dir-bottom { transform: none; }
+}
+
 .reveal-delay-1.is-visible { transition-delay: 0.09s; }
 .reveal-delay-2.is-visible { transition-delay: 0.18s; }
 .reveal-delay-3.is-visible { transition-delay: 0.27s; }

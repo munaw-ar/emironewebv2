@@ -21,12 +21,15 @@ export default function SectionEthics() {
             Honesty, fairness, and respect for all parties — operationalized in every campaign decision.
           </p>
           <div className="grid-2" style={{ marginBottom: 'var(--s6)' }}>
-            {principles.map(p => (
-              <div key={p.title} style={{ padding: 'var(--s4) 0', borderTop: '1px solid var(--rule)' }}>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-1)', fontWeight: 400, color: 'var(--ink)', marginBottom: 'var(--s2)' }}>{p.title}</div>
-                <p style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-0)', color: 'var(--mid)', lineHeight: 'var(--lh-body)' }}>{p.body}</p>
-              </div>
-            ))}
+            {principles.map((p, i) => {
+              const dir = ['dir-left', 'dir-top', 'dir-bottom', 'dir-right'][i % 4];
+              return (
+                <div key={p.title} className={`reveal glass ${dir}`} style={{ padding: 'var(--s5)' }}>
+                  <div style={{ fontFamily: 'var(--serif)', fontSize: 'var(--step-1)', fontWeight: 400, color: 'var(--ink)', marginBottom: 'var(--s2)' }}>{p.title}</div>
+                  <p style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-0)', color: 'var(--mid)', lineHeight: 'var(--lh-body)' }}>{p.body}</p>
+                </div>
+              );
+            })}
           </div>
           <Link to="/sharia-aligned" className="link-wipe" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step--1)', fontWeight: 500, color: 'var(--green)', letterSpacing: '0.04em' }}>
             Read the full ethics framework →
