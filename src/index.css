@@ -389,7 +389,9 @@
 }
 @media (max-width: 980px) {
   .hero-grid { grid-template-columns: 1fr; }
-  .hero-aside { display: none; }
+  /* story player stacks below the hero content on mobile */
+  .hero-aside { margin-top: var(--s2); }
+  .hero-story { margin: 0 auto !important; }
 }
 
 /* Oversized ghost section numerals (editorial rhythm) */
