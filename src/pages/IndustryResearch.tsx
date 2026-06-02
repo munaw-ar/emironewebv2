@@ -151,7 +151,7 @@ const IndustryResearch = () => {
       <div style={{ minHeight: "100vh", background: "var(--paper)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "var(--s4)" }}>
         <h1 className="h-section" style={{ marginBottom: "var(--s3)", textAlign: "center" }}>Something went wrong</h1>
         <p style={{ ...bodyStyle, marginBottom: "var(--s6)", textAlign: "center" }}>{error}</p>
-        <Button variant="outline" onClick={() => window.location.reload()} className="touch-target">
+        <Button variant="outline" onClick={() => window.location.reload()}>
           Try Again
         </Button>
       </div>
@@ -165,7 +165,7 @@ const IndustryResearch = () => {
         <h1 className="h-section" style={{ marginBottom: "var(--s3)", textAlign: "center" }}>Research Not Found</h1>
         <p style={{ ...bodyStyle, marginBottom: "var(--s6)", textAlign: "center" }}>This report doesn't exist or hasn't been published yet.</p>
         <Link to="/research/industry">
-          <Button variant="outline" className="touch-target">Back to Industry Research</Button>
+          <Button variant="outline">Back to Industry Research</Button>
         </Link>
       </div>
     );
@@ -182,12 +182,12 @@ const IndustryResearch = () => {
       <a href="#main" className="skip-link">Skip to content</a>
       <Navigation />
 
-      <div className="container-wide pt-28 md:pt-36 pb-6 sm:pb-8 md:pb-12">
-        <div className="flex gap-8 lg:gap-12">
+      <div style={{ paddingTop: "var(--section-y)", paddingBottom: "var(--section-y)" }}>
+        <div className="w" style={{ display: "flex", gap: "clamp(32px, 4vw, 56px)", alignItems: "flex-start" }}>
           {/* Sidebar TOC - Desktop only */}
-          <aside className="hidden lg:block w-64 shrink-0">
+          <aside className="hidden lg:block" style={{ width: 240, flexShrink: 0, position: "sticky", top: "calc(var(--nav-h) + 24px)" }}>
             <TableOfContents items={tocItems} />
-            <div className="mt-8">
+            <div style={{ marginTop: "var(--s6)" }}>
               <SubscribeWidget />
             </div>
           </aside>
@@ -240,7 +240,7 @@ const IndustryResearch = () => {
                   href={`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareTitle}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="touch-target p-2 -m-2"
+                  className="p-2 -m-2"
                   style={{ color: "var(--green)" }}
                 >
                   <Linkedin size={18} />
@@ -249,7 +249,7 @@ const IndustryResearch = () => {
                   href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="touch-target p-2 -m-2"
+                  className="p-2 -m-2"
                   style={{ color: "var(--green)" }}
                 >
                   <Twitter size={18} />
@@ -421,7 +421,7 @@ const IndustryResearch = () => {
 
       {/* Mobile Subscribe */}
       <div className="lg:hidden" style={{ padding: "var(--s6) 0", background: "var(--paper-2)" }}>
-        <div className="container-wide">
+        <div className="w">
           <SubscribeWidget />
         </div>
       </div>
