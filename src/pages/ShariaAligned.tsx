@@ -1,256 +1,149 @@
-import Navigation from "@/components/layout/Navigation";
-import Footer from "@/components/layout/Footer";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Shield, Heart, Eye, Users, Check } from "lucide-react";
+import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
+const pillars = [
+  { icon: Shield, title: "No deception", practice: "Truthful subject lines, clear identity, clear purpose", benefit: "Lower reputational risk; fewer complaint/brand damage events" },
+  { icon: Heart, title: "No manipulation", practice: "No pressure, no dark patterns, no manufactured urgency", benefit: "Sustainable relationships; prospects remember you positively" },
+  { icon: Users, title: "Quality over volume", practice: "Signal-based targeting, manual verification, reasonable limits", benefit: "Higher conversion rates; lower spam complaints" },
+  { icon: Eye, title: "Full transparency", practice: "Full message approval, complete data access, real-time visibility", benefit: "Full control; no surprises; you own everything" },
+];
+
+const islamicPrinciples = [
+  { arabic: "لا ضرر ولا ضرار", transliteration: "La darar wa la dirar", meaning: "No harm and no reciprocating harm", practice: "We design systems that protect your reputation and the recipient's inbox." },
+  { arabic: "المسلم من سلم الناس من لسانه ويده", transliteration: "Al-Muslim man salima al-nasu min lisanihi wa yadihi", meaning: "A Muslim is one from whose tongue and hand people are safe", practice: "Every message we send should leave the recipient better informed, not annoyed." },
+  { arabic: "الصدق في المعاملة", transliteration: "As-sidq fil-mu'amala", meaning: "Truthfulness in dealings", practice: "We never misrepresent capabilities, create false urgency, or use deceptive tactics." },
+];
+
+const outcomes = [
+  "Your reputation is protected",
+  "No tactics you'd be embarrassed by",
+  "Sustainable, long-term relationships",
+];
+
+const eyebrowStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step--1)", fontWeight: 600, letterSpacing: "var(--track-caps)", textTransform: "uppercase", color: "var(--green)" };
+const leadStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-1)", color: "var(--mid)", lineHeight: "var(--lh-lead)" };
+const bodyStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-0)", color: "var(--mid)", lineHeight: "var(--lh-body)" };
+
+function PrimaryCta({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="cta" style={{ fontFamily: "var(--body)", fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "15px 30px", minHeight: 48, display: "inline-flex", alignItems: "center", gap: 10 }}>
+      {label} <ArrowRight size={16} />
+    </button>
+  );
+}
 
 const ShariaAligned = () => {
-  const heroRef = useRef(null);
-  const heroInView = useInView(heroRef, { once: true });
-  const pillarsRef = useRef(null);
-  const pillarsInView = useInView(pillarsRef, { once: true, margin: "-100px" });
-  const islamicRef = useRef(null);
-  const islamicInView = useInView(islamicRef, { once: true, margin: "-100px" });
-  const outcomesRef = useRef(null);
-  const outcomesInView = useInView(outcomesRef, { once: true, margin: "-100px" });
-  const fitRef = useRef(null);
-  const fitInView = useInView(fitRef, { once: true, margin: "-100px" });
   const navigate = useNavigate();
-
-  const pillars = [
-    {
-      icon: Shield,
-      title: "No deception",
-      practice: "Truthful subject lines, clear identity, clear purpose",
-      benefit: "Lower reputational risk; fewer complaint/brand damage events",
-    },
-    {
-      icon: Heart,
-      title: "No manipulation",
-      practice: "No pressure, no dark patterns, no manufactured urgency",
-      benefit: "Sustainable relationships; prospects remember you positively",
-    },
-    {
-      icon: Users,
-      title: "Quality over volume",
-      practice: "Signal-based targeting, manual verification, reasonable limits",
-      benefit: "Higher conversion rates; lower spam complaints",
-    },
-    {
-      icon: Eye,
-      title: "Full transparency",
-      practice: "Full message approval, complete data access, real-time visibility",
-      benefit: "Full control; no surprises; you own everything",
-    },
-  ];
-
-  const islamicPrinciples = [
-    {
-      arabic: "لا ضرر ولا ضرار",
-      transliteration: "La darar wa la dirar",
-      meaning: "No harm and no reciprocating harm",
-      practice: "We design systems that protect your reputation and the recipient's inbox.",
-    },
-    {
-      arabic: "المسلم من سلم الناس من لسانه ويده",
-      transliteration: "Al-Muslim man salima al-nasu min lisanihi wa yadihi",
-      meaning: "A Muslim is one from whose tongue and hand people are safe",
-      practice: "Every message we send should leave the recipient better informed, not annoyed.",
-    },
-    {
-      arabic: "الصدق في المعاملة",
-      transliteration: "As-sidq fil-mu'amala",
-      meaning: "Truthfulness in dealings",
-      practice: "We never misrepresent capabilities, create false urgency, or use deceptive tactics.",
-    },
-  ];
-
-  const outcomes = [
-    "Your reputation is protected",
-    "No tactics you'd be embarrassed by",
-    "Sustainable, long-term relationships",
-  ];
+  useScrollReveal();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div style={{ minHeight: "100vh", background: "var(--paper)" }}>
+      <a href="#main" className="skip-link">Skip to content</a>
       <Navigation />
-      <main>
-        {/* 1. Hero */}
-        <section ref={heroRef} className="bg-background pt-28 md:pt-36 pb-20 md:pb-28">
-          <div className="max-w-5xl mx-auto px-6">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6 }}
-              className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-foreground leading-[1.08] tracking-[-0.02em] mb-6 max-w-[840px]"
-            >
-              What "Sharia-aligned" means in outbound.
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="text-[17px] md:text-[18px] text-muted-foreground leading-[1.65] mb-10 max-w-[540px]"
-            >
+      <main id="main">
+        {/* Hero */}
+        <section style={{ padding: "var(--section-y-lg) 0 var(--section-y)", background: "radial-gradient(900px 520px at 88% -8%, rgba(52,211,153,0.12), transparent 60%), var(--paper)", borderBottom: "1px solid var(--rule)" }}>
+          <div className="w">
+            <div className="reveal" style={{ ...eyebrowStyle, marginBottom: "var(--s4)" }}>Ethics · Sharia-Aligned</div>
+            <h1 className="reveal reveal-delay-1 h-hero" style={{ maxWidth: 880, marginBottom: "var(--s5)" }}>
+              What “Sharia-aligned” means in <em>outbound.</em>
+            </h1>
+            <p className="reveal reveal-delay-2 measure-lead" style={{ ...leadStyle, marginBottom: "var(--s6)" }}>
               Honesty, fairness, and respect for all parties — operationalized in every campaign decision.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="flex flex-col sm:flex-row gap-3"
-            >
-              <button
-                onClick={() => navigate("/book")}
-                className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 text-[15px] font-semibold text-primary-foreground bg-primary hover:bg-primary-medium rounded-lg transition-colors duration-200"
-              >
-                REQUEST A SYSTEM REVIEW
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+            </p>
+            <div className="reveal reveal-delay-3" style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
+              <PrimaryCta label="Request a system review" onClick={() => navigate("/book")} />
+              <button onClick={() => navigate("/fit")} className="btn-ghost" style={{ fontFamily: "var(--body)", fontSize: 13, fontWeight: 600, letterSpacing: "0.04em", padding: "15px 28px", minHeight: 48 }}>
+                Check if we're a fit
               </button>
-              <button
-                onClick={() => navigate("/fit")}
-                className="inline-flex items-center justify-center px-7 py-4 text-[15px] font-semibold text-foreground bg-transparent border border-border hover:bg-secondary rounded-lg transition-colors duration-200"
-              >
-                Check If We're a Fit
-              </button>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* 2. Four Pillars */}
-        <section ref={pillarsRef} className="py-20 md:py-28 bg-secondary">
-          <div className="max-w-5xl mx-auto px-6">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={pillarsInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="text-[28px] md:text-[36px] lg:text-[40px] font-semibold text-foreground leading-[1.2] mb-12 max-w-[600px]"
-            >
-              Four pillars. Concrete practices. Tangible buyer outcomes.
-            </motion.h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[680px]">
-              {pillars.map((p, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={pillarsInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.1 + i * 0.08, duration: 0.4 }}
-                  className="p-6 rounded-lg border border-border bg-background"
-                >
-                  <p.icon className="w-5 h-5 text-primary mb-4" strokeWidth={2} />
-                  <h3 className="text-[17px] font-semibold text-foreground mb-2">{p.title}</h3>
-                  <p className="text-[14px] text-muted-foreground leading-[1.5] mb-3">{p.practice}</p>
-                  <p className="text-[13px] text-primary font-medium leading-[1.5]">↳ {p.benefit}</p>
-                </motion.div>
-              ))}
             </div>
           </div>
         </section>
 
-        {/* 3. Islamic Ethics */}
-        <section ref={islamicRef} className="py-20 md:py-28 bg-background">
-          <div className="max-w-5xl mx-auto px-6">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={islamicInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="text-[28px] md:text-[36px] lg:text-[40px] font-semibold text-foreground leading-[1.2] mb-12 max-w-[600px]"
-            >
-              Rooted in Islamic business ethics.
-            </motion.h2>
-
-            <div className="space-y-6 max-w-[600px]">
-              {islamicPrinciples.map((p, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={islamicInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.1 + i * 0.1, duration: 0.4 }}
-                  className="p-6 rounded-lg border border-border bg-secondary"
-                >
-                  <p className="text-[22px] md:text-[26px] text-foreground mb-2 text-right font-medium" dir="rtl">
-                    {p.arabic}
-                  </p>
-                  <p className="text-[13px] text-muted-foreground italic mb-3">
-                    "{p.transliteration}" — {p.meaning}
-                  </p>
-                  <p className="text-[15px] text-muted-foreground leading-[1.6]">
-                    <span className="font-semibold text-foreground">In practice:</span> {p.practice}
-                  </p>
-                </motion.div>
-              ))}
+        {/* 01 — Four Pillars */}
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">01</span>Four Pillars</div>
+            <div>
+              <h2 className="reveal h-section" style={{ marginBottom: "var(--s6)" }}>
+                Four pillars. Concrete practices. <em>Tangible buyer outcomes.</em>
+              </h2>
+              <div className="grid-2">
+                {pillars.map((p, i) => (
+                  <div key={i} className="reveal glass" style={{ padding: "var(--s5)" }}>
+                    <p.icon className="w-5 h-5" style={{ color: "var(--green)", marginBottom: "var(--s3)" }} strokeWidth={2} />
+                    <h3 style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--ink)", marginBottom: "var(--s2)" }}>{p.title}</h3>
+                    <p style={{ ...bodyStyle, marginBottom: "var(--s2)" }}>{p.practice}</p>
+                    <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--green)", fontWeight: 500, lineHeight: 1.5 }}>↳ {p.benefit}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* 4. What This Means For You */}
-        <section ref={outcomesRef} className="py-20 md:py-28 bg-secondary">
-          <div className="max-w-5xl mx-auto px-6">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={outcomesInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="text-[28px] md:text-[36px] lg:text-[40px] font-semibold text-foreground leading-[1.2] mb-10 max-w-[600px]"
-            >
-              What this means for you.
-            </motion.h2>
-
-            <ul className="space-y-4 max-w-[540px]">
-              {outcomes.map((item, i) => (
-                <motion.li
-                  key={i}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={outcomesInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.1 + i * 0.08, duration: 0.4 }}
-                  className="flex items-start gap-3 text-[15px] md:text-[16px] text-foreground leading-[1.5]"
-                >
-                  <Check className="w-4 h-4 text-primary mt-1 shrink-0" strokeWidth={2.5} />
-                  <span>{item}</span>
-                </motion.li>
-              ))}
-            </ul>
+        {/* 02 — Islamic Ethics */}
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">02</span>Islamic Ethics</div>
+            <div>
+              <h2 className="reveal h-section" style={{ marginBottom: "var(--s6)" }}>
+                Rooted in <em>Islamic business ethics.</em>
+              </h2>
+              <div style={{ display: "grid", gap: "var(--s4)" }}>
+                {islamicPrinciples.map((p, i) => (
+                  <div key={i} className="reveal glass" style={{ padding: "var(--s5)" }}>
+                    <p style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", color: "var(--ink)", marginBottom: "var(--s2)", textAlign: "right" }} dir="rtl">{p.arabic}</p>
+                    <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--mid)", fontStyle: "italic", marginBottom: "var(--s3)" }}>"{p.transliteration}" — {p.meaning}</p>
+                    <p style={bodyStyle}><span style={{ fontWeight: 600, color: "var(--ink)" }}>In practice:</span> {p.practice}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* 5. Fit Gate */}
-        <section ref={fitRef} className="py-20 md:py-28 bg-background">
-          <div className="max-w-5xl mx-auto px-6">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={fitInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="text-[28px] md:text-[36px] lg:text-[40px] font-semibold text-foreground leading-[1.2] mb-6 max-w-[600px]"
-            >
-              Is this right for you?
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={fitInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1, duration: 0.4 }}
-              className="text-[17px] text-muted-foreground leading-[1.65] mb-4 max-w-[540px]"
-            >
-              Yes if: you want long-term deliverability + brand safety.
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={fitInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2, duration: 0.4 }}
-              className="text-[15px] text-muted-foreground leading-[1.6] mb-10 max-w-[540px]"
-            >
-              No if: you want shortcuts, mass blasting, or pressure tactics.
-            </motion.p>
-            <motion.button
-              initial={{ opacity: 0, y: 12 }}
-              animate={fitInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.3, duration: 0.4 }}
-              onClick={() => navigate("/book")}
-              className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 text-[15px] font-semibold text-primary-foreground bg-primary hover:bg-primary-medium rounded-lg transition-colors duration-200"
-            >
-              REQUEST A SYSTEM REVIEW
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-            </motion.button>
+        {/* 03 — Outcomes */}
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">03</span>For You</div>
+            <div>
+              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                What this means <em>for you.</em>
+              </h2>
+              <ul className="reveal reveal-delay-1" style={{ display: "grid", gap: "var(--s3)", maxWidth: "var(--measure)" }}>
+                {outcomes.map((item, i) => (
+                  <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, ...bodyStyle, color: "var(--ink)" }}>
+                    <Check className="w-4 h-4 shrink-0" style={{ color: "var(--green)", marginTop: 4 }} strokeWidth={2.5} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* 04 — Fit Gate */}
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">04</span>Fit</div>
+            <div>
+              <h2 className="reveal h-section" style={{ marginBottom: "var(--s4)" }}>
+                Is this <em>right for you?</em>
+              </h2>
+              <p className="reveal reveal-delay-1 measure" style={{ ...leadStyle, marginBottom: "var(--s3)" }}>
+                Yes if: you want long-term deliverability + brand safety.
+              </p>
+              <p className="reveal reveal-delay-2 measure" style={{ ...bodyStyle, marginBottom: "var(--s6)" }}>
+                No if: you want shortcuts, mass blasting, or pressure tactics.
+              </p>
+              <div className="reveal reveal-delay-3">
+                <PrimaryCta label="Request a system review" onClick={() => navigate("/book")} />
+              </div>
+            </div>
           </div>
         </section>
       </main>
