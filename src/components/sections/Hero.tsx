@@ -1,4 +1,14 @@
+import type { CSSProperties } from 'react';
 import DomainHealthChecker from './DomainHealthChecker';
+
+const HERO_WORDS = [
+  'Your', 'cold', 'email', 'is', 'failing.',
+  'We', 'fix', 'the', 'infrastructure,',
+  'not', 'the', 'copy.',
+];
+// "We fix the infrastructure," — the green accent phrase
+const ACCENT_FROM = 5;
+const ACCENT_TO = 8;
 
 export default function Hero() {
   return (
@@ -9,10 +19,22 @@ export default function Hero() {
     }}>
       <div className="w">
         <div className="section-eyebrow" style={{ paddingTop: 0, color: 'var(--green)', marginBottom: 'var(--s4)' }}>
-          <a href="#sharia" style={{ color: 'inherit', textDecoration: 'none' }}>Sharia-Aligned</a>{' '}· Ethical Cold Email Infrastructure
+          <a href="#sharia" style={{ color: 'inherit', textDecoration: 'underline', textUnderlineOffset: 3, textDecorationThickness: 1 }}>Sharia-Aligned</a>{' '}· Ethical Cold Email Infrastructure
         </div>
-        <h1 className="h-hero" style={{ maxWidth: 900, marginBottom: 'var(--s5)' }}>
-          Your cold email is failing. <em>We fix the infrastructure,</em> not the copy.
+        <h1 className="h-hero word-reveal" style={{ maxWidth: 900, marginBottom: 'var(--s5)' }}>
+          {HERO_WORDS.map((word, i) => {
+            const accent = i >= ACCENT_FROM && i <= ACCENT_TO;
+            return (
+              <span key={i}>
+                <span
+                  className="w-word"
+                  style={{ '--i': i, color: accent ? 'var(--green)' : undefined } as CSSProperties}
+                >
+                  {word}
+                </span>{' '}
+              </span>
+            );
+          })}
         </h1>
         <p className="measure-lead" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-1)', color: 'var(--mid)', lineHeight: 'var(--lh-lead)', marginBottom: 'var(--s6)' }}>
           Score your domain free — see exactly what's killing your deliverability before we talk.
