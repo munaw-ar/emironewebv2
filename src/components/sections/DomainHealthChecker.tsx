@@ -121,6 +121,7 @@ function HealthDrawer({ domain, results, onClose }: {
 
         <button
           onClick={goToBook}
+          className="cta"
           style={{
             width: '100%', fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600,
             letterSpacing: '0.08em', padding: '14px 0', minHeight: 44,
@@ -165,6 +166,7 @@ export default function DomainHealthChecker() {
         />
         <button
           type="submit"
+          className="cta"
           disabled={isChecking}
           style={{
             fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600,

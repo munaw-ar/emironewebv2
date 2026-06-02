@@ -5,11 +5,11 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 const lwStyle: React.CSSProperties = {
   fill: 'none',
-  stroke: '#0D5C38',
+  stroke: '#2FD27F',
   strokeWidth: 0.65,
   strokeLinecap: 'round',
   vectorEffect: 'non-scaling-stroke',
-  opacity: 0.45,
+  opacity: 0.6,
 };
 
 export default function Navigation() {
@@ -71,7 +71,7 @@ export default function Navigation() {
   );
 
   const cta = (
-    <Link to="/book" style={{
+    <Link to="/book" className="cta" style={{
       fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600,
       letterSpacing: '0.12em', textTransform: 'uppercase',
       color: 'var(--paper)', background: 'var(--green)',
@@ -86,7 +86,7 @@ export default function Navigation() {
     <>
       <header style={{
         position: 'sticky', top: 0, zIndex: 100,
-        background: 'rgba(255,255,255,0.8)', borderBottom: '1px solid var(--rule)',
+        background: 'rgba(11,12,16,0.72)', borderBottom: '1px solid var(--rule)',
         WebkitBackdropFilter: 'blur(10px)', backdropFilter: 'blur(10px)',
       }}>
         <div className="w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 'var(--nav-h)' }}>

@@ -4,56 +4,61 @@
 
 @layer base {
   :root {
-    /* v2.1 clean-modern tokens mapped to HSL for shadcn compatibility */
-    --background:   0 0% 100%;      /* #FFFFFF white      */
-    --foreground:   0 0% 7%;        /* #121212 ink        */
-    --card:         0 0% 100%;
-    --card-foreground: 0 0% 7%;
-    --popover:      0 0% 100%;
-    --popover-foreground: 0 0% 7%;
-    --primary:      151 75% 21%;    /* #0D5C38 green      */
-    --primary-foreground: 0 0% 100%;
-    --secondary:    0 0% 97%;       /* #F7F7F7 alt        */
-    --secondary-foreground: 0 0% 7%;
-    --muted:        0 0% 97%;
-    --muted-foreground: 0 0% 34%;   /* #575757 mid        */
-    --accent:       0 0% 97%;
-    --accent-foreground: 0 0% 7%;
-    --destructive:  0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border:       0 0% 89%;       /* #E3E3E3 rule       */
-    --input:        0 0% 89%;
-    --ring:         151 75% 21%;
-    --radius:       0.25rem;
+    /* v2.2 dark-glass tokens mapped to HSL for shadcn compatibility */
+    --background:   228 18% 5%;     /* #0B0C10 charcoal   */
+    --foreground:   0 0% 96%;       /* near-white         */
+    --card:         225 14% 9%;
+    --card-foreground: 0 0% 96%;
+    --popover:      225 14% 9%;
+    --popover-foreground: 0 0% 96%;
+    --primary:      158 67% 50%;    /* emerald accent     */
+    --primary-foreground: 228 18% 5%;
+    --secondary:    225 12% 11%;
+    --secondary-foreground: 0 0% 96%;
+    --muted:        225 12% 11%;
+    --muted-foreground: 0 0% 64%;
+    --accent:       225 12% 13%;
+    --accent-foreground: 0 0% 96%;
+    --destructive:  0 72% 55%;
+    --destructive-foreground: 0 0% 96%;
+    --border:       225 9% 18%;
+    --input:        225 9% 18%;
+    --ring:         158 67% 50%;
+    --radius:       0.5rem;
 
     /* Sidebar tokens */
-    --sidebar-background:        0 0% 100%;
-    --sidebar-foreground:        0 0% 7%;
-    --sidebar-primary:           151 75% 21%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent:            0 0% 97%;
-    --sidebar-accent-foreground: 0 0% 7%;
-    --sidebar-border:            0 0% 89%;
-    --sidebar-ring:              151 75% 21%;
+    --sidebar-background:        228 18% 5%;
+    --sidebar-foreground:        0 0% 96%;
+    --sidebar-primary:           158 67% 50%;
+    --sidebar-primary-foreground: 228 18% 5%;
+    --sidebar-accent:            225 12% 13%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border:            225 9% 18%;
+    --sidebar-ring:              158 67% 50%;
 
-    /* v2.1 named aliases (used in inline styles / legacy CSS) */
-    --paper:   #ffffff;
-    --paper-2: hsl(0 0% 97.5%);
-    --ink:     hsl(0 0% 7%);
-    --ink-2:   hsl(0 0% 14%);
-    --mid:     hsl(0 0% 34%);
-    --light:   hsl(0 0% 62%);
-    --rule:    hsl(0 0% 89%);
-    --rule-2:  hsl(0 0% 94%);
-    --green:   #0D5C38;
-    --green-h: #0a4a2d;
-    --green-deep: #0a4a2d;          /* CTA hover */
-    --paper-dim: hsl(0 0% 78%);     /* dimmed text on dark sections */
+    /* v2.2 named aliases (dark glassmorphism, green-brand accent) */
+    --paper:   #0B0C10;             /* page background    */
+    --paper-2: #111319;             /* alt section        */
+    --ink:     #F3F4F6;             /* primary text       */
+    --ink-2:   #E5E7EB;
+    --mid:     rgba(243,244,246,0.62);
+    --light:   rgba(243,244,246,0.42);
+    --rule:    rgba(255,255,255,0.10);
+    --rule-2:  rgba(255,255,255,0.06);
+    --green:   #2FD27F;             /* bright emerald (on dark) */
+    --green-h: #57e09a;
+    --green-deep: #0D5C38;          /* brand forest green */
+    --green-grad: linear-gradient(135deg, #0D5C38, #2FD27F);
+    --paper-dim: rgba(243,244,246,0.55);
 
-    /* Typography — clean modern, sans-serif throughout */
-    --serif:   "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
-    --display: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
-    --body:    "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Glass */
+    --glass-bg: rgba(255,255,255,0.035);
+    --glass-border: rgba(255,255,255,0.10);
+
+    /* Typography — Space Grotesk display + Inter body */
+    --serif:   "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    --display: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+    --body:    "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     --mono:    "JetBrains Mono", Consolas, monospace;
 
     /* Type scale — Major Third 1.25; Perfect Fourth reserved for hero H1 */
@@ -63,7 +68,7 @@
     --step-2:  clamp(1.50rem, 1.36rem + 0.62vw, 1.95rem);   /* 24→31 sub-head */
     --step-3:  clamp(1.95rem, 1.70rem + 1.10vw, 2.75rem);   /* 31→44 section H2 */
     --step-4:  clamp(2.60rem, 2.10rem + 2.20vw, 4.25rem);   /* 42→68 page H1 */
-    --step-5:  clamp(3.50rem, 2.40rem + 4.90vw, 6.50rem);   /* 56→104 hero display */
+    --step-5:  clamp(2.25rem, 1.50rem + 4.60vw, 6.50rem);   /* 36→104 hero display */
 
     /* Line-height — inverse to size */
     --lh-display: 1.05;
@@ -104,16 +109,14 @@
     --dur-reveal: 0.65s;
     --dur-micro:  0.2s;
 
-    /* Warm tinted shadows — tint toward ink, never pure black */
-    --shadow-sm: 0 0 0 1px hsl(30 12% 12% / 0.06),
-                 0 1px 2px hsl(30 12% 12% / 0.06),
-                 0 2px 6px hsl(30 12% 12% / 0.05);
-    --shadow-md: 0 0 0 1px hsl(30 12% 12% / 0.06),
-                 0 2px 6px hsl(30 12% 12% / 0.08),
-                 0 8px 24px hsl(30 12% 12% / 0.08);
-    --shadow-lg: 0 0 0 1px hsl(30 12% 12% / 0.06),
-                 0 8px 24px hsl(30 12% 12% / 0.10),
-                 0 24px 64px hsl(30 12% 12% / 0.12);
+    /* Dark shadows + hairline ring */
+    --shadow-sm: 0 0 0 1px rgba(255,255,255,0.05),
+                 0 1px 2px rgba(0,0,0,0.40),
+                 0 2px 8px rgba(0,0,0,0.35);
+    --shadow-md: 0 0 0 1px rgba(255,255,255,0.06),
+                 0 8px 24px rgba(0,0,0,0.45);
+    --shadow-lg: 0 0 0 1px rgba(255,255,255,0.07),
+                 0 24px 64px rgba(0,0,0,0.55);
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -163,40 +166,61 @@
   td, .mono, [data-mono] { overflow-wrap: anywhere; }
 }
 
-/* Clean-modern heading system (sans-serif display) */
+/* Dark-glass heading system (Space Grotesk display) */
 .h-hero {
   font-family: var(--display);
   font-size: var(--step-5);
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.02;
-  letter-spacing: -0.038em;
+  letter-spacing: -0.03em;
   color: var(--ink);
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 .h-section {
   font-family: var(--display);
   font-size: var(--step-3);
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.08;
-  letter-spacing: -0.028em;
+  letter-spacing: -0.022em;
   color: var(--ink);
   text-wrap: balance;
 }
 .h-cta {
   font-family: var(--display);
   font-size: var(--step-4);
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.05;
-  letter-spacing: -0.032em;
-  color: var(--paper);
+  letter-spacing: -0.025em;
+  color: var(--ink);
   text-wrap: balance;
 }
-/* Headline emphasis → green accent (replaces the old serif italic) */
+/* Headline emphasis → emerald accent */
 .h-hero em, .h-section em, .h-cta em {
   font-style: normal;
   color: var(--green);
 }
-.h-cta em { color: #6fd39f; }
+
+/* Glassmorphism surface */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+/* CTA glow on hover */
+.cta {
+  transition: box-shadow var(--dur-micro) var(--ease-micro),
+              transform var(--dur-micro) var(--ease-micro),
+              background var(--dur-micro) var(--ease-micro);
+}
+.cta:hover {
+  box-shadow: 0 0 28px rgba(47,210,127,0.40);
+  transform: translateY(-1px);
+}
 
 /* Layout utility */
 .w {

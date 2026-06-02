@@ -18,11 +18,11 @@ export default function Footer() {
 
   return (
     <footer style={{
-      background: 'linear-gradient(180deg, hsl(38 14% 7%), var(--ink))',
-      color: 'var(--paper)',
+      background: 'linear-gradient(180deg, #0A0B0E, #08090C)',
+      color: 'var(--ink)',
       padding: '64px 0 40px',
       borderTop: '1px solid rgba(255,255,255,0.08)',
-      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
+      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
     }}>
       <div className="w grid-2" style={{ gap: 48 }}>
         <div>
@@ -58,7 +58,7 @@ export default function Footer() {
           </p>
           <div aria-live="polite">
             {status === 'success' ? (
-              <p style={{ fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--paper)' }}>
+              <p style={{ fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--green)' }}>
                 ✓ You're subscribed. Quarterly updates incoming.
               </p>
             ) : (
@@ -83,11 +83,12 @@ export default function Footer() {
                 <button
                   onClick={handleSubscribe}
                   disabled={status === 'loading'}
+                  className="cta"
                   style={{
                     fontFamily: 'var(--body)', fontSize: 12, fontWeight: 600,
                     letterSpacing: '0.08em', padding: '9px 18px', minHeight: 44,
                     background: 'var(--green)', color: 'var(--paper)',
-                    border: 'none', borderRadius: 3, cursor: 'pointer',
+                    border: 'none', borderRadius: 6, cursor: 'pointer',
                     opacity: status === 'loading' ? 0.6 : 1,
                   }}
                 >

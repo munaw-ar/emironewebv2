@@ -4,7 +4,8 @@ export default function Hero() {
   return (
     <section aria-label="Hero: Free Deliverability Health Score" style={{
       padding: 'var(--section-y-lg) 0 var(--section-y)',
-      background: 'var(--paper)', borderBottom: '1px solid var(--rule)',
+      background: 'radial-gradient(900px 520px at 82% -8%, rgba(47,210,127,0.12), transparent 60%), var(--paper)',
+      borderBottom: '1px solid var(--rule)',
     }}>
       <div className="w">
         <div className="section-eyebrow" style={{ paddingTop: 0, color: 'var(--green)', marginBottom: 'var(--s4)' }}>

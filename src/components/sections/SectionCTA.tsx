@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 export default function SectionCTA() {
   const navigate = useNavigate();
   return (
-    <section aria-label="Call to action" style={{ padding: 'var(--section-y-lg) 0', background: 'var(--ink)', color: 'var(--paper)' }}>
+    <section aria-label="Call to action" style={{ padding: 'var(--section-y-lg) 0', background: 'radial-gradient(700px 380px at 50% 0%, rgba(47,210,127,0.14), transparent 62%), var(--paper-2)', color: 'var(--ink)', borderTop: '1px solid var(--rule)' }}>
       <div className="w" style={{ maxWidth: 720 }}>
         <div style={{ fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--light)', marginBottom: 20 }}>
           Ready to build?
@@ -16,11 +16,12 @@ export default function SectionCTA() {
         </p>
         <button
           onClick={() => navigate('/book')}
+          className="cta"
           style={{
             fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600, letterSpacing: '0.1em',
             textTransform: 'uppercase', padding: '16px 32px', minHeight: 44,
             background: 'var(--green)', color: 'var(--paper)',
-            border: 'none', borderRadius: 3, cursor: 'pointer',
+            border: 'none', borderRadius: 6, cursor: 'pointer',
           }}
         >
           Book a Strategy Call

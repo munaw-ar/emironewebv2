@@ -24,7 +24,7 @@ export default function SectionOffer() {
           <h2 id="offer-h" className="reveal h-section" style={{ marginBottom: 'var(--s4)' }}>
             For firms ready to <em>build the system</em>, not just audit it.
           </h2>
-          <div style={{ border: '1px solid var(--rule)', borderRadius: 4, padding: 'var(--s5)', marginTop: 'var(--s5)', marginBottom: 'var(--s5)', boxShadow: 'var(--shadow-sm)' }}>
+          <div className="glass" style={{ padding: 'var(--s5)', marginTop: 'var(--s5)', marginBottom: 'var(--s5)' }}>
             <div className="section-eyebrow" style={{ paddingTop: 0, marginBottom: 'var(--s3)', fontFamily: 'var(--mono)', letterSpacing: '0.12em' }}>
               The Sprint — Deliverables
             </div>
@@ -63,10 +63,11 @@ export default function SectionOffer() {
           </div>
           <button
             onClick={() => navigate('/book')}
+            className="cta"
             style={{
               fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600, letterSpacing: '0.08em',
               padding: '14px 28px', minHeight: 44, background: 'var(--green)', color: 'var(--paper)',
-              border: 'none', borderRadius: 3, cursor: 'pointer',
+              border: 'none', borderRadius: 6, cursor: 'pointer',
             }}
           >
             Reserve your Sprint →

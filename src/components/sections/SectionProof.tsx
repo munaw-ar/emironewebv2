@@ -19,7 +19,7 @@ export default function SectionProof() {
           <p className="reveal reveal-delay-1 measure" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-0)', color: 'var(--mid)', lineHeight: 'var(--lh-body)', marginBottom: 'var(--s5)' }}>
             Every domain we build scores 10/10. MXToolbox and GlockApps are the arbiters — not our word.
           </p>
-          <div style={{ border: '1px solid var(--rule)', borderRadius: 4, overflow: 'hidden' }}>
+          <div className="glass" style={{ overflow: 'hidden' }}>
             <table className="stack-table" style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--mono)', fontSize: 13 }}>
               <caption style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>
                 Domains we have built and their third-party verified deliverability scores
