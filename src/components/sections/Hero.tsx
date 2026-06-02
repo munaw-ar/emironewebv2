@@ -14,7 +14,7 @@ const ACCENT_TO = 8;
 export default function Hero() {
   return (
     <section aria-label="Hero: Free Deliverability Health Score" style={{
-      padding: 'var(--section-y-lg) 0 var(--section-y)',
+      padding: 'clamp(36px, 5vw, 72px) 0 clamp(28px, 4vw, 52px)',
       background: 'radial-gradient(900px 520px at 88% -8%, rgba(52,211,153,0.12), transparent 60%), var(--paper)',
       borderBottom: '1px solid var(--rule)',
       overflow: 'hidden',
@@ -22,10 +22,10 @@ export default function Hero() {
       <div className="w hero-grid">
         {/* Left — message + action */}
         <div>
-          <div className="section-eyebrow" style={{ paddingTop: 0, color: 'var(--green)', marginBottom: 'var(--s4)' }}>
+          <div className="section-eyebrow" style={{ paddingTop: 0, color: 'var(--green)', marginBottom: 'var(--s3)' }}>
             <a href="#sharia" style={{ color: 'inherit', textDecoration: 'underline', textUnderlineOffset: 3, textDecorationThickness: 1 }}>Sharia-Aligned</a>{' '}· Ethical Cold Email Infrastructure
           </div>
-          <h1 className="h-hero word-reveal" style={{ maxWidth: 760, marginBottom: 'var(--s5)' }}>
+          <h1 className="h-hero word-reveal" style={{ maxWidth: 760, marginBottom: 'var(--s4)' }}>
             {HERO_WORDS.map((word, i) => {
               const accent = i >= ACCENT_FROM && i <= ACCENT_TO;
               return (
@@ -44,7 +44,7 @@ export default function Hero() {
               );
             })}
           </h1>
-          <p className="measure-lead" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-1)', color: 'var(--mid)', lineHeight: 'var(--lh-lead)', marginBottom: 'var(--s6)' }}>
+          <p className="measure-lead" style={{ fontFamily: 'var(--body)', fontSize: 'var(--step-1)', color: 'var(--mid)', lineHeight: 'var(--lh-lead)', marginBottom: 'var(--s4)' }}>
             Score your domain free — see exactly what's killing your deliverability before we talk.
           </p>
           <DomainHealthChecker />
@@ -57,7 +57,7 @@ export default function Hero() {
       </div>
 
       {/* Full-width metric bar */}
-      <div className="w" style={{ display: 'flex', gap: 0, marginTop: 'var(--s7)', paddingTop: 'var(--s4)', borderTop: '1px solid var(--rule)', flexWrap: 'wrap' }}>
+      <div className="w" style={{ display: 'flex', gap: 0, marginTop: 'var(--s4)', paddingTop: 'var(--s3)', borderTop: '1px solid var(--rule)', flexWrap: 'wrap' }}>
         {[
           { n: '10 / 10', l: 'MXToolbox domain score' },
           { n: '21-day', l: 'Monitored warm-up' },

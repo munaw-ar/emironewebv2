@@ -69,7 +69,7 @@
     --step-2:  clamp(1.50rem, 1.36rem + 0.62vw, 1.95rem);   /* 24→31 sub-head */
     --step-3:  clamp(1.95rem, 1.70rem + 1.10vw, 2.75rem);   /* 31→44 section H2 */
     --step-4:  clamp(2.60rem, 2.10rem + 2.20vw, 4.25rem);   /* 42→68 page H1 */
-    --step-5:  clamp(2.25rem, 1.50rem + 4.60vw, 6.50rem);   /* 36→104 hero display */
+    --step-5:  clamp(2.1rem, 1.35rem + 3.9vw, 5.25rem);     /* 34→84 hero display */
 
     /* Line-height — inverse to size */
     --lh-display: 1.05;
@@ -370,15 +370,16 @@
 /* Hero: asymmetric two-column composition */
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: clamp(32px, 5vw, 72px);
   align-items: center;
 }
+.hero-grid > * { min-width: 0; }
 @media (max-width: 980px) {
-  .hero-grid { grid-template-columns: 1fr; }
+  .hero-grid { grid-template-columns: minmax(0, 1fr); }
   /* story player stacks below the hero content on mobile */
   .hero-aside { margin-top: var(--s2); }
-  .hero-story { margin: 0 auto !important; }
+  .hero-story { margin: 0 auto !important; max-width: 100%; }
 }
 
 /* Section numbering removed — no ghost numerals */
@@ -417,7 +418,7 @@
 }
 
 /* Two-column content grid that collapses on phones */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); overflow: clip; overflow-clip-margin: 12px; }
 @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; gap: var(--s3); } }
 
 /* Measure helpers */
