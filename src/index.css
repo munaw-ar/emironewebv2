@@ -510,6 +510,68 @@
   .reveal { opacity: 1; transform: none; }
 }
 
+/* Animated story track — path to the inbox */
+.story-track {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.story-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s2);
+  padding: var(--s4);
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
+}
+.story-link {
+  flex: 0 0 clamp(20px, 4vw, 56px);
+  align-self: center;
+  height: 2px;
+  background: linear-gradient(90deg, var(--green), rgba(13,92,56,0.35));
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.story-badge {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1.5px solid; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: var(--s2);
+}
+.story-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--s2); }
+.story-chip {
+  font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+  border: 1px solid; border-radius: 999px; padding: 3px 9px;
+}
+.story-ring { position: relative; width: 64px; height: 64px; margin-bottom: var(--s2); }
+.story-ring-num {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 20px; font-weight: 400; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.story-ring-num small { font-size: 11px; color: var(--mid); margin-left: 1px; }
+.story-title {
+  font-family: var(--display); font-size: var(--step-1); font-weight: 400; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.story-sub {
+  font-family: var(--body); font-size: var(--step--1); color: var(--mid); line-height: var(--lh-body);
+}
+@media (max-width: 860px) {
+  .story-track { flex-direction: column; gap: 0; }
+  .story-stage { width: 100%; }
+  .story-link {
+    flex: 0 0 28px; width: 2px; height: 28px;
+    align-self: flex-start; margin-left: 24px;
+    background: linear-gradient(180deg, var(--green), rgba(13,92,56,0.35));
+    transform: none !important; /* vertical connector always visible on mobile */
+  }
+}
+
 /* Sticky stacking cards — each box scrolls up and rests into the previous */
 .ramp-card {
   position: sticky;
