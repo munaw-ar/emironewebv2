@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { wavePaths } from '@/data/wavePaths';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 const lwStyle: React.CSSProperties = {
   fill: 'none',
@@ -14,6 +15,7 @@ const lwStyle: React.CSSProperties = {
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const isMobile = useMediaQuery('(max-width: 820px)');
 
   useEffect(() => { setMobileOpen(false); }, [location]);
 
@@ -22,102 +24,91 @@ export default function Navigation() {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
+  // Close the drawer if the viewport grows back to desktop
+  useEffect(() => { if (!isMobile) setMobileOpen(false); }, [isMobile]);
+
   const navLinks = [
     { href: '/research', label: 'Research' },
     { href: '/sharia-aligned', label: 'Sharia-Aligned' },
     { href: '/how-we-make-it', label: 'How We Make It' },
   ];
 
-  const getAEST = () =>
-    new Date().toLocaleTimeString('en-AU', {
-      timeZone: 'Australia/Sydney',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  const Logo = (
+    <Link to="/" aria-label="Emir One home" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+      <svg
+        viewBox="0 0 280 95"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ height: 44, width: 'auto', overflow: 'visible' }}
+        role="img"
+        aria-label="Emir One"
+      >
+        <g id="logo-wave">
+          {wavePaths.map((d, i) => (
+            <path key={i} style={lwStyle} d={d} />
+          ))}
+        </g>
+        <line
+          x1="14" y1="49" x2="182" y2="49"
+          stroke="var(--ink)" strokeWidth="0.85"
+          style={{ fill: 'none' }}
+        />
+        <text
+          x="168" y="68"
+          fontFamily="'Great Vibes',cursive"
+          fontSize="32"
+          fill="var(--ink)"
+        >one</text>
+        <text
+          x="14" y="38"
+          fontFamily="'Libre Baskerville',Georgia,serif"
+          fontSize="36"
+          fontWeight="400"
+          letterSpacing="10"
+          fill="var(--ink)"
+        >EMIR</text>
+      </svg>
+    </Link>
+  );
 
-  const [nowAEST, setNowAEST] = useState(getAEST);
-
-  useEffect(() => {
-    const id = setInterval(() => setNowAEST(getAEST()), 60_000);
-    return () => clearInterval(id);
-  }, []);
+  const cta = (
+    <Link to="/book" style={{
+      fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600,
+      letterSpacing: '0.12em', textTransform: 'uppercase',
+      color: 'var(--paper)', background: 'var(--green)',
+      padding: '9px 18px', borderRadius: 3, textDecoration: 'none',
+      display: 'inline-flex', alignItems: 'center', minHeight: 38,
+    }}>
+      Book a Call
+    </Link>
+  );
 
   return (
     <>
       <header style={{
         position: 'sticky', top: 0, zIndex: 100,
-        background: 'var(--paper)', borderBottom: '1px solid var(--rule)',
-        WebkitBackdropFilter: 'blur(8px)', backdropFilter: 'blur(8px)',
+        background: 'rgba(250,248,243,0.85)', borderBottom: '1px solid var(--rule)',
+        WebkitBackdropFilter: 'blur(10px)', backdropFilter: 'blur(10px)',
       }}>
-        <div className="w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 }}>
-          <Link to="/" aria-label="Emir One home" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
-            <svg
-              viewBox="0 0 280 95"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ height: 44, width: 'auto', overflow: 'visible' }}
-              role="img"
-              aria-label="Emir One"
-            >
-              <g id="logo-wave">
-                {wavePaths.map((d, i) => (
-                  <path key={i} style={lwStyle} d={d} />
-                ))}
-              </g>
-              <line
-                x1="14" y1="49" x2="182" y2="49"
-                stroke="var(--ink)" strokeWidth="0.85"
-                style={{ fill: 'none' }}
-              />
-              <text
-                x="168" y="68"
-                fontFamily="'Great Vibes',cursive"
-                fontSize="32"
-                fill="var(--ink)"
-              >one</text>
-              <text
-                x="14" y="38"
-                fontFamily="'Libre Baskerville',Georgia,serif"
-                fontSize="36"
-                fontWeight="400"
-                letterSpacing="10"
-                fill="var(--ink)"
-              >EMIR</text>
-            </svg>
-          </Link>
+        <div className="w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 'var(--nav-h)' }}>
+          {Logo}
 
-          <nav aria-label="Main navigation" style={{ display: 'flex', alignItems: 'center', gap: 28 }}
-            className="hidden md:flex">
-            {navLinks.map(link => (
-              <Link key={link.href} to={link.href} style={{
-                fontFamily: 'var(--body)', fontSize: 13, fontWeight: 500,
-                letterSpacing: '0.04em', textDecoration: 'none',
-                color: location.pathname.startsWith(link.href) ? 'var(--green)' : 'var(--ink)',
-              }}>
-                {link.label}
-              </Link>
-            ))}
-            <Link to="/book" style={{
-              fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600,
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              color: 'var(--paper)', background: 'var(--green)',
-              padding: '7px 16px', borderRadius: 3, textDecoration: 'none',
-            }}>
-              Book a Call
-            </Link>
-          </nav>
+          {!isMobile && (
+            <nav aria-label="Main navigation" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+              {navLinks.map(link => (
+                <Link key={link.href} to={link.href} style={{
+                  fontFamily: 'var(--body)', fontSize: 13, fontWeight: 500,
+                  letterSpacing: '0.02em', textDecoration: 'none',
+                  color: location.pathname.startsWith(link.href) ? 'var(--green)' : 'var(--ink)',
+                }}>
+                  {link.label}
+                </Link>
+              ))}
+              {cta}
+            </nav>
+          )}
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div className="hidden md:flex" style={{ alignItems: 'center', gap: 6 }}>
-              <span className="animate-breathe" style={{
-                display: 'inline-block', width: 6, height: 6,
-                borderRadius: '50%', background: 'var(--green)',
-              }} />
-              <span className="tnum" style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--mid)' }}>
-                Live · {nowAEST} AEST
-              </span>
-            </div>
+          {isMobile && (
             <button
-              className="md:hidden"
               onClick={() => setMobileOpen(o => !o)}
               aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
               aria-expanded={mobileOpen}
@@ -130,20 +121,21 @@ export default function Navigation() {
                 }
               </svg>
             </button>
-          </div>
+          )}
         </div>
       </header>
 
-      {mobileOpen && (
+      {isMobile && mobileOpen && (
         <nav aria-label="Mobile navigation" style={{
-          position: 'fixed', top: 60, left: 0, right: 0, bottom: 0,
+          position: 'fixed', top: 'var(--nav-h)', left: 0, right: 0, bottom: 0,
           background: 'var(--paper)', zIndex: 99, padding: '32px 20px',
           borderTop: '1px solid var(--rule)', overflowY: 'auto',
+          height: 'calc(100dvh - var(--nav-h))',
         }}>
           {navLinks.map(link => (
             <Link key={link.href} to={link.href} style={{
               display: 'block', fontFamily: 'var(--body)', fontSize: 18, fontWeight: 500,
-              color: 'var(--ink)', textDecoration: 'none', padding: '14px 0',
+              color: 'var(--ink)', textDecoration: 'none', padding: '16px 0',
               borderBottom: '1px solid var(--rule-2)',
             }}>
               {link.label}
@@ -153,7 +145,7 @@ export default function Navigation() {
             display: 'block', marginTop: 32, fontFamily: 'var(--body)', fontSize: 13,
             fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase',
             color: 'var(--paper)', background: 'var(--green)',
-            padding: '14px 0', borderRadius: 3, textDecoration: 'none', textAlign: 'center',
+            padding: '16px 0', borderRadius: 3, textDecoration: 'none', textAlign: 'center',
           }}>
             Book a Call
           </Link>
