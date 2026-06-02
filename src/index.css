@@ -274,48 +274,35 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Primary button — tactile, molded, premium */
+/* Primary button — solid green pill */
 .btn-primary, .cta {
   position: relative;
-  isolation: isolate;
-  background: linear-gradient(180deg, #16794F 0%, #0D5C38 100%);
+  background: var(--green);
   color: #fff;
   border: none;
   border-radius: 999px;
   cursor: pointer;
   text-decoration: none;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.20),
-              0 1px 2px rgba(16,24,40,0.14),
-              0 6px 16px rgba(13,92,56,0.22);
+  box-shadow: 0 1px 2px rgba(16,24,40,0.12),
+              0 6px 16px rgba(13,92,56,0.20);
   transition: transform 0.24s var(--ease-micro),
               box-shadow 0.24s var(--ease-micro),
-              filter 0.24s var(--ease-micro);
-}
-/* soft top sheen */
-.btn-primary::before, .cta::before {
-  content: '';
-  position: absolute; inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0) 45%);
-  pointer-events: none;
-  z-index: -1;
+              background 0.24s var(--ease-micro);
 }
 .btn-primary:hover, .cta:hover {
+  background: var(--green-h);
   transform: translateY(-2px);
-  filter: brightness(1.06) saturate(1.04);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.24),
-              0 2px 6px rgba(16,24,40,0.14),
+  box-shadow: 0 2px 6px rgba(16,24,40,0.14),
               0 14px 30px rgba(13,92,56,0.30);
 }
 .btn-primary:active, .cta:active {
   transform: translateY(0) scale(0.97);
-  filter: brightness(0.98);
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.22),
-              0 2px 8px rgba(13,92,56,0.18);
+  box-shadow: 0 2px 8px rgba(13,92,56,0.18);
 }
 .btn-primary:disabled, .btn-primary[disabled],
 .cta:disabled, .cta[disabled], .cta[aria-disabled="true"] {
-  opacity: 0.5; cursor: not-allowed; transform: none; filter: none;
+  opacity: 0.5; cursor: not-allowed; transform: none;
+  background: var(--green);
   box-shadow: var(--shadow-sm);
 }
 @media (prefers-reduced-motion: reduce) {

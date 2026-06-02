@@ -168,7 +168,7 @@ export default function DomainHealthChecker() {
           disabled={isChecking}
           style={{
             fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600,
-            letterSpacing: '0.06em', padding: '12px 24px', minHeight: 48,
+            letterSpacing: '0.09em', textTransform: 'uppercase', padding: '12px 26px', minHeight: 48,
             borderRadius: '0 999px 999px 0',
             whiteSpace: 'nowrap',
           }}
