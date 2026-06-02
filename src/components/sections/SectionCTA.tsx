@@ -19,9 +19,7 @@ export default function SectionCTA() {
           className="cta"
           style={{
             fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600, letterSpacing: '0.1em',
-            textTransform: 'uppercase', padding: '16px 32px', minHeight: 44,
-            background: 'var(--green)', color: 'var(--paper)',
-            border: 'none', borderRadius: 6, cursor: 'pointer',
+            textTransform: 'uppercase', padding: '17px 36px', minHeight: 48,
           }}
         >
           Book a Strategy Call

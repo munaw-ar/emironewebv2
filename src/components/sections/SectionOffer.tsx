@@ -47,8 +47,7 @@ export default function SectionOffer() {
             className="cta"
             style={{
               fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600, letterSpacing: '0.08em',
-              padding: '14px 28px', minHeight: 44, background: 'var(--green)', color: 'var(--paper)',
-              border: 'none', borderRadius: 6, cursor: 'pointer',
+              padding: '15px 32px', minHeight: 48,
             }}
           >
             Reserve your Sprint →

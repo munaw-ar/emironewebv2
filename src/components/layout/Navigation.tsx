@@ -74,9 +74,8 @@ export default function Navigation() {
     <Link to="/book" className="cta" style={{
       fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600,
       letterSpacing: '0.12em', textTransform: 'uppercase',
-      color: 'var(--paper)', background: 'var(--green)',
-      padding: '9px 18px', borderRadius: 3, textDecoration: 'none',
-      display: 'inline-flex', alignItems: 'center', minHeight: 38,
+      padding: '10px 20px',
+      display: 'inline-flex', alignItems: 'center', minHeight: 40,
     }}>
       Book a Call
     </Link>
@@ -141,11 +140,10 @@ export default function Navigation() {
               {link.label}
             </Link>
           ))}
-          <Link to="/book" style={{
+          <Link to="/book" className="cta" style={{
             display: 'block', marginTop: 32, fontFamily: 'var(--body)', fontSize: 13,
             fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase',
-            color: 'var(--paper)', background: 'var(--green)',
-            padding: '16px 0', borderRadius: 3, textDecoration: 'none', textAlign: 'center',
+            padding: '16px 0', textAlign: 'center',
           }}>
             Book a Call
           </Link>

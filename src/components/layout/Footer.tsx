@@ -85,10 +85,7 @@ export default function Footer() {
                   className="cta"
                   style={{
                     fontFamily: 'var(--body)', fontSize: 12, fontWeight: 600,
-                    letterSpacing: '0.08em', padding: '9px 18px', minHeight: 44,
-                    background: 'var(--green)', color: 'var(--paper)',
-                    border: 'none', borderRadius: 6, cursor: 'pointer',
-                    opacity: status === 'loading' ? 0.6 : 1,
+                    letterSpacing: '0.08em', padding: '9px 22px', minHeight: 44,
                   }}
                 >
                   {status === 'loading' ? '…' : 'Subscribe'}

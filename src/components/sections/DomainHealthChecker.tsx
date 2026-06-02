@@ -124,9 +124,7 @@ function HealthDrawer({ domain, results, onClose }: {
           className="cta"
           style={{
             width: '100%', fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600,
-            letterSpacing: '0.08em', padding: '14px 0', minHeight: 44,
-            background: 'var(--green)', color: 'var(--paper)',
-            border: 'none', borderRadius: 3, cursor: 'pointer',
+            letterSpacing: '0.08em', padding: '15px 0', minHeight: 48,
           }}
         >
           Book a free strategy call →
@@ -158,10 +156,10 @@ export default function DomainHealthChecker() {
           aria-label="Your domain"
           disabled={isChecking}
           style={{
-            flex: 1, minWidth: 0, fontFamily: 'var(--mono)', fontSize: 16, minHeight: 44,
-            padding: '12px 16px', background: 'var(--paper)',
+            flex: 1, minWidth: 0, fontFamily: 'var(--mono)', fontSize: 16, minHeight: 48,
+            padding: '12px 20px', background: 'var(--paper)',
             border: '1px solid var(--rule)', borderRight: 'none',
-            borderRadius: '3px 0 0 3px', color: 'var(--ink)',
+            borderRadius: '999px 0 0 999px', color: 'var(--ink)',
           }}
         />
         <button
@@ -170,11 +168,9 @@ export default function DomainHealthChecker() {
           disabled={isChecking}
           style={{
             fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600,
-            letterSpacing: '0.06em', padding: '12px 20px', minHeight: 44,
-            background: isChecking ? 'var(--mid)' : 'var(--green)',
-            color: 'var(--paper)', border: 'none',
-            borderRadius: '0 3px 3px 0', cursor: isChecking ? 'not-allowed' : 'pointer',
-            whiteSpace: 'nowrap', transition: 'background 0.2s',
+            letterSpacing: '0.06em', padding: '12px 24px', minHeight: 48,
+            borderRadius: '0 999px 999px 0',
+            whiteSpace: 'nowrap',
           }}
         >
           {isChecking ? 'Checking…' : 'Score my domain →'}
