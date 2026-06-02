@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { ArrowRight, Calendar, Tag } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -15,6 +14,35 @@ interface ExperimentCardProps {
   delay?: number;
 }
 
+const labelStyle: React.CSSProperties = {
+  fontFamily: "var(--body)",
+  fontSize: "var(--step--1)",
+  fontWeight: 600,
+  letterSpacing: "var(--track-caps)",
+  textTransform: "uppercase",
+  color: "var(--green)",
+  marginBottom: "var(--s1)",
+};
+
+const valueStyle: React.CSSProperties = {
+  fontFamily: "var(--body)",
+  fontSize: "var(--step-0)",
+  color: "var(--ink)",
+  lineHeight: "var(--lh-body)",
+};
+
+const badgeStyle: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 6,
+  padding: "4px 12px",
+  borderRadius: 999,
+  fontFamily: "var(--body)",
+  fontSize: "var(--step--1)",
+  fontWeight: 500,
+  border: "1px solid var(--rule)",
+};
+
 const ExperimentCard = ({
   date,
   industry,
@@ -27,67 +55,86 @@ const ExperimentCard = ({
   slug = "#",
   delay = 0,
 }: ExperimentCardProps) => {
+  const delayClass = delay >= 0.18 ? "reveal-delay-2" : delay >= 0.09 ? "reveal-delay-1" : "";
+
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay, ease: [0.25, 0.4, 0.25, 1] }}
-      whileHover={{ y: -2, boxShadow: "0 8px 30px -10px hsl(var(--primary) / 0.1)" }}
-      className="bg-card rounded-xl border border-border/15 p-8 transition-all duration-300"
+    <article
+      className={`reveal glass ${delayClass}`}
+      style={{ padding: "var(--s5)", minWidth: 0 }}
     >
       {/* Badges */}
-      <div className="flex flex-wrap gap-3 mb-4">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/20 text-accent text-xs font-medium">
-          <Calendar size={12} />
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: "var(--s4)" }}>
+        <span style={{ ...badgeStyle, background: "var(--green-wash)", color: "var(--green)" }}>
+          <Calendar size={12} style={{ color: "var(--green)" }} />
           {date}
         </span>
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted text-muted-foreground text-xs font-medium">
-          <Tag size={12} />
+        <span style={{ ...badgeStyle, background: "var(--paper-2)", color: "var(--mid)" }}>
+          <Tag size={12} style={{ color: "var(--green)" }} />
           {industry}
         </span>
       </div>
 
       {/* Title */}
-      <h3 className="text-heading-3 font-semibold text-foreground mb-6">{title}</h3>
+      <h3
+        style={{
+          fontFamily: "var(--display)",
+          fontSize: "var(--step-2)",
+          fontWeight: 400,
+          color: "var(--ink)",
+          lineHeight: "var(--lh-sub)",
+          marginBottom: "var(--s5)",
+        }}
+      >
+        {title}
+      </h3>
 
       {/* Sections */}
-      <div className="space-y-5">
+      <div style={{ display: "grid", gap: "var(--s4)" }}>
         <div>
-          <p className="text-xs uppercase tracking-wider text-muted-foreground/60 mb-1">Hypothesis</p>
-          <p className="text-body text-foreground">{hypothesis}</p>
+          <p style={labelStyle}>Hypothesis</p>
+          <p style={valueStyle}>{hypothesis}</p>
         </div>
 
         <div>
-          <p className="text-xs uppercase tracking-wider text-muted-foreground/60 mb-1">Test Setup</p>
-          <p className="text-body text-foreground">{testSetup}</p>
+          <p style={labelStyle}>Test Setup</p>
+          <p style={valueStyle}>{testSetup}</p>
         </div>
 
         <div>
-          <p className="text-xs uppercase tracking-wider text-muted-foreground/60 mb-1">Results</p>
-          <p className="text-body text-foreground">{results}</p>
+          <p style={labelStyle}>Results</p>
+          <p style={valueStyle}>{results}</p>
         </div>
 
         <div>
-          <p className="text-xs uppercase tracking-wider text-muted-foreground/60 mb-1">Conclusion</p>
-          <p className="text-body text-foreground">{conclusion}</p>
+          <p style={labelStyle}>Conclusion</p>
+          <p style={valueStyle}>{conclusion}</p>
         </div>
 
         <div>
-          <p className="text-xs uppercase tracking-wider text-muted-foreground/60 mb-1">What We'll Test Next</p>
-          <p className="text-body text-foreground">{nextTest}</p>
+          <p style={labelStyle}>What We'll Test Next</p>
+          <p style={valueStyle}>{nextTest}</p>
         </div>
       </div>
 
       {/* Link */}
       <Link
         to={slug}
-        className="inline-flex items-center gap-2 mt-6 text-primary font-medium hover:gap-3 transition-all duration-300"
+        className="link-wipe"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          marginTop: "var(--s5)",
+          fontFamily: "var(--body)",
+          fontSize: "var(--step-0)",
+          fontWeight: 600,
+          color: "var(--green)",
+        }}
       >
         Read Full Report
         <ArrowRight size={16} />
       </Link>
-    </motion.article>
+    </article>
   );
 };
 

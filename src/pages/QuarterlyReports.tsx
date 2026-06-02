@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { FileText, Download, Calendar, Database, Sparkles, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import EmailGateModal from "@/components/research/EmailGateModal";
 import SubscribeWidget from "@/components/research/SubscribeWidget";
 import BackToTop from "@/components/research/BackToTop";
@@ -9,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 interface QuarterlyReport {
   id: string;
@@ -27,11 +26,16 @@ interface QuarterlyReport {
   download_count: number | null;
 }
 
+const eyebrowStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step--1)", fontWeight: 600, letterSpacing: "var(--track-caps)", textTransform: "uppercase", color: "var(--green)" };
+const leadStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-1)", color: "var(--mid)", lineHeight: "var(--lh-lead)" };
+const bodyStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-0)", color: "var(--mid)", lineHeight: "var(--lh-body)" };
+
 const QuarterlyReports = () => {
   const [reports, setReports] = useState<QuarterlyReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState<QuarterlyReport | null>(null);
+  useScrollReveal();
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -51,23 +55,6 @@ const QuarterlyReports = () => {
     fetchReports();
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: [0.25, 0.4, 0.25, 1] as const },
-    },
-  };
-
   const handleDownload = (report: QuarterlyReport) => {
     setSelectedReport(report);
     setIsModalOpen(true);
@@ -82,128 +69,131 @@ const QuarterlyReports = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div style={{ minHeight: "100vh", background: "var(--paper)" }}>
+      <a href="#main" className="skip-link">Skip to content</a>
       <Navigation />
 
-      <main className="container-wide pt-28 md:pt-36 pb-12 md:pb-16">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Page Header */}
-          <motion.div variants={itemVariants} className="max-w-3xl mb-12">
-            <h1 className="text-heading-1 font-bold text-foreground mb-4">
-              Quarterly Outbound Reality Reports
+      <main id="main">
+        {/* Hero */}
+        <section style={{ padding: "var(--section-y-lg) 0 var(--section-y)", background: "radial-gradient(900px 520px at 88% -8%, rgba(52,211,153,0.12), transparent 60%), var(--paper)", borderBottom: "1px solid var(--rule)" }}>
+          <div className="w">
+            <div className="reveal" style={{ ...eyebrowStyle, marginBottom: "var(--s4)" }}>Research · Quarterly Reports</div>
+            <h1 className="reveal reveal-delay-1 h-hero" style={{ maxWidth: 880, marginBottom: "var(--s5)" }}>
+              Quarterly Outbound <em>Reality Reports.</em>
             </h1>
-            <p className="text-heading-4 text-muted-foreground mb-2">
+            <p className="reveal reveal-delay-2 measure-lead" style={{ ...leadStyle, marginBottom: "var(--s3)" }}>
               Cross-industry insights. Benchmarks. Trends. Ethical boundaries.
             </p>
-            <p className="text-body text-muted-foreground">
+            <p className="reveal reveal-delay-3 measure" style={{ ...bodyStyle }}>
               Published every 90 days based on live campaign data.
             </p>
-          </motion.div>
+          </div>
+        </section>
 
-          {/* Loading State */}
-          {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-          ) : reports.length === 0 ? (
-            <motion.div variants={itemVariants} className="text-center py-20">
-              <p className="text-muted-foreground">No quarterly reports published yet. Check back soon!</p>
-            </motion.div>
-          ) : (
-            /* Report Cards */
-            <div className="space-y-8 mb-16">
-              {reports.map((report) => {
-                const isNew = isNewReport(report.published_date);
-                return (
-                  <motion.article
-                    key={report.id}
-                    variants={itemVariants}
-                    whileHover={{ y: -2 }}
-                    className={`relative rounded-2xl border p-8 md:p-10 transition-all duration-300 ${
-                      isNew 
-                        ? "border-primary/30 bg-gradient-to-br from-primary/5 to-accent/5 shadow-lg" 
-                        : "border-border/20 bg-card hover:shadow-md"
-                    }`}
-                  >
-                    {/* New Badge */}
-                    {isNew && (
-                      <span className="absolute -top-3 left-6 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold">
-                        <Sparkles size={12} />
-                        NEW
-                      </span>
-                    )}
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                      {/* Report Info */}
-                      <div className="md:col-span-2">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="bg-accent/20 p-2.5 rounded-lg">
-                            <FileText size={24} className="text-accent" />
-                          </div>
-                          <div>
-                            <h2 className="text-heading-3 font-bold text-foreground">{report.title}</h2>
-                            <p className="text-body-sm text-muted-foreground flex items-center gap-2">
-                              <Calendar size={14} />
-                              Published: {format(new Date(report.published_date), "MMMM d, yyyy")}
-                            </p>
-                          </div>
-                        </div>
-
-                        {report.description && (
-                          <div className="mb-6">
-                            <p className="text-body text-muted-foreground">{report.description}</p>
-                          </div>
+        {/* 01 — Reports */}
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">01</span>Reports</div>
+            <div style={{ minWidth: 0 }}>
+              {/* Loading State */}
+              {loading ? (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "var(--s8) 0" }}>
+                  <Loader2 className="h-8 w-8 animate-spin" style={{ color: "var(--green)" }} />
+                </div>
+              ) : reports.length === 0 ? (
+                <div className="reveal" style={{ ...bodyStyle, textAlign: "center", padding: "var(--s8) 0" }}>
+                  <p>No quarterly reports published yet. Check back soon!</p>
+                </div>
+              ) : (
+                /* Report Cards */
+                <div style={{ display: "grid", gap: "var(--s4)" }}>
+                  {reports.map((report, idx) => {
+                    const isNew = isNewReport(report.published_date);
+                    return (
+                      <article
+                        key={report.id}
+                        className={`reveal ${idx % 3 === 1 ? "reveal-delay-1" : idx % 3 === 2 ? "reveal-delay-2" : ""} glass`}
+                        style={{ position: "relative", padding: "var(--s5)" }}
+                      >
+                        {/* New Badge */}
+                        {isNew && (
+                          <span style={{ position: "absolute", top: "calc(-1 * var(--s2))", left: "var(--s4)", display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 999, background: "var(--green)", color: "var(--paper)", fontFamily: "var(--body)", fontSize: "var(--step--1)", fontWeight: 600, letterSpacing: "var(--track-caps)", textTransform: "uppercase" }}>
+                            <Sparkles size={12} />
+                            NEW
+                          </span>
                         )}
 
-                        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-1.5">
-                            <Database size={14} />
-                            {report.sample_size_emails?.toLocaleString() || 0} emails, {report.sample_size_replies?.toLocaleString() || 0} replies, {report.sample_size_meetings?.toLocaleString() || 0} meetings
-                          </span>
-                          {report.page_count && (
-                            <>
-                              <span>•</span>
-                              <span>{report.page_count}-page PDF</span>
-                            </>
-                          )}
-                          {report.pdf_file_size && (
-                            <>
-                              <span>•</span>
-                              <span>{report.pdf_file_size}</span>
-                            </>
-                          )}
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--s5)", alignItems: "center", justifyContent: "space-between" }}>
+                          {/* Report Info */}
+                          <div style={{ flex: "1 1 300px", minWidth: 0 }}>
+                            <div style={{ display: "flex", alignItems: "flex-start", gap: "var(--s3)", marginBottom: "var(--s3)" }}>
+                              <FileText size={24} style={{ color: "var(--green)", flexShrink: 0, marginTop: 4 }} strokeWidth={2} />
+                              <div style={{ minWidth: 0 }}>
+                                <h2 style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", fontWeight: 400, color: "var(--ink)", marginBottom: "var(--s1)" }}>{report.title}</h2>
+                                <p style={{ ...bodyStyle, fontSize: "var(--step--1)", display: "flex", alignItems: "center", gap: 8 }}>
+                                  <Calendar size={14} style={{ color: "var(--green)", flexShrink: 0 }} />
+                                  Published: {format(new Date(report.published_date), "MMMM d, yyyy")}
+                                </p>
+                              </div>
+                            </div>
+
+                            {report.description && (
+                              <p style={{ ...bodyStyle, marginBottom: "var(--s3)" }}>{report.description}</p>
+                            )}
+
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--s3)", fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)" }}>
+                              <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                                <Database size={14} style={{ color: "var(--green)", flexShrink: 0 }} />
+                                {report.sample_size_emails?.toLocaleString() || 0} emails, {report.sample_size_replies?.toLocaleString() || 0} replies, {report.sample_size_meetings?.toLocaleString() || 0} meetings
+                              </span>
+                              {report.page_count && (
+                                <>
+                                  <span>•</span>
+                                  <span>{report.page_count}-page PDF</span>
+                                </>
+                              )}
+                              {report.pdf_file_size && (
+                                <>
+                                  <span>•</span>
+                                  <span>{report.pdf_file_size}</span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Download Button */}
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            <button
+                              onClick={() => handleDownload(report)}
+                              disabled={!report.pdf_url}
+                              className="cta"
+                              style={{ fontFamily: "var(--body)", fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "15px 30px", minHeight: 48, display: "inline-flex", alignItems: "center", gap: 10, whiteSpace: "nowrap" }}
+                            >
+                              <Download size={16} />
+                              {report.pdf_url ? "Download Report (Free)" : "Coming Soon"}
+                            </button>
+                          </div>
                         </div>
-                      </div>
-
-                      {/* Download Button */}
-                      <div className="flex items-center justify-start md:justify-end">
-                        <Button
-                          variant={isNew ? "hero" : "outline"}
-                          size="lg"
-                          onClick={() => handleDownload(report)}
-                          className="gap-2"
-                          disabled={!report.pdf_url}
-                        >
-                          <Download size={18} />
-                          {report.pdf_url ? "Download Report (Free)" : "Coming Soon"}
-                        </Button>
-                      </div>
-                    </div>
-                  </motion.article>
-                );
-              })}
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          )}
+          </div>
+        </section>
 
-          {/* Subscribe CTA */}
-          <motion.div variants={itemVariants} className="max-w-xl mx-auto">
-            <SubscribeWidget variant="inline" />
-          </motion.div>
-        </motion.div>
+        {/* 02 — Subscribe */}
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">02</span>Subscribe</div>
+            <div style={{ minWidth: 0 }}>
+              <div className="reveal" style={{ maxWidth: 560 }}>
+                <SubscribeWidget variant="inline" />
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />

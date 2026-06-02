@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Mail, CheckCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,7 +37,7 @@ const SubscribeWidget = ({ variant = "sidebar", source = "research_page" }: Subs
       });
 
       if (error) throw error;
-      
+
       if (data?.error) {
         if (data.error.includes('Too many requests')) {
           toast.error("Too many attempts. Please try again later.");
@@ -61,37 +60,27 @@ const SubscribeWidget = ({ variant = "sidebar", source = "research_page" }: Subs
 
   if (isSubscribed) {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="bg-accent/8 border border-accent/30 rounded-lg p-6"
-      >
-        <div className="flex items-center gap-3 text-accent">
-          <CheckCircle size={24} />
-          <div>
-            <p className="font-semibold text-foreground">You're subscribed!</p>
-            <p className="text-body-sm text-muted-foreground">
+      <div className="reveal glass" style={{ padding: "var(--s5)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <CheckCircle size={24} style={{ color: "var(--green)", flexShrink: 0 }} />
+          <div style={{ minWidth: 0 }}>
+            <p style={{ fontFamily: "var(--body)", fontWeight: 600, color: "var(--ink)" }}>You're subscribed!</p>
+            <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--mid)" }}>
               Expect quarterly updates in your inbox.
             </p>
           </div>
         </div>
-      </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
-      className="bg-accent/8 border border-accent/30 rounded-lg p-6"
-    >
-      <div className="flex items-center gap-2 mb-3">
-        <Mail size={20} className="text-accent" />
-        <h4 className="font-semibold text-foreground">Get Research Updates</h4>
+    <div className="reveal glass" style={{ padding: "var(--s5)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "var(--s3)" }}>
+        <Mail size={20} style={{ color: "var(--green)" }} />
+        <h4 style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--ink)" }}>Get Research Updates</h4>
       </div>
-      <p className="text-body-sm text-muted-foreground mb-4">
+      <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--mid)", lineHeight: "var(--lh-body)", marginBottom: "var(--s4)" }}>
         New experiments & reports delivered quarterly.
       </p>
       <form onSubmit={handleSubmit} className={variant === "inline" ? "flex gap-2" : "space-y-3"}>
@@ -105,9 +94,9 @@ const SubscribeWidget = ({ variant = "sidebar", source = "research_page" }: Subs
           className="bg-background border-border/30"
           maxLength={255}
         />
-        <Button 
-          type="submit" 
-          variant="hero" 
+        <Button
+          type="submit"
+          variant="hero"
           className={variant === "inline" ? "shrink-0" : "w-full"}
           disabled={isSubmitting}
         >
@@ -118,10 +107,10 @@ const SubscribeWidget = ({ variant = "sidebar", source = "research_page" }: Subs
           )}
         </Button>
       </form>
-      <p className="text-xs text-muted-foreground/60 mt-3">
+      <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", marginTop: "var(--s3)" }}>
         4 emails/year max. Unsubscribe anytime.
       </p>
-    </motion.div>
+    </div>
   );
 };
 

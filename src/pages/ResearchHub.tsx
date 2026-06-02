@@ -1,39 +1,54 @@
 import { memo } from "react";
-import { motion, useInView } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { useRef } from "react";
 import { ArrowRight, FileText, FlaskConical, BookOpen, TestTube, Download, Check } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import SubscribeWidget from "@/components/research/SubscribeWidget";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLatestQuarterlyReport, useFeaturedResearch, useIncrementDownloadCount, isNewContent, formatNumber } from "@/hooks/useResearchData";
+
+const bodyStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-0)", color: "var(--mid)", lineHeight: "var(--lh-body)" };
+const leadStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-1)", color: "var(--mid)", lineHeight: "var(--lh-lead)" };
 
 const ResearchCard = memo(({ research, isNew }: { research: any; isNew: boolean }) => (
   <Link
     to={`/research/industry/${research.slug}`}
-    className="relative block p-5 rounded-lg border border-border bg-background hover:bg-secondary transition-colors group"
+    className="reveal glass group"
+    style={{ position: "relative", display: "block", padding: "var(--s5)", minWidth: 0 }}
   >
     {isNew && (
-      <span className="absolute top-3 right-3 bg-primary text-primary-foreground text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded">
+      <span
+        style={{
+          position: "absolute",
+          top: "var(--s4)",
+          right: "var(--s4)",
+          fontFamily: "var(--body)",
+          fontSize: 10,
+          fontWeight: 600,
+          letterSpacing: "var(--track-caps)",
+          textTransform: "uppercase",
+          color: "var(--green)",
+        }}
+      >
         NEW
       </span>
     )}
-    <div className="flex items-center gap-2 mb-2">
-      <span className="text-[12px] font-medium text-primary">{research.industry_name}</span>
-      <span className="text-[12px] text-muted-foreground">· {research.quarter}</span>
+    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "var(--s2)" }}>
+      <span style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", fontWeight: 600, color: "var(--green)" }}>{research.industry_name}</span>
+      <span style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)" }}>· {research.quarter}</span>
     </div>
-    <h3 className="text-[15px] font-semibold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+    <h3 style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--ink)", lineHeight: 1.25, marginBottom: "var(--s4)" }}>
       {research.title}
     </h3>
-    <div className="grid grid-cols-2 gap-2 pt-3 border-t border-border">
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--s3)", paddingTop: "var(--s4)", borderTop: "1px solid var(--rule)" }}>
       <div>
-        <p className="text-[16px] font-bold text-foreground">{research.open_rate_range || "N/A"}</p>
-        <p className="text-[11px] text-muted-foreground">Open Rate</p>
+        <p style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", color: "var(--ink)" }}>{research.open_rate_range || "N/A"}</p>
+        <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)" }}>Open Rate</p>
       </div>
       <div>
-        <p className="text-[16px] font-bold text-foreground">{research.reply_rate_range || "N/A"}</p>
-        <p className="text-[11px] text-muted-foreground">Reply Rate</p>
+        <p style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", color: "var(--ink)" }}>{research.reply_rate_range || "N/A"}</p>
+        <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)" }}>Reply Rate</p>
       </div>
     </div>
   </Link>
@@ -41,10 +56,10 @@ const ResearchCard = memo(({ research, isNew }: { research: any; isNew: boolean 
 ResearchCard.displayName = "ResearchCard";
 
 const ResearchCardSkeleton = () => (
-  <div className="p-5 rounded-lg border border-border bg-background">
+  <div className="glass" style={{ padding: "var(--s5)", minWidth: 0 }}>
     <Skeleton className="h-4 w-3/4 mb-2" />
     <Skeleton className="h-4 w-1/2 mb-3" />
-    <div className="grid grid-cols-2 gap-2 pt-3 border-t border-border">
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--s3)", paddingTop: "var(--s4)", borderTop: "1px solid var(--rule)" }}>
       <Skeleton className="h-5 w-14" />
       <Skeleton className="h-5 w-14" />
     </div>
@@ -56,13 +71,7 @@ const ResearchHub = () => {
   const { data: featuredResearch, isLoading: isLoadingResearch } = useFeaturedResearch();
   const incrementDownload = useIncrementDownloadCount();
   const navigate = useNavigate();
-
-  const heroRef = useRef(null);
-  const heroInView = useInView(heroRef, { once: true });
-  const catRef = useRef(null);
-  const catInView = useInView(catRef, { once: true, margin: "-100px" });
-  const bridgeRef = useRef(null);
-  const bridgeInView = useInView(bridgeRef, { once: true, margin: "-100px" });
+  useScrollReveal();
 
   const tabs = [
     { label: "Industry Research", href: "/research/industry", icon: FileText, desc: "Cold email benchmarks by industry" },
@@ -87,190 +96,161 @@ const ResearchHub = () => {
   const isReportNew = latestReport ? isNewContent(latestReport.published_date, 30) : false;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div style={{ minHeight: "100vh", background: "var(--paper)" }}>
+      <a href="#main" className="skip-link">Skip to content</a>
       <Navigation />
-      <main>
+      <main id="main">
         {/* 1. Hero */}
-        <section ref={heroRef} className="bg-background pt-28 md:pt-36 pb-20 md:pb-28">
-          <div className="max-w-5xl mx-auto px-6">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6 }}
-              className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-foreground leading-[1.08] tracking-[-0.02em] mb-6 max-w-[840px]"
-            >
-              Emir One GTM Research Lab
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="text-[17px] md:text-[18px] text-muted-foreground leading-[1.65] mb-10 max-w-[540px]"
-            >
+        <section style={{ padding: "var(--section-y-lg) 0 var(--section-y)", background: "radial-gradient(900px 520px at 88% -8%, rgba(52,211,153,0.12), transparent 60%), var(--paper)", borderBottom: "1px solid var(--rule)" }}>
+          <div className="w">
+            <h1 className="reveal h-hero" style={{ maxWidth: 880, marginBottom: "var(--s5)" }}>
+              Emir One GTM <em>Research Lab.</em>
+            </h1>
+            <p className="reveal reveal-delay-1 measure-lead" style={{ ...leadStyle, marginBottom: "var(--s6)" }}>
               Real outbound experiments. Real data. Real ethical constraints.
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="flex flex-col sm:flex-row gap-3"
-            >
+            <div className="reveal reveal-delay-2" style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
               {isLoadingReport ? (
                 <Skeleton className="h-[52px] w-60" />
               ) : (
                 <button
                   onClick={handleDownload}
                   disabled={!latestReport?.pdf_url}
-                  className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 text-[15px] font-semibold text-primary-foreground bg-primary hover:bg-primary-medium rounded-lg transition-colors duration-200 disabled:opacity-50"
+                  className="cta"
+                  style={{ fontFamily: "var(--body)", fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "15px 30px", minHeight: 48, display: "inline-flex", alignItems: "center", gap: 10 }}
                 >
-                  <Download className="w-4 h-4" />
+                  <Download size={16} />
                   {latestReport
                     ? `Download ${latestReport.quarter} ${latestReport.year} Report`
                     : "Download Latest Report"}
                   {isReportNew && (
-                    <span className="text-[10px] bg-primary-foreground/20 px-1.5 py-0.5 rounded uppercase font-bold">NEW</span>
+                    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", opacity: 0.85 }}>NEW</span>
                   )}
                 </button>
               )}
               <Link
                 to={featuredResearch?.[0]?.slug ? `/research/industry/${featuredResearch[0].slug}` : "/research/industry"}
-                className="group inline-flex items-center gap-2 px-7 py-4 text-[15px] font-semibold text-primary hover:text-primary-medium transition-colors"
+                className="btn-ghost"
+                style={{ fontFamily: "var(--body)", fontSize: 13, fontWeight: 600, letterSpacing: "0.04em", padding: "15px 28px", minHeight: 48, display: "inline-flex", alignItems: "center", gap: 8 }}
               >
                 View Latest Research
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                <ArrowRight size={16} />
               </Link>
-            </motion.div>
+            </div>
 
             {latestReport?.page_count && latestReport?.sample_size_emails && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={heroInView ? { opacity: 1 } : {}}
-                transition={{ delay: 0.35, duration: 0.4 }}
-                className="text-[13px] text-muted-foreground mt-4"
-              >
+              <p className="reveal reveal-delay-3" style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", marginTop: "var(--s4)" }}>
                 {latestReport.page_count} pages · {formatNumber(latestReport.sample_size_emails)} emails analyzed
-              </motion.p>
+              </p>
             )}
           </div>
         </section>
 
         {/* 2. Featured Benchmark */}
-        <section className="py-20 md:py-28 bg-secondary">
-          <div className="max-w-5xl mx-auto px-6">
-            <h2 className="text-[28px] md:text-[36px] lg:text-[40px] font-semibold text-foreground leading-[1.2] mb-10 max-w-[600px]">
-              Featured industry research
-            </h2>
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">01</span>Featured</div>
+            <div>
+              <h2 className="reveal h-section" style={{ marginBottom: "var(--s6)" }}>
+                Featured <em>industry research.</em>
+              </h2>
 
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
-              {isLoadingResearch
-                ? Array.from({ length: 3 }).map((_, i) => <ResearchCardSkeleton key={i} />)
-                : featuredResearch && featuredResearch.length > 0
-                  ? featuredResearch.map((r) => (
-                      <ResearchCard key={r.id} research={r} isNew={isNewContent(r.last_updated, 14)} />
-                    ))
-                  : (
-                    <div className="col-span-full p-8 rounded-lg border border-border bg-background text-center">
-                      <p className="text-muted-foreground">Research coming soon — we're analyzing cold email data across industries.</p>
-                    </div>
-                  )}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "var(--s4)", marginBottom: "var(--s6)" }}>
+                {isLoadingResearch
+                  ? Array.from({ length: 3 }).map((_, i) => <ResearchCardSkeleton key={i} />)
+                  : featuredResearch && featuredResearch.length > 0
+                    ? featuredResearch.map((r) => (
+                        <ResearchCard key={r.id} research={r} isNew={isNewContent(r.last_updated, 14)} />
+                      ))
+                    : (
+                      <div className="glass" style={{ gridColumn: "1 / -1", padding: "var(--s6)", textAlign: "center" }}>
+                        <p style={bodyStyle}>Research coming soon — we're analyzing cold email data across industries.</p>
+                      </div>
+                    )}
+              </div>
+
+              <Link to="/research/industry" className="link-wipe" style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "var(--green)", fontFamily: "var(--body)", fontSize: 13, fontWeight: 600, letterSpacing: "0.04em" }}>
+                View All Industry Research
+                <ArrowRight size={16} />
+              </Link>
             </div>
-
-            <Link
-              to="/research/industry"
-              className="group inline-flex items-center gap-2 text-[15px] font-semibold text-primary hover:text-primary-medium transition-colors"
-            >
-              View All Industry Research
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
           </div>
         </section>
 
         {/* 3. What We Publish (categories) */}
-        <section ref={catRef} className="py-20 md:py-28 bg-background">
-          <div className="max-w-5xl mx-auto px-6">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={catInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="text-[28px] md:text-[36px] lg:text-[40px] font-semibold text-foreground leading-[1.2] mb-10 max-w-[600px]"
-            >
-              What we publish
-            </motion.h2>
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">02</span>Catalog</div>
+            <div>
+              <h2 className="reveal h-section" style={{ marginBottom: "var(--s6)" }}>
+                What <em>we publish.</em>
+              </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {tabs.map((tab, i) => (
-                <motion.div
-                  key={tab.href}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={catInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.1 + i * 0.06, duration: 0.4 }}
-                >
+              <div className="grid-2">
+                {tabs.map((tab, i) => (
                   <Link
+                    key={tab.href}
                     to={tab.href}
-                    className="block p-5 rounded-lg border border-border hover:bg-secondary transition-colors group"
+                    className={`reveal ${i % 3 === 1 ? "reveal-delay-1" : i % 3 === 2 ? "reveal-delay-2" : ""} glass`}
+                    style={{ display: "block", padding: "var(--s5)", minWidth: 0 }}
                   >
-                    <tab.icon className="w-5 h-5 text-primary mb-3" strokeWidth={2} />
-                    <h3 className="text-[15px] font-semibold text-foreground mb-1">{tab.label}</h3>
-                    <p className="text-[13px] text-muted-foreground leading-[1.5]">{tab.desc}</p>
+                    <tab.icon className="w-5 h-5" style={{ color: "var(--green)", marginBottom: "var(--s3)" }} strokeWidth={2} />
+                    <h3 style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--ink)", marginBottom: "var(--s2)" }}>{tab.label}</h3>
+                    <p style={bodyStyle}>{tab.desc}</p>
                   </Link>
-                </motion.div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
         {/* 4. Research → Execution bridge */}
-        <section ref={bridgeRef} className="py-20 md:py-28 bg-secondary">
-          <div className="max-w-5xl mx-auto px-6">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={bridgeInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="text-[28px] md:text-[36px] lg:text-[40px] font-semibold text-foreground leading-[1.2] mb-10 max-w-[600px]"
-            >
-              Research that directly informs execution.
-            </motion.h2>
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">03</span>Execution</div>
+            <div>
+              <h2 className="reveal h-section" style={{ marginBottom: "var(--s6)" }}>
+                Research that directly <em>informs execution.</em>
+              </h2>
 
-            <ul className="space-y-3 mb-10 max-w-[540px]">
-              {bridgeBullets.map((item, i) => (
-                <motion.li
-                  key={i}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={bridgeInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.1 + i * 0.06, duration: 0.4 }}
-                  className="flex items-start gap-3 text-[15px] md:text-[16px] text-foreground leading-[1.5]"
+              <ul className="reveal reveal-delay-1" style={{ display: "grid", gap: "var(--s3)", maxWidth: "var(--measure)", marginBottom: "var(--s6)" }}>
+                {bridgeBullets.map((item, i) => (
+                  <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, ...bodyStyle, color: "var(--ink)" }}>
+                    <Check className="w-4 h-4 shrink-0" style={{ color: "var(--green)", marginTop: 4 }} strokeWidth={2.5} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="reveal reveal-delay-2">
+                <button
+                  onClick={() => navigate("/book")}
+                  className="cta"
+                  style={{ fontFamily: "var(--body)", fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "15px 30px", minHeight: 48, display: "inline-flex", alignItems: "center", gap: 10 }}
                 >
-                  <Check className="w-4 h-4 text-primary mt-1 shrink-0" strokeWidth={2.5} />
-                  <span>{item}</span>
-                </motion.li>
-              ))}
-            </ul>
-
-            <motion.button
-              initial={{ opacity: 0, y: 12 }}
-              animate={bridgeInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.4, duration: 0.4 }}
-              onClick={() => navigate("/book")}
-              className="group inline-flex items-center justify-center gap-2.5 px-7 py-4 text-[15px] font-semibold text-primary-foreground bg-primary hover:bg-primary-medium rounded-lg transition-colors duration-200"
-            >
-              BOOK A REVENUE SPRINT CALL
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-            </motion.button>
+                  BOOK A REVENUE SPRINT CALL
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* 5. Lead Capture */}
-        <section className="py-20 md:py-28 bg-background">
-          <div className="max-w-5xl mx-auto px-6">
-            <h2 className="text-[28px] md:text-[36px] lg:text-[40px] font-semibold text-foreground leading-[1.2] mb-4 max-w-[600px]">
-              Get research updates.
-            </h2>
-            <p className="text-[15px] text-muted-foreground leading-[1.6] mb-8 max-w-[540px]">
-              4 emails/year max. Unsubscribe anytime.
-            </p>
-            <div className="max-w-[440px]">
-              <SubscribeWidget variant="inline" source="research-hub" />
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">04</span>Updates</div>
+            <div>
+              <h2 className="reveal h-cta" style={{ marginBottom: "var(--s4)" }}>
+                Get <em>research updates.</em>
+              </h2>
+              <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s6)" }}>
+                4 emails/year max. Unsubscribe anytime.
+              </p>
+              <div className="reveal reveal-delay-2" style={{ maxWidth: 440, minWidth: 0 }}>
+                <SubscribeWidget variant="inline" source="research-hub" />
+              </div>
             </div>
           </div>
         </section>

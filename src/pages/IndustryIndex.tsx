@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Loader2 } from "lucide-react";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
 
 interface IndustryResearch {
@@ -17,9 +17,14 @@ interface IndustryResearch {
   is_published: boolean;
 }
 
+const eyebrowStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step--1)", fontWeight: 600, letterSpacing: "var(--track-caps)", textTransform: "uppercase", color: "var(--green)" };
+const leadStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-1)", color: "var(--mid)", lineHeight: "var(--lh-lead)" };
+const bodyStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-0)", color: "var(--mid)", lineHeight: "var(--lh-body)" };
+
 const IndustryIndex = () => {
   const [industries, setIndustries] = useState<IndustryResearch[]>([]);
   const [loading, setLoading] = useState(true);
+  useScrollReveal();
 
   useEffect(() => {
     const fetchIndustries = async () => {
@@ -38,92 +43,79 @@ const IndustryIndex = () => {
     fetchIndustries();
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: [0.25, 0.4, 0.25, 1] as const },
-    },
-  };
-
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
+    <div style={{ minHeight: "100vh", background: "var(--paper)" }}>
+      <a href="#main" className="skip-link">Skip to content</a>
       <Navigation />
-
-      <main className="container-wide pt-28 md:pt-36 pb-12 md:pb-16">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Page Header */}
-          <motion.div variants={itemVariants} className="max-w-3xl mb-12">
-            <h1 className="text-heading-1 font-bold text-foreground mb-4">
-              Industry Research
+      <main id="main">
+        {/* Hero */}
+        <section style={{ padding: "var(--section-y-lg) 0 var(--section-y)", background: "radial-gradient(900px 520px at 88% -8%, rgba(52,211,153,0.12), transparent 60%), var(--paper)", borderBottom: "1px solid var(--rule)" }}>
+          <div className="w">
+            <div className="reveal" style={{ ...eyebrowStyle, marginBottom: "var(--s4)" }}>Research · By Industry</div>
+            <h1 className="reveal reveal-delay-1 h-hero" style={{ maxWidth: 880, marginBottom: "var(--s5)" }}>
+              Industry <em>Research.</em>
             </h1>
-            <p className="text-body text-muted-foreground">
+            <p className="reveal reveal-delay-2 measure-lead" style={{ ...leadStyle }}>
               Cold email benchmarks and messaging insights by industry vertical. Each report is based on real campaign data with clearly stated sample sizes and limitations.
             </p>
-          </motion.div>
+          </div>
+        </section>
 
-          {/* Loading State */}
-          {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-          ) : industries.length === 0 ? (
-            <motion.div variants={itemVariants} className="text-center py-20">
-              <p className="text-muted-foreground">No industry research published yet. Check back soon!</p>
-            </motion.div>
-          ) : (
-            /* Industry Cards */
-            <div className="grid md:grid-cols-2 gap-6">
-              {industries.map((industry) => (
-                <motion.div key={industry.id} variants={itemVariants}>
-                  <Link
-                    to={`/research/industry/${industry.slug}`}
-                    className="block h-full p-6 rounded-xl border border-border/20 bg-card hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 transition-all duration-300"
-                  >
-                    <h3 className="text-heading-4 font-semibold text-foreground mb-2">{industry.title}</h3>
-                    <p className="text-body-sm text-muted-foreground mb-4">{industry.industry_name}</p>
-                    <div className="flex items-center justify-between pt-4 border-t border-border/20">
-                      <div className="flex gap-4">
-                        <div>
-                          <p className="font-mono text-lg font-bold text-foreground">
-                            {industry.open_rate_range || "N/A"}
-                          </p>
-                          <p className="text-xs text-muted-foreground">Open Rate</p>
+        {/* 01 — Reports */}
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">01</span>Reports</div>
+            <div>
+              {/* Loading State */}
+              {loading ? (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "var(--section-y) 0" }}>
+                  <Loader2 className="h-8 w-8 animate-spin" style={{ color: "var(--green)" }} />
+                </div>
+              ) : industries.length === 0 ? (
+                <div className="reveal glass" style={{ padding: "var(--s5)", textAlign: "center" }}>
+                  <p style={bodyStyle}>No industry research published yet. Check back soon!</p>
+                </div>
+              ) : (
+                /* Industry Cards */
+                <div className="grid-2">
+                  {industries.map((industry, i) => (
+                    <div key={industry.id} className={`reveal${i % 3 === 1 ? " reveal-delay-1" : i % 3 === 2 ? " reveal-delay-2" : ""}`}>
+                      <Link
+                        to={`/research/industry/${industry.slug}`}
+                        className="glass"
+                        style={{ display: "flex", flexDirection: "column", height: "100%", minWidth: 0, padding: "var(--s5)", textDecoration: "none" }}
+                      >
+                        <h3 style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--ink)", marginBottom: "var(--s2)" }}>{industry.title}</h3>
+                        <p style={{ ...eyebrowStyle, color: "var(--mid)", marginBottom: "var(--s4)" }}>{industry.industry_name}</p>
+                        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "var(--s3)", marginTop: "auto", paddingTop: "var(--s4)", borderTop: "1px solid var(--rule)" }}>
+                          <div style={{ display: "flex", gap: "var(--s5)", minWidth: 0 }}>
+                            <div>
+                              <p className="tnum" style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", fontWeight: 400, color: "var(--ink)", lineHeight: 1 }}>
+                                {industry.open_rate_range || "N/A"}
+                              </p>
+                              <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", marginTop: "var(--s2)" }}>Open Rate</p>
+                            </div>
+                            <div>
+                              <p className="tnum" style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", fontWeight: 400, color: "var(--ink)", lineHeight: 1 }}>
+                                {industry.reply_rate_range || "N/A"}
+                              </p>
+                              <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", marginTop: "var(--s2)" }}>Reply Rate</p>
+                            </div>
+                          </div>
+                          <ArrowRight size={18} style={{ color: "var(--green)", flexShrink: 0 }} />
                         </div>
-                        <div>
-                          <p className="font-mono text-lg font-bold text-foreground">
-                            {industry.reply_rate_range || "N/A"}
-                          </p>
-                          <p className="text-xs text-muted-foreground">Reply Rate</p>
-                        </div>
-                      </div>
-                      <ArrowRight size={18} className="text-primary" />
+                        {industry.sample_size && (
+                          <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", marginTop: "var(--s3)" }}>{industry.sample_size}</p>
+                        )}
+                      </Link>
                     </div>
-                    {industry.sample_size && (
-                      <p className="text-xs text-muted-foreground/60 mt-2">{industry.sample_size}</p>
-                    )}
-                  </Link>
-                </motion.div>
-              ))}
+                  ))}
+                </div>
+              )}
             </div>
-          )}
-        </motion.div>
+          </div>
+        </section>
       </main>
-
       <Footer />
     </div>
   );

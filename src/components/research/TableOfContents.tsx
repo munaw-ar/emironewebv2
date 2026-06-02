@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 
 interface TOCItem {
   id: string;
@@ -41,29 +40,50 @@ const TableOfContents = ({ items }: TableOfContentsProps) => {
   };
 
   return (
-    <motion.nav
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
-      className="sticky top-24 space-y-2"
+    <nav
+      className="reveal"
+      style={{ position: "sticky", top: 96, display: "grid", gap: "var(--s2)" }}
     >
-      <p className="text-xs uppercase tracking-wider text-muted-foreground/60 mb-3 font-medium">
+      <p
+        style={{
+          fontFamily: "var(--body)",
+          fontSize: "var(--step--1)",
+          fontWeight: 600,
+          letterSpacing: "var(--track-caps)",
+          textTransform: "uppercase",
+          color: "var(--green)",
+          marginBottom: "var(--s2)",
+        }}
+      >
         On This Page
       </p>
-      {items.map((item) => (
-        <button
-          key={item.id}
-          onClick={() => scrollToSection(item.id)}
-          className={`block w-full text-left text-sm py-1.5 px-3 rounded transition-all duration-200 ${
-            activeId === item.id
-              ? "text-primary bg-primary/5 font-medium border-l-2 border-primary"
-              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-          }`}
-        >
-          {item.title}
-        </button>
-      ))}
-    </motion.nav>
+      {items.map((item) => {
+        const isActive = activeId === item.id;
+        return (
+          <button
+            key={item.id}
+            onClick={() => scrollToSection(item.id)}
+            style={{
+              display: "block",
+              width: "100%",
+              textAlign: "left",
+              fontFamily: "var(--body)",
+              fontSize: "var(--step-0)",
+              padding: "8px 14px",
+              borderRadius: 6,
+              cursor: "pointer",
+              background: isActive ? "var(--green-wash)" : "transparent",
+              color: isActive ? "var(--green)" : "var(--mid)",
+              fontWeight: isActive ? 600 : 400,
+              borderLeft: isActive ? "2px solid var(--green)" : "2px solid transparent",
+              transition: "color var(--dur-micro) var(--ease-micro), background var(--dur-micro) var(--ease-micro)",
+            }}
+          >
+            {item.title}
+          </button>
+        );
+      })}
+    </nav>
   );
 };
 

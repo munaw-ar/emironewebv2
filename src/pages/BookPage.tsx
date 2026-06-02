@@ -1,15 +1,39 @@
 import { useState, useMemo, useRef, useCallback } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
 
 const CAL_URL = "https://cal.com/munawar-emirone/30min";
 
+const bodyStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-0)", color: "var(--mid)", lineHeight: "var(--lh-body)" };
+const leadStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-1)", color: "var(--mid)", lineHeight: "var(--lh-lead)" };
+const labelStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step--1)", fontWeight: 600, letterSpacing: "0.04em", color: "var(--ink)" };
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "13px 16px",
+  fontSize: 16,
+  fontFamily: "var(--body)",
+  color: "var(--ink)",
+  background: "#fff",
+  border: "1px solid var(--rule)",
+  borderRadius: 10,
+  outline: "none",
+};
+
+const callAgenda = [
+  "Diagnose your current pipeline",
+  "Identify revenue leaks",
+  "Outline a 90-day execution plan",
+];
+
 const BookPage = () => {
   const [searchParams] = useSearchParams();
   const initialEmail = searchParams.get("email") || localStorage.getItem("booking_email") || "";
+  useScrollReveal();
 
   const [email, setEmail] = useState(initialEmail);
   const [fullName, setFullName] = useState("");
@@ -58,129 +82,165 @@ const BookPage = () => {
     return `${CAL_URL}?${params.toString()}`;
   }, [fullName, email, companyName, website, phone, goal]);
 
-  const inputClass =
-    "w-full px-4 py-3.5 text-[16px] rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors";
-
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div style={{ minHeight: "100vh", background: "var(--paper)" }}>
+      <a href="#main" className="skip-link">Skip to content</a>
       <Navigation />
-      <main className="flex-1 pt-24 md:pt-32 pb-16 md:pb-24">
-        <div className="max-w-3xl mx-auto px-6">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors mb-8"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Back
-          </Link>
+      <main id="main">
+        {/* Hero */}
+        <section style={{ padding: "var(--section-y-lg) 0 var(--section-y)", background: "radial-gradient(900px 520px at 88% -8%, rgba(52,211,153,0.12), transparent 60%), var(--paper)", borderBottom: "1px solid var(--rule)" }}>
+          <div className="w">
+            <Link
+              to="/"
+              className="reveal link-wipe"
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--green)", marginBottom: "var(--s5)", textDecoration: "none" }}
+            >
+              <ArrowLeft size={14} />
+              Back
+            </Link>
 
-          <h1 className="text-[28px] md:text-[36px] font-bold text-foreground tracking-[-0.02em] mb-3">
-            Private Strategy Call — B2B Revenue Acceleration
-          </h1>
-          <div className="text-[15px] text-muted-foreground mb-8 max-w-[520px] leading-relaxed space-y-3">
-            <p>
+            <h1 className="reveal reveal-delay-1 h-hero" style={{ maxWidth: 880, marginBottom: "var(--s5)" }}>
+              Private Strategy Call — <em>B2B Revenue Acceleration</em>
+            </h1>
+            <p className="reveal reveal-delay-2 measure-lead" style={{ ...leadStyle, marginBottom: "var(--s4)" }}>
               This call is for founders and operators who are serious about building a predictable outbound revenue engine.
             </p>
-            <p>On this call, we will:</p>
-            <ul className="list-disc list-inside space-y-1">
-              <li>Diagnose your current pipeline</li>
-              <li>Identify revenue leaks</li>
-              <li>Outline a 90-day execution plan</li>
-            </ul>
-            <p>Please complete the details so I can prepare properly.</p>
           </div>
+        </section>
 
-          {!showCalendar ? (
-            <>
-              {/* Form fields */}
-              <div className="grid gap-3 mb-6">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Work Email *"
-                  className={inputClass}
-                  autoComplete="email"
-                />
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Full Name *"
-                  className={inputClass}
-                  autoComplete="name"
-                />
-                <input
-                  type="text"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Company Name"
-                  className={inputClass}
-                  autoComplete="organization"
-                />
-                <input
-                  type="text"
-                  value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
-                  placeholder="Company Website"
-                  className={inputClass}
-                  autoComplete="url"
-                />
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Best Phone Number"
-                  className={inputClass}
-                  autoComplete="tel"
-                />
-                <textarea
-                  value={goal}
-                  onChange={(e) => setGoal(e.target.value)}
-                  placeholder="e.g. Generate 20 qualified calls/month, fix low reply rates, launch outbound, etc."
-                  rows={3}
-                  className={`${inputClass} min-h-[80px] resize-none`}
-                />
-                <label className="text-[13px] text-muted-foreground -mt-2">
-                  Primary Revenue Goal (Next 90 Days)
-                </label>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleContinue}
-                disabled={!fullName.trim() || !email.trim()}
-                className="primary-cta group w-full disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <span className="primary-cta__text">Continue to Calendar</span>
-                <ArrowRight className="primary-cta__icon w-5 h-5 transition-transform duration-250 group-hover:translate-x-1" strokeWidth={2.5} />
-              </button>
-            </>
-          ) : (
-            <>
-              {/* Cal.com embed */}
-              <iframe
-                src={calEmbedSrc}
-                className="w-full min-h-[600px] rounded-lg border-0"
-                allow="payment"
-                title="Schedule a call"
-              />
-
-              {/* Fallback */}
-              <p className="text-[13px] text-muted-foreground/60 text-center mt-4">
-                Calendar not loading?{" "}
-                <a
-                  href={`${CAL_URL}?email=${encodeURIComponent(email.trim())}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-foreground transition-colors"
-                >
-                  Open scheduling page
-                </a>
+        {/* 01 — What we'll cover */}
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">01</span>The Call</div>
+            <div>
+              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                On this call, <em>we will:</em>
+              </h2>
+              <ul className="reveal reveal-delay-1" style={{ display: "grid", gap: "var(--s3)", maxWidth: "var(--measure)", marginBottom: "var(--s5)" }}>
+                {callAgenda.map((item, i) => (
+                  <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, ...bodyStyle, color: "var(--ink)" }}>
+                    <Check className="w-4 h-4 shrink-0" style={{ color: "var(--green)", marginTop: 4 }} strokeWidth={2.5} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="reveal reveal-delay-2 measure" style={bodyStyle}>
+                Please complete the details so I can prepare properly.
               </p>
-            </>
-          )}
-        </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 02 — Booking */}
+        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
+          <div className="w section-grid">
+            <div className="section-eyebrow"><span className="sec-num">02</span>{showCalendar ? "Schedule" : "Your Details"}</div>
+            <div style={{ minWidth: 0 }}>
+              {!showCalendar ? (
+                <>
+                  <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                    Tell me <em>about you.</em>
+                  </h2>
+
+                  {/* Form fields */}
+                  <div className="reveal reveal-delay-1 glass" style={{ padding: "var(--s5)", marginBottom: "var(--s4)" }}>
+                    <div style={{ display: "grid", gap: "var(--s3)" }}>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Work Email *"
+                        style={inputStyle}
+                        autoComplete="email"
+                      />
+                      <input
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="Full Name *"
+                        style={inputStyle}
+                        autoComplete="name"
+                      />
+                      <input
+                        type="text"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        placeholder="Company Name"
+                        style={inputStyle}
+                        autoComplete="organization"
+                      />
+                      <input
+                        type="text"
+                        value={website}
+                        onChange={(e) => setWebsite(e.target.value)}
+                        placeholder="Company Website"
+                        style={inputStyle}
+                        autoComplete="url"
+                      />
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="Best Phone Number"
+                        style={inputStyle}
+                        autoComplete="tel"
+                      />
+                      <textarea
+                        value={goal}
+                        onChange={(e) => setGoal(e.target.value)}
+                        placeholder="e.g. Generate 20 qualified calls/month, fix low reply rates, launch outbound, etc."
+                        rows={3}
+                        style={{ ...inputStyle, minHeight: 80, resize: "none" }}
+                      />
+                      <label style={{ ...labelStyle, color: "var(--mid)", marginTop: "calc(var(--s2) * -1)" }}>
+                        Primary Revenue Goal (Next 90 Days)
+                      </label>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleContinue}
+                    disabled={!fullName.trim() || !email.trim()}
+                    className="reveal reveal-delay-2 cta"
+                    style={{ fontFamily: "var(--body)", fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "15px 30px", minHeight: 48, display: "inline-flex", alignItems: "center", gap: 10 }}
+                  >
+                    Continue to Calendar <ArrowRight size={16} />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                    Pick <em>a time.</em>
+                  </h2>
+
+                  {/* Cal.com embed */}
+                  <iframe
+                    src={calEmbedSrc}
+                    className="reveal reveal-delay-1"
+                    style={{ width: "100%", minHeight: 600, border: "1px solid var(--rule)", borderRadius: 16 }}
+                    allow="payment"
+                    title="Schedule a call"
+                  />
+
+                  {/* Fallback */}
+                  <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", textAlign: "center", marginTop: "var(--s4)" }}>
+                    Calendar not loading?{" "}
+                    <a
+                      href={`${CAL_URL}?email=${encodeURIComponent(email.trim())}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-wipe"
+                      style={{ color: "var(--green)" }}
+                    >
+                      Open scheduling page
+                    </a>
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>

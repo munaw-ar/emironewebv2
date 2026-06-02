@@ -98,7 +98,8 @@ const EmailGateModal = ({ isOpen, onClose, reportTitle, reportId, pdfUrl }: Emai
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-foreground/60 z-50"
+            className="fixed inset-0 z-50"
+            style={{ background: "rgba(17,24,39,0.6)" }}
           />
 
           {/* Modal */}
@@ -109,11 +110,12 @@ const EmailGateModal = ({ isOpen, onClose, reportTitle, reportId, pdfUrl }: Emai
             transition={{ duration: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
             className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md mx-4"
           >
-            <div className="bg-background rounded-xl border border-border/20 p-8 shadow-2xl">
+            <div className="glass" style={{ position: "relative", padding: "var(--s6)" }}>
               {/* Close button */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute top-4 right-4"
+                style={{ color: "var(--light)", background: "transparent", border: "none", cursor: "pointer", transition: "color var(--dur-micro) var(--ease-micro)" }}
               >
                 <X size={20} />
               </button>
@@ -122,31 +124,32 @@ const EmailGateModal = ({ isOpen, onClose, reportTitle, reportId, pdfUrl }: Emai
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-8"
+                  className="text-center"
+                  style={{ paddingTop: "var(--s5)", paddingBottom: "var(--s5)" }}
                 >
-                  <CheckCircle size={48} className="text-[#2ECC71] mx-auto mb-4" />
-                  <h3 className="text-heading-4 font-semibold text-foreground mb-2">
+                  <CheckCircle size={48} className="mx-auto" style={{ color: "var(--green)", marginBottom: "var(--s3)" }} />
+                  <h3 style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", fontWeight: 400, color: "var(--ink)", marginBottom: "var(--s2)" }}>
                     Download Starting...
                   </h3>
-                  <p className="text-body-sm text-muted-foreground">
+                  <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--mid)" }}>
                     Your download should begin automatically.
                   </p>
                 </motion.div>
               ) : (
                 <>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="bg-accent/20 p-2.5 rounded-lg">
-                      <Download size={24} className="text-accent" />
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: "var(--s5)" }}>
+                    <div style={{ background: "var(--green-wash)", padding: 10, borderRadius: 10, display: "inline-flex" }}>
+                      <Download size={24} style={{ color: "var(--green)" }} />
                     </div>
-                    <h3 className="text-heading-4 font-semibold text-foreground">
+                    <h3 style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", fontWeight: 400, color: "var(--ink)" }}>
                       Download Report
                     </h3>
                   </div>
 
-                  <p className="text-body text-muted-foreground mb-2 font-medium">
+                  <p style={{ fontFamily: "var(--body)", fontSize: "var(--step-0)", fontWeight: 600, color: "var(--ink)", marginBottom: "var(--s2)" }}>
                     {reportTitle}
                   </p>
-                  <p className="text-body-sm text-muted-foreground mb-6">
+                  <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--mid)", marginBottom: "var(--s5)" }}>
                     Enter your email to download the report:
                   </p>
 
@@ -178,7 +181,7 @@ const EmailGateModal = ({ isOpen, onClose, reportTitle, reportId, pdfUrl }: Emai
                     </Button>
                   </form>
 
-                  <p className="text-xs text-muted-foreground/60 text-center mt-4">
+                  <p className="text-center" style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", marginTop: "var(--s3)" }}>
                     Your email will only receive quarterly report updates (4x/year max).
                     <br />
                     No spam. Unsubscribe anytime.

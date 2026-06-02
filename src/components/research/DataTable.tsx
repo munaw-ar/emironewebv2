@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 interface Column {
   key: string;
   header: string;
@@ -13,22 +11,28 @@ interface DataTableProps {
 
 const DataTable = ({ columns, data }: DataTableProps) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
-      className="overflow-x-auto rounded-lg border border-border/10"
+    <div
+      className="reveal glass"
+      style={{ overflowX: "auto", padding: 0 }}
     >
-      <table className="w-full min-w-[600px]">
+      <table className="stack-table" style={{ width: "100%", minWidth: 600, borderCollapse: "collapse" }}>
         <thead>
-          <tr className="bg-accent/5">
+          <tr style={{ background: "var(--paper-2)" }}>
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`px-4 py-3 text-left text-sm font-semibold text-foreground border-b border-border/10 ${
-                  col.isNumeric ? "font-mono" : ""
-                }`}
+                className={col.isNumeric ? "tnum" : ""}
+                style={{
+                  padding: "var(--s3) var(--s3)",
+                  textAlign: "left",
+                  fontFamily: "var(--body)",
+                  fontSize: "var(--step--1)",
+                  fontWeight: 600,
+                  letterSpacing: "0.04em",
+                  textTransform: "uppercase",
+                  color: "var(--mid)",
+                  borderBottom: "1px solid var(--rule)",
+                }}
               >
                 {col.header}
               </th>
@@ -39,14 +43,20 @@ const DataTable = ({ columns, data }: DataTableProps) => {
           {data.map((row, idx) => (
             <tr
               key={idx}
-              className={`${idx % 2 === 1 ? "bg-muted/30" : "bg-background"} hover:bg-muted/50 transition-colors`}
+              style={{ background: idx % 2 === 1 ? "var(--rule-2)" : "var(--paper)" }}
             >
               {columns.map((col) => (
                 <td
                   key={col.key}
-                  className={`px-4 py-3 text-sm text-foreground border-b border-border/5 ${
-                    col.isNumeric ? "font-mono" : ""
-                  }`}
+                  data-label={col.header}
+                  className={col.isNumeric ? "tnum" : ""}
+                  style={{
+                    padding: "var(--s3) var(--s3)",
+                    fontFamily: "var(--body)",
+                    fontSize: "var(--step-0)",
+                    color: "var(--ink)",
+                    borderBottom: "1px solid var(--rule-2)",
+                  }}
                 >
                   {row[col.key]}
                 </td>
@@ -55,7 +65,7 @@ const DataTable = ({ columns, data }: DataTableProps) => {
           ))}
         </tbody>
       </table>
-    </motion.div>
+    </div>
   );
 };
 

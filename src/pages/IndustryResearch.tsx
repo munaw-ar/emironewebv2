@@ -1,7 +1,6 @@
 import { useEffect, useState, memo } from "react";
-import { motion } from "framer-motion";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { ChevronRight, Calendar, User, Database, Linkedin, Twitter, Loader2 } from "lucide-react";
+import { ChevronRight, Calendar, User, Database, Linkedin, Twitter, Loader2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StatCard from "@/components/research/StatCard";
 import DataTable from "@/components/research/DataTable";
@@ -13,6 +12,7 @@ import { format } from "date-fns";
 import { sanitizeHtml } from "@/lib/sanitize";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 interface IndustryResearchData {
   id: string;
@@ -35,25 +35,29 @@ interface IndustryResearchData {
   last_updated: string | null;
 }
 
+const bodyStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-0)", color: "var(--mid)", lineHeight: "var(--lh-body)" };
+const leadStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-1)", color: "var(--mid)", lineHeight: "var(--lh-lead)" };
+const metaStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)" };
+
 // Memoized result card for performance
 const ResultCard = memo(({ item, type }: { item: any; type: 'success' | 'failure' }) => {
-  const bgColor = type === 'success' ? 'border-[#2ECC71]/30 bg-[#2ECC71]/5' : 'border-[#E74C3C]/30 bg-[#E74C3C]/5';
-  
+  const accent = type === 'success' ? 'var(--green)' : '#B91C1C';
+
   return (
-    <div className={`p-4 sm:p-6 rounded-xl border ${bgColor}`}>
-      <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">{item.title}</h3>
+    <div className="glass" style={{ padding: "var(--s5)", borderLeft: `3px solid ${accent}` }}>
+      <h3 style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--ink)", marginBottom: "var(--s2)" }}>{item.title}</h3>
       {item.subjectLine && (
-        <p className="text-xs sm:text-sm text-muted-foreground mb-2 break-words">
-          <span className="font-medium">Subject:</span> {item.subjectLine}
+        <p style={{ ...bodyStyle, fontSize: "var(--step--1)", marginBottom: "var(--s2)", wordBreak: "break-word" }}>
+          <span style={{ fontWeight: 600, color: "var(--ink)" }}>Subject:</span> {item.subjectLine}
         </p>
       )}
       {item.explanation && (
-        <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4">{item.explanation}</p>
+        <p style={{ ...bodyStyle, marginBottom: "var(--s4)" }}>{item.explanation}</p>
       )}
-      <div className="flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm">
-        {item.openRate && <span>Open: <strong>{item.openRate}</strong></span>}
-        {item.replyRate && <span>Reply: <strong>{item.replyRate}</strong></span>}
-        {item.meetingRate && <span>Meeting: <strong>{item.meetingRate}</strong></span>}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--s4)", ...metaStyle }}>
+        {item.openRate && <span>Open: <strong style={{ color: "var(--ink)" }}>{item.openRate}</strong></span>}
+        {item.replyRate && <span>Reply: <strong style={{ color: "var(--ink)" }}>{item.replyRate}</strong></span>}
+        {item.meetingRate && <span>Meeting: <strong style={{ color: "var(--ink)" }}>{item.meetingRate}</strong></span>}
       </div>
     </div>
   );
@@ -67,6 +71,7 @@ const IndustryResearch = () => {
   const [research, setResearch] = useState<IndustryResearchData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  useScrollReveal();
 
   useEffect(() => {
     let mounted = true;
@@ -107,16 +112,6 @@ const IndustryResearch = () => {
     };
   }, [slug]);
 
-  // Simplified animation variants for mobile
-  const itemVariants = {
-    hidden: { opacity: 0, y: 8 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] as const },
-    },
-  };
-
   const tocItems = [
     { id: "overview", title: "Industry Context" },
     { id: "icps-tested", title: "Target Profiles" },
@@ -141,10 +136,10 @@ const IndustryResearch = () => {
   // Loading state - mobile optimized
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="text-center">
-          <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin text-primary mx-auto mb-3" />
-          <p className="text-sm text-muted-foreground">Loading research...</p>
+      <div style={{ minHeight: "100vh", background: "var(--paper)", display: "flex", alignItems: "center", justifyContent: "center", padding: "var(--s4)" }}>
+        <div style={{ textAlign: "center" }}>
+          <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin" style={{ color: "var(--green)", margin: "0 auto var(--s3)" }} />
+          <p style={metaStyle}>Loading research...</p>
         </div>
       </div>
     );
@@ -153,9 +148,9 @@ const IndustryResearch = () => {
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-        <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-3 text-center">Something went wrong</h1>
-        <p className="text-sm sm:text-base text-muted-foreground mb-6 text-center">{error}</p>
+      <div style={{ minHeight: "100vh", background: "var(--paper)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "var(--s4)" }}>
+        <h1 className="h-section" style={{ marginBottom: "var(--s3)", textAlign: "center" }}>Something went wrong</h1>
+        <p style={{ ...bodyStyle, marginBottom: "var(--s6)", textAlign: "center" }}>{error}</p>
         <Button variant="outline" onClick={() => window.location.reload()} className="touch-target">
           Try Again
         </Button>
@@ -166,9 +161,9 @@ const IndustryResearch = () => {
   // Not found state
   if (!research) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-        <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-3 text-center">Research Not Found</h1>
-        <p className="text-sm sm:text-base text-muted-foreground mb-6 text-center">This report doesn't exist or hasn't been published yet.</p>
+      <div style={{ minHeight: "100vh", background: "var(--paper)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "var(--s4)" }}>
+        <h1 className="h-section" style={{ marginBottom: "var(--s3)", textAlign: "center" }}>Research Not Found</h1>
+        <p style={{ ...bodyStyle, marginBottom: "var(--s6)", textAlign: "center" }}>This report doesn't exist or hasn't been published yet.</p>
         <Link to="/research/industry">
           <Button variant="outline" className="touch-target">Back to Industry Research</Button>
         </Link>
@@ -183,7 +178,8 @@ const IndustryResearch = () => {
   const commonMistakes = Array.isArray(research.common_mistakes) ? research.common_mistakes : [];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div style={{ minHeight: "100vh", background: "var(--paper)" }}>
+      <a href="#main" className="skip-link">Skip to content</a>
       <Navigation />
 
       <div className="container-wide pt-28 md:pt-36 pb-6 sm:pb-8 md:pb-12">
@@ -197,223 +193,234 @@ const IndustryResearch = () => {
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 min-w-0 max-w-4xl">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.05 } }
-              }}
-            >
-              {/* Breadcrumb - hidden on small mobile */}
-              <motion.nav variants={itemVariants} className="hidden sm:flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 flex-wrap">
-                <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-                <ChevronRight size={12} className="sm:w-3.5 sm:h-3.5" />
-                <Link to="/research" className="hover:text-primary transition-colors">Research</Link>
-                <ChevronRight size={12} className="sm:w-3.5 sm:h-3.5" />
-                <Link to="/research/industry" className="hover:text-primary transition-colors">Industry</Link>
-                <ChevronRight size={12} className="sm:w-3.5 sm:h-3.5" />
-                <span className="text-foreground truncate max-w-[120px]">{research.industry_name}</span>
-              </motion.nav>
+          <main id="main" className="flex-1 min-w-0 max-w-4xl">
+            {/* Breadcrumb - hidden on small mobile */}
+            <nav className="reveal hidden sm:flex items-center gap-2 flex-wrap" style={{ ...metaStyle, marginBottom: "var(--s4)" }}>
+              <Link to="/" className="link-wipe" style={{ color: "var(--green)" }}>Home</Link>
+              <ChevronRight size={12} className="sm:w-3.5 sm:h-3.5" style={{ color: "var(--light)" }} />
+              <Link to="/research" className="link-wipe" style={{ color: "var(--green)" }}>Research</Link>
+              <ChevronRight size={12} className="sm:w-3.5 sm:h-3.5" style={{ color: "var(--light)" }} />
+              <Link to="/research/industry" className="link-wipe" style={{ color: "var(--green)" }}>Industry</Link>
+              <ChevronRight size={12} className="sm:w-3.5 sm:h-3.5" style={{ color: "var(--light)" }} />
+              <span className="truncate max-w-[120px]" style={{ color: "var(--ink)" }}>{research.industry_name}</span>
+            </nav>
 
-              {/* Page Header */}
-              <motion.div variants={itemVariants} className="mb-6 sm:mb-10">
-                <h1 className="text-xl sm:text-2xl md:text-heading-1 font-bold text-foreground mb-2 leading-tight">
-                  {research.title}
-                </h1>
-                <p className="text-base sm:text-lg md:text-heading-4 text-muted-foreground mb-4 sm:mb-6">{research.quarter}</p>
-                
-                <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground pb-4 sm:pb-6 border-b border-border/30">
-                  {research.last_updated && (
-                    <span className="flex items-center gap-1.5">
-                      <Calendar size={12} className="sm:w-3.5 sm:h-3.5" />
-                      {format(new Date(research.last_updated), "MMM d, yyyy")}
-                    </span>
-                  )}
-                  {research.sample_size && (
-                    <span className="flex items-center gap-1.5">
-                      <Database size={12} className="sm:w-3.5 sm:h-3.5" />
-                      n={research.sample_size}
-                    </span>
-                  )}
-                  {research.author && (
-                    <span className="flex items-center gap-1.5">
-                      <User size={12} className="sm:w-3.5 sm:h-3.5" />
-                      {research.author}
-                    </span>
-                  )}
-                </div>
+            {/* Page Header */}
+            <div style={{ marginBottom: "var(--s7)" }}>
+              <h1 className="reveal h-hero" style={{ marginBottom: "var(--s3)" }}>
+                {research.title}
+              </h1>
+              <p className="reveal reveal-delay-1 measure-lead" style={{ ...leadStyle, marginBottom: "var(--s5)" }}>{research.quarter}</p>
 
-                {/* Social Share */}
-                <div className="flex items-center gap-3 mt-3 sm:mt-4">
-                  <span className="text-xs sm:text-sm text-muted-foreground">Share:</span>
-                  <a
-                    href={`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareTitle}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors touch-target p-2 -m-2"
-                  >
-                    <Linkedin size={18} />
-                  </a>
-                  <a
-                    href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors touch-target p-2 -m-2"
-                  >
-                    <Twitter size={18} />
-                  </a>
-                </div>
-              </motion.div>
+              <div className="reveal reveal-delay-2 flex flex-wrap items-center gap-3 sm:gap-4" style={{ ...metaStyle, paddingBottom: "var(--s4)", borderBottom: "1px solid var(--rule)" }}>
+                {research.last_updated && (
+                  <span className="flex items-center gap-1.5">
+                    <Calendar size={12} className="sm:w-3.5 sm:h-3.5" style={{ color: "var(--green)" }} />
+                    {format(new Date(research.last_updated), "MMM d, yyyy")}
+                  </span>
+                )}
+                {research.sample_size && (
+                  <span className="flex items-center gap-1.5">
+                    <Database size={12} className="sm:w-3.5 sm:h-3.5" style={{ color: "var(--green)" }} />
+                    n={research.sample_size}
+                  </span>
+                )}
+                {research.author && (
+                  <span className="flex items-center gap-1.5">
+                    <User size={12} className="sm:w-3.5 sm:h-3.5" style={{ color: "var(--green)" }} />
+                    {research.author}
+                  </span>
+                )}
+              </div>
 
-              {/* Quick Stats - mobile optimized grid */}
-              <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-10 sm:mb-16">
-                <StatCard 
-                  metric={research.open_rate_range || "N/A"} 
-                  label="Open Rate Range" 
-                  sampleSize={research.sample_size ? `(${research.sample_size})` : ""} 
-                  delay={0} 
-                />
-                <StatCard 
-                  metric={research.reply_rate_range || "N/A"} 
-                  label="Reply Rate Range" 
-                  sampleSize={research.sample_size ? `(${research.sample_size})` : ""} 
-                  delay={0.05} 
-                />
-                <StatCard 
-                  metric={research.booking_rate || "N/A"} 
-                  label="Meeting Booking Rate" 
-                  sampleSize="" 
-                  delay={0.1} 
-                />
-              </motion.div>
-
-              {/* Industry Overview */}
-              {research.industry_overview && (
-                <motion.section id="overview" variants={itemVariants} className="mb-10 sm:mb-16">
-                  <h2 className="text-lg sm:text-xl md:text-heading-2 font-bold text-foreground mb-4 sm:mb-6">Industry Context</h2>
-                  <div 
-                    className="prose prose-sm sm:prose-lg max-w-none text-sm sm:text-base text-muted-foreground leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(research.industry_overview) }}
-                  />
-                </motion.section>
-              )}
-
-              {/* ICPs Tested */}
-              {icpsData.length > 0 && (
-                <motion.section id="icps-tested" variants={itemVariants} className="mb-10 sm:mb-16">
-                  <h2 className="text-lg sm:text-xl md:text-heading-2 font-bold text-foreground mb-4 sm:mb-6">Target Profiles We Tested</h2>
-                  <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-                    <DataTable columns={icpColumns} data={icpsData} />
-                  </div>
-                </motion.section>
-              )}
-
-              {/* What Worked */}
-              {whatWorked.length > 0 && (
-                <motion.section id="what-worked" variants={itemVariants} className="mb-10 sm:mb-16">
-                  <h2 className="text-lg sm:text-xl md:text-heading-2 font-bold text-foreground mb-4 sm:mb-6">✅ Messaging Angles That Worked</h2>
-                  <div className="space-y-4 sm:space-y-6">
-                    {whatWorked.map((item: any, index: number) => (
-                      <ResultCard key={index} item={item} type="success" />
-                    ))}
-                  </div>
-                </motion.section>
-              )}
-
-              {/* What Failed */}
-              {whatFailed.length > 0 && (
-                <motion.section id="what-failed" variants={itemVariants} className="mb-10 sm:mb-16">
-                  <h2 className="text-lg sm:text-xl md:text-heading-2 font-bold text-foreground mb-4 sm:mb-6">❌ Messaging Angles That Failed</h2>
-                  <div className="space-y-4 sm:space-y-6">
-                    {whatFailed.map((item: any, index: number) => (
-                      <ResultCard key={index} item={item} type="failure" />
-                    ))}
-                  </div>
-                </motion.section>
-              )}
-
-              {/* Key Insights */}
-              {keyInsights.length > 0 && (
-                <motion.section id="insights" variants={itemVariants} className="mb-10 sm:mb-16">
-                  <h2 className="text-lg sm:text-xl md:text-heading-2 font-bold text-foreground mb-4 sm:mb-6">📊 Cross-Cutting Insights</h2>
-                  <div className="space-y-3 sm:space-y-4">
-                    {keyInsights.map((insight: string, index: number) => (
-                      <div key={index} className="flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg bg-muted/30">
-                        <span className="font-mono text-base sm:text-lg font-bold text-primary shrink-0">{index + 1}.</span>
-                        <p className="text-sm sm:text-base text-foreground">{insight}</p>
-                      </div>
-                    ))}
-                  </div>
-                </motion.section>
-              )}
-
-              {/* Common Mistakes */}
-              {commonMistakes.length > 0 && (
-                <motion.section id="mistakes" variants={itemVariants} className="mb-10 sm:mb-16">
-                  <h2 className="text-lg sm:text-xl md:text-heading-2 font-bold text-foreground mb-4 sm:mb-6">🚨 Common Mistakes We Observed</h2>
-                  <div className="space-y-3 sm:space-y-4">
-                    {commonMistakes.map((item: any, index: number) => (
-                      <div key={index} className="p-3 sm:p-4 rounded-lg border border-border/20">
-                        <p className="text-sm sm:text-base mb-2">
-                          <span className="text-[#E74C3C] font-medium">❌ Bad:</span> {item.bad}
-                        </p>
-                        <p className="text-sm sm:text-base">
-                          <span className="text-[#2ECC71] font-medium">✅ Good:</span> {item.good}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </motion.section>
-              )}
-
-              {/* Methodology */}
-              {research.methodology && (
-                <motion.section id="methodology" variants={itemVariants} className="mb-10 sm:mb-16">
-                  <h2 className="text-lg sm:text-xl md:text-heading-2 font-bold text-foreground mb-4 sm:mb-6">📋 Methodology</h2>
-                  <div 
-                    className="prose prose-sm sm:prose-lg max-w-none text-sm sm:text-base text-muted-foreground leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(research.methodology) }}
-                  />
-                </motion.section>
-              )}
-
-              {/* Bottom CTA */}
-              <motion.section variants={itemVariants} className="rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 p-6 sm:p-8 md:p-12 text-center">
-                <h2 className="text-lg sm:text-xl md:text-heading-2 font-bold text-foreground mb-3 sm:mb-4">
-                  Want us to run this for you?
-                </h2>
-                <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto">
-                  If you're in {research.industry_name} and need predictable, ethical outbound infrastructure, 
-                  we can build and operate a system tailored to your ICP.
-                </p>
-                <Button 
-                  variant="hero" 
-                  size="lg" 
-                  className="touch-target"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    navigate("/?booking=true#application");
-                  }}
-                  onTouchEnd={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    navigate("/?booking=true#application");
-                  }}
-                  style={{ touchAction: 'manipulation' }}
+              {/* Social Share */}
+              <div className="reveal reveal-delay-3 flex items-center gap-3" style={{ marginTop: "var(--s4)" }}>
+                <span style={metaStyle}>Share:</span>
+                <a
+                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareTitle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="touch-target p-2 -m-2"
+                  style={{ color: "var(--green)" }}
                 >
-                  See If Your Outbound System Is Built to Scale
-                </Button>
-              </motion.section>
-            </motion.div>
+                  <Linkedin size={18} />
+                </a>
+                <a
+                  href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="touch-target p-2 -m-2"
+                  style={{ color: "var(--green)" }}
+                >
+                  <Twitter size={18} />
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Stats - mobile optimized grid */}
+            <div className="reveal grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4" style={{ marginBottom: "var(--s8)" }}>
+              <StatCard
+                metric={research.open_rate_range || "N/A"}
+                label="Open Rate Range"
+                sampleSize={research.sample_size ? `(${research.sample_size})` : ""}
+                delay={0}
+              />
+              <StatCard
+                metric={research.reply_rate_range || "N/A"}
+                label="Reply Rate Range"
+                sampleSize={research.sample_size ? `(${research.sample_size})` : ""}
+                delay={0.05}
+              />
+              <StatCard
+                metric={research.booking_rate || "N/A"}
+                label="Meeting Booking Rate"
+                sampleSize=""
+                delay={0.1}
+              />
+            </div>
+
+            {/* Industry Overview */}
+            {research.industry_overview && (
+              <section id="overview" style={{ marginBottom: "var(--s8)" }}>
+                <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                  Industry <em>Context</em>
+                </h2>
+                <div
+                  className="reveal reveal-delay-1 prose prose-sm sm:prose-lg max-w-none measure"
+                  style={{ ...bodyStyle }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(research.industry_overview) }}
+                />
+              </section>
+            )}
+
+            {/* ICPs Tested */}
+            {icpsData.length > 0 && (
+              <section id="icps-tested" style={{ marginBottom: "var(--s8)" }}>
+                <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                  Target Profiles <em>We Tested</em>
+                </h2>
+                <div className="reveal reveal-delay-1 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+                  <DataTable columns={icpColumns} data={icpsData} />
+                </div>
+              </section>
+            )}
+
+            {/* What Worked */}
+            {whatWorked.length > 0 && (
+              <section id="what-worked" style={{ marginBottom: "var(--s8)" }}>
+                <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                  ✅ Messaging Angles <em>That Worked</em>
+                </h2>
+                <div style={{ display: "grid", gap: "var(--s4)" }}>
+                  {whatWorked.map((item: any, index: number) => (
+                    <div key={index} className={`reveal${index % 3 === 1 ? " reveal-delay-1" : index % 3 === 2 ? " reveal-delay-2" : ""}`}>
+                      <ResultCard item={item} type="success" />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* What Failed */}
+            {whatFailed.length > 0 && (
+              <section id="what-failed" style={{ marginBottom: "var(--s8)" }}>
+                <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                  ❌ Messaging Angles <em>That Failed</em>
+                </h2>
+                <div style={{ display: "grid", gap: "var(--s4)" }}>
+                  {whatFailed.map((item: any, index: number) => (
+                    <div key={index} className={`reveal${index % 3 === 1 ? " reveal-delay-1" : index % 3 === 2 ? " reveal-delay-2" : ""}`}>
+                      <ResultCard item={item} type="failure" />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Key Insights */}
+            {keyInsights.length > 0 && (
+              <section id="insights" style={{ marginBottom: "var(--s8)" }}>
+                <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                  Cross-Cutting <em>Insights</em>
+                </h2>
+                <div style={{ display: "grid", gap: "var(--s3)" }}>
+                  {keyInsights.map((insight: string, index: number) => (
+                    <div key={index} className="reveal glass" style={{ display: "flex", gap: "var(--s4)", padding: "var(--s4)" }}>
+                      <span style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--green)", flexShrink: 0 }}>{index + 1}.</span>
+                      <p style={{ ...bodyStyle, color: "var(--ink)", minWidth: 0 }}>{insight}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Common Mistakes */}
+            {commonMistakes.length > 0 && (
+              <section id="mistakes" style={{ marginBottom: "var(--s8)" }}>
+                <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                  Common Mistakes <em>We Observed</em>
+                </h2>
+                <div style={{ display: "grid", gap: "var(--s3)" }}>
+                  {commonMistakes.map((item: any, index: number) => (
+                    <div key={index} className="reveal glass" style={{ padding: "var(--s4)" }}>
+                      <p style={{ ...bodyStyle, marginBottom: "var(--s2)" }}>
+                        <span style={{ color: "#B91C1C", fontWeight: 600 }}>❌ Bad:</span> {item.bad}
+                      </p>
+                      <p style={bodyStyle}>
+                        <span style={{ color: "var(--green)", fontWeight: 600 }}>✅ Good:</span> {item.good}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Methodology */}
+            {research.methodology && (
+              <section id="methodology" style={{ marginBottom: "var(--s8)" }}>
+                <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
+                  📋 <em>Methodology</em>
+                </h2>
+                <div
+                  className="reveal reveal-delay-1 prose prose-sm sm:prose-lg max-w-none measure"
+                  style={{ ...bodyStyle }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(research.methodology) }}
+                />
+              </section>
+            )}
+
+            {/* Bottom CTA */}
+            <section className="reveal glass" style={{ padding: "var(--s7)", textAlign: "center" }}>
+              <h2 className="h-cta" style={{ marginBottom: "var(--s4)" }}>
+                Want us to <em>run this for you?</em>
+              </h2>
+              <p className="measure-lead" style={{ ...leadStyle, margin: "0 auto var(--s6)" }}>
+                If you're in {research.industry_name} and need predictable, ethical outbound infrastructure,
+                we can build and operate a system tailored to your ICP.
+              </p>
+              <button
+                className="cta"
+                style={{ fontFamily: "var(--body)", fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", padding: "15px 30px", minHeight: 48, display: "inline-flex", alignItems: "center", gap: 10, touchAction: "manipulation" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate("/?booking=true#application");
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate("/?booking=true#application");
+                }}
+              >
+                See If Your Outbound System Is Built to Scale <ArrowRight size={16} />
+              </button>
+            </section>
           </main>
         </div>
       </div>
 
       {/* Mobile Subscribe */}
-      <div className="lg:hidden py-6 sm:py-8 bg-secondary/30">
+      <div className="lg:hidden" style={{ padding: "var(--s6) 0", background: "var(--paper-2)" }}>
         <div className="container-wide">
           <SubscribeWidget />
         </div>
