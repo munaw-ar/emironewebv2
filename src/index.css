@@ -367,6 +367,16 @@
 /* Anchored sections land below the fixed nav */
 [id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
 
+/* Hero metric bar — horizontal w/ dividers on desktop, stacked on phones */
+.hero-stats { display: flex; flex-wrap: wrap; gap: 0; }
+.hero-stat { padding-left: var(--s5); margin-left: var(--s5); border-left: 1px solid var(--rule); }
+.hero-stat:first-child { padding-left: 0; margin-left: 0; border-left: none; }
+@media (max-width: 640px) {
+  .hero-stats { display: grid; grid-template-columns: 1fr; }
+  .hero-stat { padding: var(--s3) 0 0; margin: var(--s3) 0 0; border-left: none; border-top: 1px solid var(--rule-2); }
+  .hero-stat:first-child { padding-top: 0; margin-top: 0; border-top: none; }
+}
+
 /* Hero: asymmetric two-column composition */
 .hero-grid {
   display: grid;

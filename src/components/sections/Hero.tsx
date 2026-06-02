@@ -57,13 +57,13 @@ export default function Hero() {
       </div>
 
       {/* Full-width metric bar */}
-      <div className="w" style={{ display: 'flex', gap: 0, marginTop: 'var(--s4)', paddingTop: 'var(--s3)', borderTop: '1px solid var(--rule)', flexWrap: 'wrap' }}>
+      <div className="w hero-stats" style={{ marginTop: 'var(--s4)', paddingTop: 'var(--s3)', borderTop: '1px solid var(--rule)' }}>
         {[
           { n: '10 / 10', l: 'MXToolbox domain score' },
           { n: '21-day', l: 'Monitored warm-up' },
           { n: 'SPF·DKIM·DMARC', l: 'Hardened on every domain' },
-        ].map((stat, i) => (
-          <div key={stat.l} style={{ paddingLeft: i ? 'var(--s5)' : 0, marginLeft: i ? 'var(--s5)' : 0, borderLeft: i ? '1px solid var(--rule)' : 'none' }}>
+        ].map((stat) => (
+          <div key={stat.l} className="hero-stat">
             <div className="tnum" style={{ fontFamily: 'var(--display)', fontVariationSettings: '"opsz" 72', fontSize: 'var(--step-2)', fontWeight: 400, letterSpacing: '-0.01em', color: 'var(--ink)', lineHeight: 1.2 }}>{stat.n}</div>
             <div style={{ fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--mid)', marginTop: 4 }}>{stat.l}</div>
           </div>
