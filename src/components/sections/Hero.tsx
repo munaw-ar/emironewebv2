@@ -3,13 +3,13 @@ import DomainHealthChecker from './DomainHealthChecker';
 import HeroStory from './HeroStory';
 
 const HERO_WORDS = [
-  'Your', 'cold', 'email', 'is', 'failing.',
-  'We', 'fix', 'the', 'infrastructure,',
-  'not', 'the', 'copy.',
+  'Your', 'cold', 'email', 'should', 'be',
+  'booking', 'calls,', 'not', 'collecting', 'silence.',
+  'We', 'build', 'the', 'entire', 'system', 'that', 'does.',
 ];
-// "We fix the infrastructure," — the green italic accent phrase
+// "booking calls, not collecting silence." — the green italic accent phrase
 const ACCENT_FROM = 5;
-const ACCENT_TO = 8;
+const ACCENT_TO = 9;
 
 export default function Hero() {
   return (

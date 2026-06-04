@@ -69,7 +69,7 @@
     --step-2:  clamp(1.50rem, 1.36rem + 0.62vw, 1.95rem);   /* 24→31 sub-head */
     --step-3:  clamp(1.95rem, 1.70rem + 1.10vw, 2.75rem);   /* 31→44 section H2 */
     --step-4:  clamp(2.60rem, 2.10rem + 2.20vw, 4.25rem);   /* 42→68 page H1 */
-    --step-5:  clamp(2.1rem, 1.35rem + 3.9vw, 5.25rem);     /* 34→84 hero display */
+    --step-5:  clamp(2.05rem, 1.25rem + 3.5vw, 5rem);       /* 33→80 hero display */
 
     /* Line-height — inverse to size */
     --lh-display: 1.05;
