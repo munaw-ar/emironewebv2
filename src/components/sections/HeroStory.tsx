@@ -85,7 +85,7 @@ export default function HeroStory() {
   const subStyle: React.CSSProperties = { fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--mid)', lineHeight: 'var(--lh-body)' };
 
   return (
-    <div className="glass hero-story" ref={root} style={{ padding: 'var(--s5)', maxWidth: 420, marginLeft: 'auto', boxShadow: 'var(--shadow-lg)' }}>
+    <div className="glass hero-story" data-flow-system ref={root} style={{ padding: 'var(--s5)', maxWidth: 380, marginLeft: 0, marginRight: 'auto', boxShadow: 'var(--shadow-lg)' }}>
       {/* story progress segments */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 'var(--s4)' }}>
         {STAGES.map((_, i) => (

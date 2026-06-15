@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import DomainHealthChecker from './DomainHealthChecker';
 import HeroStory from './HeroStory';
+import HeroFlow from './HeroFlow';
 
 const HERO_WORDS = [
   'Your', 'cold', 'email', 'should', 'be',
@@ -18,8 +19,12 @@ export default function Hero() {
       background: 'radial-gradient(900px 520px at 88% -8%, rgba(52,211,153,0.12), transparent 60%), var(--paper)',
       borderBottom: '1px solid var(--rule)',
       overflow: 'hidden',
+      position: 'relative',
+      isolation: 'isolate',
     }}>
-      <div className="w hero-grid">
+      {/* signature background motion: emails → the system → calls booked */}
+      <HeroFlow />
+      <div className="w hero-grid" style={{ position: 'relative', zIndex: 1 }}>
         {/* Left — message + action */}
         <div>
           <div className="section-eyebrow" style={{ paddingTop: 0, color: 'var(--green)', marginBottom: 'var(--s3)' }}>
@@ -56,8 +61,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Full-width metric bar */}
-      <div className="w hero-stats" style={{ marginTop: 'var(--s4)', paddingTop: 'var(--s3)', borderTop: '1px solid var(--rule)' }}>
+      {/* Full-width metric bar — also the visual source of the email→calls flow */}
+      <div className="w hero-stats" data-flow-source style={{ position: 'relative', zIndex: 1, marginTop: 'var(--s4)', paddingTop: 'var(--s3)', borderTop: '1px solid var(--rule)' }}>
         {[
           { n: '10 / 10', l: 'MXToolbox domain score' },
           { n: '21-day', l: 'Monitored warm-up' },
