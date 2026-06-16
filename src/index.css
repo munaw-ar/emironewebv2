@@ -172,6 +172,14 @@
 
   html {
     -webkit-text-size-adjust: 100%;
+    /* kill the grey tap-flash box on touch devices for a cleaner, premium feel */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Remove the ~300ms double-tap-zoom delay on interactive elements so taps
+     register instantly (buttery on touch). Pinch-zoom elsewhere is unaffected. */
+  a, button, [role="button"], input, select, textarea, label, summary {
+    touch-action: manipulation;
   }
 
   /* Lenis smooth scroll (desktop). Recommended base rules so the library and
