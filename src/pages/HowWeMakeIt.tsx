@@ -308,7 +308,7 @@ const HowWeMakeIt = () => {
 
               <div style={{ marginBottom: "var(--s5)" }}>
                 {rampSteps.map((step, i) => (
-                  <div key={i} className="reveal glass" style={{ display: "flex", alignItems: "center", gap: "var(--s4)", padding: "var(--s4) var(--s5)", marginBottom: "var(--s2)" }}>
+                  <div key={i} className="reveal rise glass" style={{ display: "flex", alignItems: "center", gap: "var(--s4)", padding: "var(--s4) var(--s5)", marginBottom: "var(--s2)" }}>
                     <span className="tnum" style={{ fontFamily: "var(--mono)", fontSize: 12, fontWeight: 600, letterSpacing: "0.04em", color: "var(--green)", flexShrink: 0, width: 72 }}>{step.day}</span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--ink)", lineHeight: 1.2 }}>{step.emails}</p>
@@ -344,7 +344,7 @@ const HowWeMakeIt = () => {
                 ))}
               </div>
 
-              <div className="reveal glass" style={{ padding: "var(--s5)", marginBottom: "var(--s5)", maxWidth: 620 }}>
+              <div className="reveal rise glass" style={{ padding: "var(--s5)", marginBottom: "var(--s5)", maxWidth: 620 }}>
                 <p style={{ fontFamily: "var(--mono)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--mid)", marginBottom: "var(--s4)" }}>The scoring model</p>
                 <div style={{ display: "grid", gap: "var(--s3)" }}>
                   {scoring.map((s) => (
@@ -414,7 +414,7 @@ const HowWeMakeIt = () => {
 
               <div style={{ display: "grid", gap: "var(--s3)", marginBottom: "var(--s5)" }}>
                 {responseTypes.map((type, i) => (
-                  <div key={i} className="reveal glass" style={{ display: "flex", alignItems: "flex-start", gap: "var(--s4)", padding: "var(--s4)" }}>
+                  <div key={i} className="reveal rise glass" style={{ display: "flex", alignItems: "flex-start", gap: "var(--s4)", padding: "var(--s4)" }}>
                     <type.icon className="w-5 h-5 shrink-0" style={{ color: "var(--green)", marginTop: 2 }} strokeWidth={2} />
                     <div style={{ minWidth: 0 }}>
                       <p style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--ink)" }}>{type.label}</p>

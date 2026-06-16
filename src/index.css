@@ -567,6 +567,12 @@
 .pipe-stage { display: grid; grid-template-columns: 56px 1fr; gap: var(--s4); }
 .pipe-node { transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease); }
 .pipe-line { transition: background 0.3s var(--ease); }
+
+/* Pipeline cards rise + settle as they scroll into view — a buttery cascade.
+   Modifier on the site's existing .reveal so each card eases up individually. */
+.reveal.rise { transform: translateY(34px) scale(0.985); }
+.reveal.rise.is-visible { transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal.rise { transform: none; } }
 .pipe-rail { position: relative; display: flex; justify-content: center; }
 .pipe-rail .pipe-line {
   position: absolute; left: 50%; transform: translateX(-50%);
