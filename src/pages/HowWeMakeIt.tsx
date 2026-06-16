@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLenis } from "@/App";
 import { ArrowRight, Smile, Clock, HelpCircle, Forward, XCircle, Check, Server, Target, PenLine, MessageSquare, CalendarCheck } from "lucide-react";
 import Navigation from "@/components/layout/Navigation";
 import HeroFlow from "@/components/sections/HeroFlow";
@@ -75,10 +76,10 @@ const visibility = [
 ];
 
 const flowNodes = [
-  { icon: Server, label: "Infrastructure" },
-  { icon: Target, label: "The List" },
-  { icon: PenLine, label: "The Copy" },
-  { icon: MessageSquare, label: "The Replies" },
+  { icon: Server, label: "Infrastructure", target: "hwmi-infra" },
+  { icon: Target, label: "The List", target: "hwmi-list" },
+  { icon: PenLine, label: "The Copy", target: "hwmi-copy" },
+  { icon: MessageSquare, label: "The Replies", target: "hwmi-replies" },
   { icon: CalendarCheck, label: "Calls booked", end: true },
 ];
 
@@ -120,9 +121,9 @@ function ProofChip({ children }: { children: React.ReactNode }) {
 }
 
 /** A pipeline stage: numbered node on a continuous vertical spine + content. */
-function Stage({ num, eyebrow, title, first, last, children }: { num: string; eyebrow: string; title: React.ReactNode; first?: boolean; last?: boolean; children: React.ReactNode }) {
+function Stage({ id, num, eyebrow, title, first, last, children }: { id: string; num: string; eyebrow: string; title: React.ReactNode; first?: boolean; last?: boolean; children: React.ReactNode }) {
   return (
-    <div className="pipe-stage">
+    <div className="pipe-stage" id={id}>
       <div className="pipe-rail">
         <span className="pipe-line" style={{ top: first ? 22 : 0, bottom: last ? "calc(100% - 22px)" : 0 }} />
         <span className="pipe-node tnum">{num}</span>
@@ -170,10 +171,21 @@ function SampleEmailCard() {
 
 const HowWeMakeIt = () => {
   const navigate = useNavigate();
+  const lenis = useLenis();
   useScrollReveal();
 
   const bookCall = () => navigate("/book");
   const scoreDomain = () => navigate("/");
+
+  // Scroll a flow-overview node to its stage. The site's global
+  // `[id] { scroll-margin-top }` already encodes the nav offset and both Lenis
+  // and native smooth scroll honor it — so no extra offset here.
+  const scrollToStage = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (lenis) lenis.scrollTo(el, { duration: 1.0 });
+    else el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--paper)" }}>
@@ -210,17 +222,32 @@ const HowWeMakeIt = () => {
             </p>
 
             <div className="reveal reveal-delay-2" style={{ display: "flex", alignItems: "stretch", gap: 10, flexWrap: "wrap" }}>
-              {flowNodes.map((n, i) => (
-                <div key={n.label} style={{ display: "flex", alignItems: "center", gap: 10, flex: "1 1 150px" }}>
-                  <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 8, textAlign: "center", padding: "16px 8px", borderRadius: 14, border: `1px solid ${n.end ? "var(--green)" : "var(--rule)"}`, background: n.end ? "var(--green)" : "var(--paper-2)", minWidth: 0 }}>
+              {flowNodes.map((n, i) => {
+                const boxStyle: React.CSSProperties = {
+                  flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+                  textAlign: "center", padding: "16px 8px", borderRadius: 14,
+                  border: `1px solid ${n.end ? "var(--green)" : "var(--rule)"}`,
+                  background: n.end ? "var(--green)" : "var(--paper-2)", minWidth: 0,
+                };
+                const inner = (
+                  <>
                     <n.icon size={20} strokeWidth={1.75} style={{ color: n.end ? "#fff" : "var(--green)" }} />
                     <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, fontWeight: 600, letterSpacing: "0.03em", color: n.end ? "#fff" : "var(--ink)" }}>{n.label}</span>
+                  </>
+                );
+                return (
+                  <div key={n.label} style={{ display: "flex", alignItems: "center", gap: 10, flex: "1 1 150px" }}>
+                    {n.end ? (
+                      <button onClick={bookCall} className="flow-node end" aria-label="Book a revenue sprint call" style={{ ...boxStyle, font: "inherit", cursor: "pointer" }}>{inner}</button>
+                    ) : (
+                      <button onClick={() => scrollToStage(n.target!)} className="flow-node" aria-label={`Jump to ${n.label}`} style={{ ...boxStyle, font: "inherit", cursor: "pointer" }}>{inner}</button>
+                    )}
+                    {i < flowNodes.length - 1 && (
+                      <span aria-hidden className="flow-arrow" style={{ flexShrink: 0, color: "var(--mint)", fontSize: 16, fontWeight: 700 }}>→</span>
+                    )}
                   </div>
-                  {i < flowNodes.length - 1 && (
-                    <span aria-hidden className="flow-arrow" style={{ flexShrink: 0, color: "var(--mint)", fontSize: 16, fontWeight: 700 }}>→</span>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
             {/* animated flow line */}
             <div aria-hidden className="reveal reveal-delay-3" style={{ marginTop: 14, height: 2, borderRadius: 2, background: "var(--rule)", overflow: "hidden" }}>
@@ -234,7 +261,7 @@ const HowWeMakeIt = () => {
           <div className="w">
 
             {/* 01 — Infrastructure */}
-            <Stage num="01" first eyebrow="The Infrastructure" title={<>We build on ground <em>you own.</em></>}>
+            <Stage id="hwmi-infra" num="01" first eyebrow="The Infrastructure" title={<>We build on ground <em>you own.</em></>}>
               <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s4)" }}>
                 Dedicated sending domains — never your brand domain. SPF, DKIM and DMARC hardened to a 10/10 MXToolbox score. Secondary domains for resilience. And a 21-day monitored warm-up before a single cold email goes out.
               </p>
@@ -268,7 +295,7 @@ const HowWeMakeIt = () => {
             </Stage>
 
             {/* 02 — The List */}
-            <Stage num="02" eyebrow="The List · the engine" title={<>We don't buy lists. <em>We build them from signals.</em></>}>
+            <Stage id="hwmi-list" num="02" eyebrow="The List · the engine" title={<>We don't buy lists. <em>We build them from signals.</em></>}>
               <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s5)" }}>
                 Every send starts from a real event — a trigger that means now is the moment. Then every prospect is scored on weighted signals and tiered, so the best-fit accounts get hand-written outreach and the rest never cost us an afternoon.
               </p>
@@ -316,7 +343,7 @@ const HowWeMakeIt = () => {
             </Stage>
 
             {/* 03 — The Copy */}
-            <Stage num="03" eyebrow="The Copy" title={<>Written by a human, <em>for one human.</em></>}>
+            <Stage id="hwmi-copy" num="03" eyebrow="The Copy" title={<>Written by a human, <em>for one human.</em></>}>
               <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s5)" }}>
                 Trigger + offer. We open with what we actually saw, then lead with something useful — a teardown, a one-pager, a capacity sheet — never a call ask in the first email. Up to six touches over about 14 days, each with a job, ending in a gracious break-up. No filler, no pressure, no spam-trigger phrasing.
               </p>
@@ -343,7 +370,7 @@ const HowWeMakeIt = () => {
             </Stage>
 
             {/* 04 — The Replies */}
-            <Stage num="04" last eyebrow="The Replies" title={<>Every reply handled like it matters — <em>because it does.</em></>}>
+            <Stage id="hwmi-replies" num="04" last eyebrow="The Replies" title={<>Every reply handled like it matters — <em>because it does.</em></>}>
               <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s5)" }}>
                 Reviewed within 24 hours, by a person, never an auto-responder. We don't persist beyond consent — if someone's out, they're out, across every domain.
               </p>
