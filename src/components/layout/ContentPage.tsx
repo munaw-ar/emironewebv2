@@ -79,12 +79,16 @@ export default function ContentPage({ eyebrow, title, titleHtml, lastUpdated, in
           </div>
         </section>
 
-        {sections.map((sec, i) => (
+        {sections.map((sec, i) => {
+          // Strip any number the author baked into the heading (e.g. "1. Title")
+          // so our own numbering never doubles up ("1. 1. Title").
+          const cleanHeading = sec.heading.replace(/^\s*\d+[.)]\s*/, "");
+          return (
           <section key={i} style={{ padding: "var(--section-y) 0", background: i % 2 === 0 ? "var(--paper-2)" : "var(--paper)" }}>
             <div className="w section-grid">
-              <div className="section-eyebrow"><span className="sec-num">{String(i + 1).padStart(2, "0")}</span>{sec.heading}</div>
+              <div className="section-eyebrow"><span className="sec-num">{String(i + 1).padStart(2, "0")}</span>{cleanHeading}</div>
               <div>
-                <h2 className="reveal h-section" style={{ marginBottom: "var(--s4)" }}>{numbered ? `${i + 1}. ${sec.heading}` : sec.heading}</h2>
+                <h2 className="reveal h-section" style={{ marginBottom: "var(--s4)" }}>{numbered ? `${i + 1}. ${cleanHeading}` : cleanHeading}</h2>
                 {sec.blocks.map((b, j) => (
                   <div key={j} className={j === 0 ? "reveal" : "reveal reveal-delay-1"}>
                     <Block block={b} />
@@ -93,7 +97,8 @@ export default function ContentPage({ eyebrow, title, titleHtml, lastUpdated, in
               </div>
             </div>
           </section>
-        ))}
+          );
+        })}
       </main>
 
       <Footer />
