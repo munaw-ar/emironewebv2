@@ -1,274 +1,276 @@
-import Navigation from "@/components/layout/Navigation";
-import Footer from "@/components/layout/Footer";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import ContentPage, { type ContentSection } from "@/components/layout/ContentPage";
 
-const leadStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-1)", color: "var(--mid)", lineHeight: "var(--lh-lead)" };
-const bodyStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-0)", color: "var(--mid)", lineHeight: "var(--lh-body)" };
-const listStyle: React.CSSProperties = { ...bodyStyle, listStyle: "disc", paddingLeft: "var(--s5)", display: "grid", gap: "var(--s1)", marginBottom: "var(--s3)" };
+const sections: ContentSection[] = [
+  {
+    "heading": "1. Acceptance of these terms",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "emirone.com (the \"site\") is operated by Emir One (\"we\", \"us\", \"our\"). By accessing or using the site, you agree to these Terms of Service. If you do not agree with any part of them, please do not use the site."
+      },
+      {
+        "kind": "p",
+        "text": "These terms cover use of the website only. They are not a contract for paid work. If you become a client, the work we do for you is governed by a separate written engagement agreement, and where that agreement and these terms conflict, the engagement agreement wins for matters it covers."
+      }
+    ]
+  },
+  {
+    "heading": "2. Who may use the site",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "You may use the site if you are at least 18 and able to enter into a binding agreement. The site is built for businesses and the people who run them, not for personal or household use."
+      },
+      {
+        "kind": "p",
+        "text": "If you use the site on behalf of a company, you confirm you are authorised to accept these terms for that company, and \"you\" then means both you and the company."
+      }
+    ]
+  },
+  {
+    "heading": "3. What the site offers",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "The site is informational. It exists to explain how we work and to let you start a conversation with us. Specifically, you can:"
+      },
+      {
+        "kind": "ul",
+        "items": [
+          "Read articles, guides, and published research about cold email and deliverability.",
+          "Run a free deliverability checker by typing in a domain name. The lookup runs from your own browser against a public DNS resolver, and we do not store the domain you check.",
+          "Sign up for our newsletter with your email address.",
+          "Book a call with us through an embedded scheduling calendar, sharing details like your name, email, company, website, and goal so we can prepare."
+        ]
+      },
+      {
+        "kind": "p",
+        "text": "We may add, change, or remove any of these features at any time. Nothing on the site is an offer to provide paid services until we agree to that in writing."
+      }
+    ]
+  },
+  {
+    "heading": "4. Acceptable use",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "Use the site for its intended purpose and within the law. You agree not to:"
+      },
+      {
+        "kind": "ul",
+        "items": [
+          "Scrape, crawl, harvest, or bulk-copy content, research, or data from the site by any automated means without our written permission.",
+          "Abuse the deliverability checker, for example by running automated or high-volume queries, or using it to probe or attack domains you do not own or control.",
+          "Attempt to breach, test, or get around the security of the site, access non-public areas (including the private admin area), or interfere with how the site runs for anyone else.",
+          "Upload or submit anything unlawful, misleading, malicious, or that infringes someone else's rights.",
+          "Use the site to send spam, impersonate others, or misrepresent who you are."
+        ]
+      },
+      {
+        "kind": "p",
+        "text": "If you break these rules, we can suspend or block your access without notice."
+      }
+    ]
+  },
+  {
+    "heading": "5. Intellectual property",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "The site and everything on it, including the text, research, data, methods, frameworks, names, logos, layout, and design, belongs to Emir One or is used by us with permission. It is protected by copyright and other laws."
+      },
+      {
+        "kind": "p",
+        "text": "You may read the site and share normal links to it. You may not copy, republish, resell, or build a competing or derivative work from our content without our written permission. If you want to cite or quote our research, contact research@emirone.com and we will usually say yes, with attribution and a link back."
+      }
+    ]
+  },
+  {
+    "heading": "6. About the research we publish",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "Every figure in our research is labeled so you know what it is:"
+      },
+      {
+        "kind": "ul",
+        "items": [
+          "Measured: taken directly from data we observed.",
+          "Recalled: reported from memory or past records, so treat it as an estimate.",
+          "Modeled: calculated or projected, not observed directly."
+        ]
+      },
+      {
+        "kind": "p",
+        "text": "The research is published for information only. It is not a promise of results, and it is not financial, legal, or professional advice. Numbers from past or modeled scenarios are not a guarantee that you will see the same outcome. Your results depend on your market, your offer, your execution, and conditions outside anyone's control. Make your own decisions and get your own professional advice before acting on anything you read here."
+      }
+    ]
+  },
+  {
+    "heading": "7. Third-party links and embeds",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "The site links to and embeds tools and content run by other companies. The booking calendar, for example, is provided through an embedded Cal.com widget, and the site uses third-party hosting, infrastructure, and fonts to run."
+      },
+      {
+        "kind": "p",
+        "text": "When you use one of these, you are also subject to that provider's own terms and privacy policy, which we do not control and are not responsible for. We link to third parties because we find them useful, not as an endorsement of everything they do."
+      }
+    ]
+  },
+  {
+    "heading": "General terms",
+    "blocks": [
+      {
+        "kind": "h3",
+        "text": "Severability"
+      },
+      {
+        "kind": "p",
+        "text": "If any part of these terms is found unenforceable, the rest stay in force."
+      },
+      {
+        "kind": "h3",
+        "text": "Entire agreement"
+      },
+      {
+        "kind": "p",
+        "text": "These terms, together with our Privacy Policy and any separate written agreement for paid work, are the whole agreement between you and Emir One about your use of the website."
+      },
+      {
+        "kind": "h3",
+        "text": "No waiver"
+      },
+      {
+        "kind": "p",
+        "text": "If we do not enforce a right or a term, that is not a waiver of it."
+      },
+      {
+        "kind": "h3",
+        "text": "Assignment"
+      },
+      {
+        "kind": "p",
+        "text": "You may not transfer your rights under these terms without our consent. We may assign ours, for example as part of a reorganisation, without reducing your rights."
+      },
+      {
+        "kind": "h3",
+        "text": "Changes to the site"
+      },
+      {
+        "kind": "p",
+        "text": "We may change, suspend, or discontinue any part of the website at any time without notice."
+      }
+    ]
+  },
+  {
+    "heading": "8. How we contact and email people",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "Our outbound email is consent-first and based on legitimate interest. Everyone we contact has a real reason to hear from us. We do not use fake reply lines, fabricated connections, or manufactured urgency."
+      },
+      {
+        "kind": "p",
+        "text": "If you ask to opt out, we honour it the same day, across every sending domain, through a maintained suppression list. Our practice is built to comply with the GDPR (including the legitimate-interest basis under Article 6(1)(f) and your right to object under Article 21), US CAN-SPAM, UK PECR, and the Australian Spam Act. If you signed up for the newsletter, you can unsubscribe at any time using the link in any email."
+      }
+    ]
+  },
+  {
+    "heading": "9. Privacy",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "Your privacy matters to us. How we collect and handle information, including what the deliverability checker, newsletter, and booking form do with your data, is explained in our Privacy Policy, which forms part of these terms."
+      },
+      {
+        "kind": "p",
+        "text": "For privacy questions or requests, email privacy@emirone.com."
+      }
+    ]
+  },
+  {
+    "heading": "10. Disclaimers",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "The site and its content are provided \"as is\" and \"as available\", without warranties of any kind, whether express or implied, to the fullest extent the law allows."
+      },
+      {
+        "kind": "p",
+        "text": "We do our best to keep the site accurate and running, but we do not promise it will always be available, error-free, secure, or up to date, or that the deliverability checker or any third-party tool will be uninterrupted. Anything you rely on from the site, you rely on at your own discretion and risk. Nothing in these terms removes rights you have under consumer law that cannot be excluded."
+      }
+    ]
+  },
+  {
+    "heading": "11. Limitation of liability",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "To the maximum extent permitted by law, Emir One is not liable for any indirect, incidental, special, or consequential loss, or for lost profits, revenue, data, or goodwill, arising out of your use of the site."
+      },
+      {
+        "kind": "p",
+        "text": "Where liability cannot be excluded, our total liability connected to your use of the site is limited to the amount you paid us, if any, for access to the site, which for most visitors is nothing."
+      }
+    ]
+  },
+  {
+    "heading": "12. Indemnity",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "You agree to cover us for reasonable claims, losses, and costs that arise from your misuse of the site, your breach of these terms, or your breach of someone else's rights. This is a light obligation: it applies to things you do wrong, not to ordinary, good-faith use of the site."
+      }
+    ]
+  },
+  {
+    "heading": "13. Changes to these terms",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "We may update these terms as the site changes. When we do, we will post the new version here and update the date at the top. If you keep using the site after a change, that means you accept the updated terms. It is worth checking back now and then."
+      }
+    ]
+  },
+  {
+    "heading": "14. Governing law and disputes",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "These terms are governed by the laws that apply at Emir One's place of business, without regard to conflict-of-law rules. For our registered entity and postal address, contact us and we will share them."
+      },
+      {
+        "kind": "p",
+        "text": "If something goes wrong, talk to us first. Most issues are quicker to sort out by email than through a formal process. Email legal@emirone.com and we will try to resolve it in good faith before anyone takes it further."
+      }
+    ]
+  },
+  {
+    "heading": "15. Contact",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "Questions about these terms: legal@emirone.com. Privacy questions: privacy@emirone.com. Research and general enquiries: research@emirone.com."
+      },
+      {
+        "kind": "p",
+        "text": "Emir One operates emirone.com. For our registered entity name and postal address, contact us and we will provide them."
+      }
+    ]
+  }
+];
 
-const TermsOfService = () => {
-  useScrollReveal();
-
+export default function TermsOfService() {
   return (
-    <div style={{ minHeight: "100vh", background: "var(--paper)" }}>
-      <a href="#main" className="skip-link">Skip to content</a>
-      <Navigation />
-      <main id="main">
-        {/* Hero */}
-        <section style={{ padding: "var(--section-y-lg) 0 var(--section-y)", background: "radial-gradient(900px 520px at 88% -8%, rgba(52,211,153,0.12), transparent 60%), var(--paper)", borderBottom: "1px solid var(--rule)" }}>
-          <div className="w">
-            <h1 className="reveal h-hero" style={{ maxWidth: 880, marginBottom: "var(--s4)" }}>
-              Terms of <em>Service.</em>
-            </h1>
-            <p className="reveal reveal-delay-1" style={{ fontFamily: "var(--body)", fontSize: "var(--step-0)", color: "var(--light)", marginBottom: "var(--s5)" }}>
-              <strong>Last updated:</strong> 15 DECEMBER 2025
-            </p>
-            <p className="reveal reveal-delay-2 measure-lead" style={leadStyle}>
-              These Terms of Service govern your use of <strong>emirone.com</strong> and any services provided by Emir One ("we", "us", or "our").
-              <br /><br />
-              By accessing this website or submitting an application, you agree to these Terms.
-            </p>
-          </div>
-        </section>
-
-        {/* 01 — Services Overview */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">01</span>Services Overview</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                1. <em>Services Overview.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s3)" }}>
-                Emir One provides consulting and implementation services related to outbound email systems for B2B businesses.
-              </p>
-              <p className="reveal reveal-delay-2 measure" style={bodyStyle}>
-                All services are provided on a <strong>best-effort basis</strong>, not as guarantees of specific outcomes.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 02 — No Guarantees */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">02</span>No Guarantees</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                2. No Guarantees or <em>Earnings Claims.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s3)" }}>We do <strong>not</strong> guarantee:</p>
-              <ul className="reveal reveal-delay-1 measure" style={listStyle}>
-                <li>Revenue outcomes</li>
-                <li>Meeting volume</li>
-                <li>Sales results</li>
-                <li>Business growth</li>
-              </ul>
-              <p className="reveal reveal-delay-2 measure" style={{ ...bodyStyle, marginBottom: "var(--s3)" }}>
-                Results depend on many factors outside our control, including your market, offer, execution, and external conditions.
-              </p>
-              <p className="reveal reveal-delay-2 measure" style={bodyStyle}>
-                Any examples discussed are illustrative only.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 03 — Application and Acceptance */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">03</span>Application</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                3. Application and <em>Acceptance.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s3)" }}>
-                Submitting an application does <strong>not</strong> guarantee acceptance as a client.
-              </p>
-              <p className="reveal reveal-delay-2 measure" style={{ ...bodyStyle, marginBottom: "var(--s3)" }}>We reserve the right to:</p>
-              <ul className="reveal reveal-delay-2 measure" style={{ ...listStyle, marginBottom: 0 }}>
-                <li>Accept or decline applicants</li>
-                <li>Limit client capacity</li>
-                <li>Discontinue discussions at our discretion</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* 04 — Client Responsibilities */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">04</span>Responsibilities</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                4. Client <em>Responsibilities.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s3)" }}>You agree to:</p>
-              <ul className="reveal reveal-delay-1 measure" style={listStyle}>
-                <li>Provide accurate information</li>
-                <li>Operate lawfully and ethically</li>
-                <li>Comply with applicable marketing, privacy, and anti-spam laws</li>
-                <li>Maintain responsibility for final messaging approvals</li>
-              </ul>
-              <p className="reveal reveal-delay-2 measure" style={bodyStyle}>
-                You remain responsible for your business decisions and outcomes.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 05 — Intellectual Property */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">05</span>IP</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                5. Intellectual <em>Property.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s3)" }}>All content on this website, including:</p>
-              <ul className="reveal reveal-delay-1 measure" style={listStyle}>
-                <li>Text</li>
-                <li>Frameworks</li>
-                <li>Processes</li>
-                <li>Visuals</li>
-              </ul>
-              <p className="reveal reveal-delay-2 measure" style={bodyStyle}>
-                is owned by Emir One and may not be copied, reproduced, or distributed without written permission.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 06 — Confidentiality */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">06</span>Confidentiality</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                6. <em>Confidentiality.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={bodyStyle}>
-                Any non-public information shared during discussions or engagements is treated as confidential unless disclosure is required by law.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 07 — Limitation of Liability */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">07</span>Liability</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                7. Limitation of <em>Liability.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s3)" }}>To the maximum extent permitted by law:</p>
-              <ul className="reveal reveal-delay-1 measure" style={listStyle}>
-                <li>We are not liable for indirect, incidental, or consequential losses</li>
-                <li>Our liability is limited to the amount paid for services (if any)</li>
-              </ul>
-              <p className="reveal reveal-delay-2 measure" style={bodyStyle}>
-                You use this website and our services at your own risk.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 08 — Indemnification */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">08</span>Indemnification</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                8. <em>Indemnification.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s3)" }}>
-                You agree to indemnify and hold harmless Emir One from any claims arising from:
-              </p>
-              <ul className="reveal reveal-delay-1 measure" style={{ ...listStyle, marginBottom: 0 }}>
-                <li>Your use of the website</li>
-                <li>Your business activities</li>
-                <li>Your breach of these Terms</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* 09 — Termination */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">09</span>Termination</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                9. <em>Termination.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={bodyStyle}>
-                We may suspend or terminate access to the website or services at any time if these Terms are breached.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 10 — Governing Law */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">10</span>Governing Law</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                10. Governing <em>Law.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={bodyStyle}>
-                These Terms are governed by the laws of <strong>Australia</strong>, without regard to conflict-of-law principles.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 11 — Changes to Terms */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper-2)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">11</span>Changes</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                11. Changes to <em>Terms.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={bodyStyle}>
-                We may update these Terms periodically. Continued use of the website constitutes acceptance of the updated Terms.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 12 — Contact */}
-        <section style={{ padding: "var(--section-y) 0", background: "var(--paper)" }}>
-          <div className="w section-grid">
-            <div className="section-eyebrow"><span className="sec-num">12</span>Contact</div>
-            <div>
-              <h2 className="reveal h-section" style={{ marginBottom: "var(--s5)" }}>
-                12. <em>Contact.</em>
-              </h2>
-              <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s4)" }}>For questions regarding these Terms:</p>
-              <div className="reveal reveal-delay-2 glass" style={{ padding: "var(--s5)", display: "grid", gap: "var(--s2)", maxWidth: "var(--measure)" }}>
-                <p style={{ ...bodyStyle, color: "var(--ink)" }}>
-                  <strong>Email:</strong>{" "}
-                  <a href="mailto:hello@emirone.com" className="link-wipe" style={{ color: "var(--green)" }}>
-                    hello@emirone.com
-                  </a>
-                </p>
-                <p style={{ ...bodyStyle, color: "var(--ink)" }}>
-                  <strong>Website:</strong>{" "}
-                  <a href="https://emirone.com" className="link-wipe" style={{ color: "var(--green)" }}>
-                    https://emirone.com
-                  </a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+    <ContentPage
+      eyebrow="Terms of Use"
+      titleHtml="Terms of <em>Service.</em>"
+      lastUpdated="17 June 2026"
+      intro={["These terms govern your use of emirone.com. They are written to be read, not to hide things in fine print. If you use the site, browse the research, run the deliverability checker, sign up for the newsletter, or book a call, you are agreeing to what is below."]}
+      numbered
+      sections={sections}
+    />
   );
-};
-
-export default TermsOfService;
+}

@@ -34,10 +34,10 @@ export default function Footer() {
           </p>
           <div style={{ marginTop: 24, display: 'flex', gap: 24, flexWrap: 'wrap' }}>
             {[
-              { to: '/privacy-policy', label: 'Privacy' },
-              { to: '/terms-of-service', label: 'Terms' },
-              { to: '/research', label: 'Research' },
-              { to: '/sharia-aligned', label: 'Ethics' },
+              { to: '/how-we-make-it', label: 'How We Make It' },
+              { to: '/sharia-aligned', label: 'Sharia-Aligned' },
+              { to: '/research', label: 'Research & Case Studies' },
+              { to: '/careers', label: 'Careers' },
             ].map(l => (
               <Link key={l.to} to={l.to} className="link-wipe" style={{
                 fontFamily: 'var(--body)', fontSize: 12, color: 'var(--paper-dim)',
@@ -105,13 +105,15 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="w" style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+      <div className="w" style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid var(--rule)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px 24px' }}>
         <span className="tnum" style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--paper-dim)' }}>
           © {year} Emir One. All rights reserved.
         </span>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--paper-dim)' }}>
-          ABN: Available on request
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
+          <Link to="/privacy-policy" className="link-wipe" style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--paper-dim)', letterSpacing: '0.04em' }}>Privacy</Link>
+          <Link to="/terms-of-service" className="link-wipe" style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--paper-dim)', letterSpacing: '0.04em' }}>Terms of Use</Link>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--paper-dim)' }}>ABN: Available on request</span>
+        </div>
       </div>
     </footer>
   );

@@ -16,6 +16,7 @@ const BookPage = lazy(() => import('./pages/BookPage'));
 const ShariaAligned = lazy(() => import('./pages/ShariaAligned'));
 const HowWeMakeIt = lazy(() => import('./pages/HowWeMakeIt'));
 const FitPage = lazy(() => import('./pages/FitPage'));
+const Careers = lazy(() => import('./pages/Careers'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
 
@@ -184,6 +185,7 @@ function AnimatedRoutes() {
           <Route path="/sharia-aligned" element={<ShariaAligned />} />
           <Route path="/how-we-make-it" element={<HowWeMakeIt />} />
           <Route path="/fit" element={<FitPage />} />
+          <Route path="/careers" element={<Careers />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/research" element={<ResearchHub />} />
