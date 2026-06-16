@@ -8,6 +8,7 @@ import HeroFlow from "@/components/sections/HeroFlow";
 import Footer from "@/components/layout/Footer";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useLatestQuarterlyReport, useFeaturedResearch, useIncrementDownloadCount, isNewContent, formatNumber } from "@/hooks/useResearchData";
+import { splitMetric } from "@/lib/metric";
 
 const bodyStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-0)", color: "var(--mid)", lineHeight: "var(--lh-body)" };
 const leadStyle: React.CSSProperties = { fontFamily: "var(--body)", fontSize: "var(--step-1)", color: "var(--mid)", lineHeight: "var(--lh-lead)" };
@@ -16,7 +17,7 @@ const ResearchCard = memo(({ research, isNew }: { research: any; isNew: boolean 
   <Link
     to={`/research/industry/${research.slug}`}
     className="reveal glass group"
-    style={{ position: "relative", display: "block", padding: "var(--s5)", minWidth: 0 }}
+    style={{ position: "relative", display: "block", padding: "var(--s5)", minWidth: 0, textDecoration: "none" }}
   >
     {isNew && (
       <span
@@ -35,22 +36,23 @@ const ResearchCard = memo(({ research, isNew }: { research: any; isNew: boolean 
         NEW
       </span>
     )}
-    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "var(--s2)" }}>
-      <span style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", fontWeight: 600, color: "var(--green)" }}>{research.industry_name}</span>
+    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 8, rowGap: 2, marginBottom: "var(--s2)", overflowWrap: "normal" }}>
+      <span style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", fontWeight: 600, color: "var(--green)", whiteSpace: "nowrap", flexShrink: 0 }}>{research.industry_name}</span>
       <span style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)" }}>· {research.quarter}</span>
     </div>
     <h3 style={{ fontFamily: "var(--display)", fontSize: "var(--step-1)", fontWeight: 400, color: "var(--ink)", lineHeight: 1.25, marginBottom: "var(--s4)" }}>
       {research.title}
     </h3>
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--s3)", paddingTop: "var(--s4)", borderTop: "1px solid var(--rule)" }}>
-      <div>
-        <p style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", color: "var(--ink)" }}>{research.open_rate_range || "N/A"}</p>
-        <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)" }}>Open Rate</p>
-      </div>
-      <div>
-        <p style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", color: "var(--ink)" }}>{research.reply_rate_range || "N/A"}</p>
-        <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)" }}>Reply Rate</p>
-      </div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--s4)", paddingTop: "var(--s4)", borderTop: "1px solid var(--rule)" }}>
+      {[research.open_rate_range, research.reply_rate_range].map((raw, i) => {
+        const { value, unit } = splitMetric(raw);
+        return (
+          <div key={i} style={{ minWidth: 0 }}>
+            <p className="tnum" style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", color: "var(--ink)", lineHeight: 1.1, letterSpacing: "-0.01em", overflowWrap: "normal" }}>{value}</p>
+            <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", marginTop: 2, textTransform: "capitalize", overflowWrap: "normal" }}>{unit || (i === 0 ? "Open rate" : "Reply rate")}</p>
+          </div>
+        );
+      })}
     </div>
   </Link>
 ));

@@ -482,6 +482,58 @@
   }
 }
 
+/* Rich-text tables inside research articles (embedded HTML, not DataTable).
+   Overrides the @tailwindcss/typography :where() defaults (0 specificity). */
+.research-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  font-family: var(--body);
+  font-size: var(--step--1);
+  line-height: var(--lh-body);
+}
+.research-prose thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--paper-2);
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: var(--step--1);
+  color: var(--mid);
+  padding: var(--s3) var(--s4);
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+.research-prose tbody td {
+  padding: var(--s3) var(--s4);
+  border-bottom: 1px solid var(--rule-2);
+  color: var(--ink);
+  vertical-align: top;
+}
+.research-prose tbody tr:last-child td { border-bottom: 0; }
+.research-prose tbody tr:nth-child(even) { background: var(--rule-2); }
+.research-prose thead th:first-child,
+.research-prose tbody td:first-child { font-weight: 500; color: var(--ink); }
+
+/* Scroll wrapper injected around each embedded table (see IndustryResearch).
+   Rounds + frames the table and lets it scroll horizontally on narrow screens
+   instead of crushing the columns. */
+.table-scroll {
+  margin: var(--s5) 0;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--paper);
+  box-shadow: 0 1px 3px rgba(17, 24, 39, 0.04);
+  overscroll-behavior: contain;
+}
+.table-scroll table { min-width: 560px; }      /* keep columns legible; scroll if tighter */
+.table-scroll--tall { max-height: 60vh; }       /* tall tables: cap + scroll, header stays pinned */
+
 /* Scroll-reveal */
 .reveal {
   opacity: 0;

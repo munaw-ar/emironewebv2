@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * The hero's signature background motion: the journey from cold emails to
@@ -26,6 +26,11 @@ const MINT = '#34D399';
 
 export default function HeroFlow({ variant = 'auto' }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // The "calls booked" node is a crisp UI element, so it lives in the DOM as
+  // vector SVG + text (sharp at any zoom) rather than being painted into the
+  // raster canvas. The canvas animation feeds it position + the live tally.
+  const [node, setNode] = useState<{ x: number; y: number } | null>(null);
+  const [tally, setTally] = useState(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -61,16 +66,6 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
     let raf = 0;
     let last = performance.now();
     let acc = 0;
-
-    const rr = (x: number, y: number, w: number, h: number, r: number) => {
-      ctx.beginPath();
-      ctx.moveTo(x + r, y);
-      ctx.arcTo(x + w, y, x + w, y + h, r);
-      ctx.arcTo(x + w, y + h, x, y + h, r);
-      ctx.arcTo(x, y + h, x, y, r);
-      ctx.arcTo(x, y, x + w, y, r);
-      ctx.closePath();
-    };
 
     function pickMode() {
       // Flow only where there's genuine room for panel + booked-output zone
@@ -121,6 +116,17 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
         }
       } else {
         geo = null;
+      }
+
+      // Position (or hide) the DOM-rendered booked node. Functional updates with
+      // an identity check keep ResizeObserver re-measures from re-rendering when
+      // nothing actually moved.
+      if (mode === 'flow' && geo) {
+        const nx = Math.round(geo.bookX);
+        const ny = Math.round(geo.bookY);
+        setNode((p) => (p && p.x === nx && p.y === ny ? p : { x: nx, y: ny }));
+      } else {
+        setNode((p) => (p === null ? p : null));
       }
     }
 
@@ -197,7 +203,7 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
       }
       booked = booked.filter((b) => !b.dead);
 
-      drawBookedNode(geo.bookX, geo.bookY, true);
+      drawRings();
     }
 
     // ---- ambient composition (narrow screens): purely atmospheric ----
@@ -225,19 +231,9 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
       emails = emails.filter((e) => e.life > 0 && e.y > -10 && e.x < W + 10);
     }
 
-    function drawBookedNode(bx: number, by: number, label: boolean) {
-      ctx!.globalAlpha = 1;
-      ctx!.strokeStyle = GREEN;
-      ctx!.lineWidth = 1.5;
-      rr(bx - 12, by - 11, 24, 22, 4);
-      ctx!.stroke();
-      ctx!.strokeStyle = MINT;
-      ctx!.beginPath();
-      ctx!.moveTo(bx - 5.5, by - 11);
-      ctx!.lineTo(bx - 5.5, by - 15);
-      ctx!.moveTo(bx + 5.5, by - 11);
-      ctx!.lineTo(bx + 5.5, by - 15);
-      ctx!.stroke();
+    // Expanding pulse rings when a call lands. These stay on the canvas (faint,
+    // ephemeral — softness is invisible); the calendar + counter are DOM/SVG.
+    function drawRings() {
       for (const k of rings) {
         k.r += 1.5;
         k.a -= 0.03;
@@ -250,14 +246,6 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
       }
       rings = rings.filter((k) => k.a > 0);
       ctx!.globalAlpha = 1;
-      ctx!.fillStyle = GREEN;
-      ctx!.textAlign = 'center';
-      ctx!.font = '600 11px "JetBrains Mono", monospace';
-      ctx!.fillText((shown % 99).toString().padStart(2, '0'), bx, by + 27);
-      if (label) {
-        ctx!.font = '500 8.5px "JetBrains Mono", monospace';
-        ctx!.fillText('CALLS BOOKED', bx, by + 38);
-      }
     }
 
     function frame(now: number) {
@@ -268,6 +256,7 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
       if (shown < count && now - lastTick > 700) {
         shown++;
         lastTick = now;
+        setTally(shown);
       }
       if (mode === 'flow') stepFlow(dt);
       else stepAmbient(dt);
@@ -316,12 +305,64 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
   }, [variant]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      // z-index:-1 paints above the section's background glow but behind page
-      // content, so no host page needs its content re-stacked.
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: -1, pointerEvents: 'none' }}
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        // z-index:-1 paints above the section's background glow but behind page
+        // content, so no host page needs its content re-stacked.
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: -1, pointerEvents: 'none' }}
+      />
+      {node && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            left: node.x,
+            top: node.y,
+            transform: 'translate(-50%, -50%)',
+            zIndex: -1,
+            pointerEvents: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 5,
+            // crisp at any zoom — vector + text, never rasterized into the canvas
+          }}
+        >
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <rect x="5" y="7.5" width="20" height="17.5" rx="3.5" stroke={GREEN} strokeWidth="1.6" />
+            <line x1="10" y1="4.5" x2="10" y2="9" stroke={MINT} strokeWidth="1.6" strokeLinecap="round" />
+            <line x1="20" y1="4.5" x2="20" y2="9" stroke={MINT} strokeWidth="1.6" strokeLinecap="round" />
+            <line x1="5" y1="13" x2="25" y2="13" stroke={GREEN} strokeWidth="1" opacity="0.45" />
+            <circle cx="15" cy="19" r="2.4" fill={MINT} />
+          </svg>
+          <span
+            style={{
+              fontFamily: 'var(--mono), "JetBrains Mono", monospace',
+              fontWeight: 700,
+              fontSize: 15,
+              lineHeight: 1,
+              color: GREEN,
+              fontVariantNumeric: 'tabular-nums',
+            }}
+          >
+            {String(tally % 99).padStart(2, '0')}
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--mono), "JetBrains Mono", monospace',
+              fontWeight: 500,
+              fontSize: 8.5,
+              letterSpacing: '0.14em',
+              color: 'var(--mid)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            CALLS BOOKED
+          </span>
+        </div>
+      )}
+    </>
   );
 }

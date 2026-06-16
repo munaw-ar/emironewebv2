@@ -6,6 +6,7 @@ import HeroFlow from "@/components/sections/HeroFlow";
 import Footer from "@/components/layout/Footer";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
+import { splitMetric } from "@/lib/metric";
 
 interface IndustryResearch {
   id: string;
@@ -91,18 +92,17 @@ const IndustryIndex = () => {
                         <p style={{ ...eyebrowStyle, color: "var(--mid)", marginBottom: "var(--s4)" }}>{industry.industry_name}</p>
                         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "var(--s3)", marginTop: "auto", paddingTop: "var(--s4)", borderTop: "1px solid var(--rule)" }}>
                           <div style={{ display: "flex", gap: "var(--s5)", minWidth: 0 }}>
-                            <div>
-                              <p className="tnum" style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", fontWeight: 400, color: "var(--ink)", lineHeight: 1 }}>
-                                {industry.open_rate_range || "N/A"}
-                              </p>
-                              <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", marginTop: "var(--s2)" }}>Open Rate</p>
-                            </div>
-                            <div>
-                              <p className="tnum" style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", fontWeight: 400, color: "var(--ink)", lineHeight: 1 }}>
-                                {industry.reply_rate_range || "N/A"}
-                              </p>
-                              <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", marginTop: "var(--s2)" }}>Reply Rate</p>
-                            </div>
+                            {[industry.open_rate_range, industry.reply_rate_range].map((raw, j) => {
+                              const { value, unit } = splitMetric(raw);
+                              return (
+                                <div key={j} style={{ minWidth: 0 }}>
+                                  <p className="tnum" style={{ fontFamily: "var(--display)", fontSize: "var(--step-2)", fontWeight: 400, color: "var(--ink)", lineHeight: 1.05, letterSpacing: "-0.01em", overflowWrap: "normal" }}>
+                                    {value}
+                                  </p>
+                                  <p style={{ fontFamily: "var(--body)", fontSize: "var(--step--1)", color: "var(--light)", marginTop: "var(--s2)", textTransform: "capitalize", overflowWrap: "normal" }}>{unit || (j === 0 ? "Open rate" : "Reply rate")}</p>
+                                </div>
+                              );
+                            })}
                           </div>
                           <ArrowRight size={18} style={{ color: "var(--green)", flexShrink: 0 }} />
                         </div>

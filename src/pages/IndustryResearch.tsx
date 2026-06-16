@@ -112,6 +112,24 @@ const IndustryResearch = () => {
     };
   }, [slug]);
 
+  // Frame each table embedded in the rich-text content in a rounded scroll
+  // container so wide tables scroll horizontally on small screens (instead of
+  // crushing columns) and very tall ones get a capped, sticky-header scroll box.
+  useEffect(() => {
+    if (!research) return;
+    const id = window.requestAnimationFrame(() => {
+      document.querySelectorAll<HTMLTableElement>(".research-prose table").forEach((tbl) => {
+        if (tbl.parentElement?.classList.contains("table-scroll")) return;
+        const wrap = document.createElement("div");
+        wrap.className = "table-scroll";
+        tbl.parentNode?.insertBefore(wrap, tbl);
+        wrap.appendChild(tbl);
+        if (tbl.scrollHeight > 520) wrap.classList.add("table-scroll--tall");
+      });
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [research]);
+
   const tocItems = [
     { id: "overview", title: "Industry Context" },
     { id: "icps-tested", title: "Target Profiles" },
@@ -286,7 +304,7 @@ const IndustryResearch = () => {
                   Industry <em>Context</em>
                 </h2>
                 <div
-                  className="reveal reveal-delay-1 prose prose-sm sm:prose-lg max-w-none measure"
+                  className="reveal reveal-delay-1 research-prose prose prose-sm sm:prose-lg max-w-none measure"
                   style={{ ...bodyStyle }}
                   dangerouslySetInnerHTML={{ __html: sanitizeHtml(research.industry_overview) }}
                 />
@@ -382,7 +400,7 @@ const IndustryResearch = () => {
                   📋 <em>Methodology</em>
                 </h2>
                 <div
-                  className="reveal reveal-delay-1 prose prose-sm sm:prose-lg max-w-none measure"
+                  className="reveal reveal-delay-1 research-prose prose prose-sm sm:prose-lg max-w-none measure"
                   style={{ ...bodyStyle }}
                   dangerouslySetInnerHTML={{ __html: sanitizeHtml(research.methodology) }}
                 />
