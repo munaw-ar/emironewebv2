@@ -112,28 +112,6 @@ const sections: ContentSection[] = [
     ]
   },
   {
-    "heading": "Your US state privacy rights",
-    "blocks": [
-      {
-        "kind": "p",
-        "text": "If you live in California or another US state with a consumer-privacy law (such as Virginia, Colorado, Connecticut, or Utah), you have rights over your personal information, including the right to know what we hold, to request a copy, to ask us to correct or delete it, and not to be treated differently for exercising those rights."
-      },
-      {
-        "kind": "p",
-        "text": "We do not sell your personal information, and we do not share it for cross-context behavioural advertising, as those terms are defined under California law. We never have. To make a request, email privacy@emirone.com and we will verify it and respond within the time the law allows."
-      }
-    ]
-  },
-  {
-    "heading": "If something goes wrong",
-    "blocks": [
-      {
-        "kind": "p",
-        "text": "We hold very little personal data and we work to keep it secure. If a breach ever affects your personal information, we will notify the relevant supervisory authority within the time the law requires (for example, within 72 hours under GDPR where feasible) and tell affected people without undue delay where there is a real risk to them."
-      }
-    ]
-  },
-  {
     "heading": "How we contact people for outbound",
     "blocks": [
       {
@@ -243,6 +221,15 @@ const sections: ContentSection[] = [
     ]
   },
   {
+    "heading": "If something goes wrong",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "We hold very little personal data and we work to keep it secure. If a breach ever affects your personal information, we will notify the relevant supervisory authority within the time the law requires (for example, within 72 hours under GDPR where feasible) and tell affected people without undue delay where there is a real risk to them."
+      }
+    ]
+  },
+  {
     "heading": "Your rights",
     "blocks": [
       {
@@ -264,6 +251,19 @@ const sections: ContentSection[] = [
       {
         "kind": "p",
         "text": "To exercise any of these, email privacy@emirone.com. We will not charge you for a reasonable request, and we will respond within the time the relevant law allows. We may need to confirm your identity first so we do not hand your data to the wrong person."
+      }
+    ]
+  },
+  {
+    "heading": "Your US state privacy rights",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "If you live in California or another US state with a consumer-privacy law (such as Virginia, Colorado, Connecticut, or Utah), you have rights over your personal information, including the right to know what we hold, to request a copy, to ask us to correct or delete it, and not to be treated differently for exercising those rights."
+      },
+      {
+        "kind": "p",
+        "text": "We do not sell your personal information, and we do not share it for cross-context behavioural advertising, as those terms are defined under California law. We never have. To make a request, email privacy@emirone.com and we will verify it and respond within the time the law allows."
       }
     ]
   },
