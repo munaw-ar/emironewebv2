@@ -545,10 +545,28 @@
   background-repeat: no-repeat;
   animation: flowSweep 3.4s linear infinite;
 }
-.flow-node { transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease); }
+.flow-node { transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease), box-shadow 0.25s var(--ease); }
 .flow-node:hover { transform: translateY(-2px); border-color: var(--green); box-shadow: 0 4px 14px rgba(13,92,56,0.10); }
 .flow-node.end:hover, .flow-node:hover.end { filter: brightness(1.08); }
+
+/* Sticky flow-overview bar — locks under the nav and tracks scroll (desktop). */
+.hwmi-sticky { position: static; z-index: 40; }
+@media (min-width: 1024px) {
+  .hwmi-sticky {
+    position: sticky;
+    top: var(--nav-h);
+    background: rgba(255, 255, 255, 0.82);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  /* clear the nav + the sticky bar when jumping to a stage */
+  .pipe-stage { scroll-margin-top: calc(var(--nav-h) + 116px); }
+}
+
 .pipe-stage { display: grid; grid-template-columns: 56px 1fr; gap: var(--s4); }
+.pipe-node { transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease); }
+.pipe-line { transition: background 0.3s var(--ease); }
 .pipe-rail { position: relative; display: flex; justify-content: center; }
 .pipe-rail .pipe-line {
   position: absolute; left: 50%; transform: translateX(-50%);

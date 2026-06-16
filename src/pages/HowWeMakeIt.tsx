@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLenis } from "@/App";
 import { ArrowRight, Smile, Clock, HelpCircle, Forward, XCircle, Check, Server, Target, PenLine, MessageSquare, CalendarCheck } from "lucide-react";
@@ -120,13 +120,17 @@ function ProofChip({ children }: { children: React.ReactNode }) {
   );
 }
 
-/** A pipeline stage: numbered node on a continuous vertical spine + content. */
-function Stage({ id, num, eyebrow, title, first, last, children }: { id: string; num: string; eyebrow: string; title: React.ReactNode; first?: boolean; last?: boolean; children: React.ReactNode }) {
+/** A pipeline stage: numbered node on a continuous vertical spine + content.
+ *  The node fills in once it's the current/passed stage; the line below fills
+ *  once the next stage has been reached — a scroll progress indicator. */
+function Stage({ id, num, index, active, eyebrow, title, first, last, children }: { id: string; num: string; index: number; active: number; eyebrow: string; title: React.ReactNode; first?: boolean; last?: boolean; children: React.ReactNode }) {
+  const reached = active >= 0 && index <= active;
+  const lineFilled = active >= 0 && index < active;
   return (
     <div className="pipe-stage" id={id}>
       <div className="pipe-rail">
-        <span className="pipe-line" style={{ top: first ? 22 : 0, bottom: last ? "calc(100% - 22px)" : 0 }} />
-        <span className="pipe-node tnum">{num}</span>
+        <span className="pipe-line" style={{ top: first ? 22 : 0, bottom: last ? "calc(100% - 22px)" : 0, background: lineFilled ? "var(--green)" : "var(--rule)" }} />
+        <span className="pipe-node tnum" style={reached ? { background: "var(--green)", color: "#fff" } : undefined}>{num}</span>
       </div>
       <div style={{ paddingBottom: last ? 0 : "var(--section-y)" }}>
         <div className="reveal" style={{ ...eyebrowStyle, marginBottom: "var(--s3)" }}>{eyebrow}</div>
@@ -172,10 +176,36 @@ function SampleEmailCard() {
 const HowWeMakeIt = () => {
   const navigate = useNavigate();
   const lenis = useLenis();
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(-1);
   useScrollReveal();
 
   const bookCall = () => navigate("/book");
   const scoreDomain = () => navigate("/");
+
+  // Track which stage is currently under the sticky bar so the overview + spine
+  // read as a live progress indicator as the visitor scrolls.
+  useEffect(() => {
+    const ids = ["hwmi-infra", "hwmi-list", "hwmi-copy", "hwmi-replies"];
+    const compute = () => {
+      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--nav-h"), 10) || 60;
+      const desktop = window.matchMedia("(min-width: 1024px)").matches;
+      const inset = navH + 16 + (desktop ? (stickyRef.current?.offsetHeight || 0) : 0);
+      let cur = -1;
+      ids.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= inset) cur = i;
+      });
+      setActive((prev) => (prev === cur ? prev : cur));
+    };
+    compute();
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute);
+    return () => {
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
+  }, []);
 
   // Scroll a flow-overview node to its stage. The site's global
   // `[id] { scroll-margin-top }` already encodes the nav offset and both Lenis
@@ -210,58 +240,65 @@ const HowWeMakeIt = () => {
           </div>
         </section>
 
-        {/* Flow overview — sets the mental model */}
-        <section style={{ padding: "var(--section-y) 0 var(--s7)", background: "var(--paper)" }}>
-          <div className="w">
+        {/* The system — sticky overview that tracks scroll + the pipeline */}
+        <section style={{ background: "var(--paper)" }}>
+          <div className="w" style={{ paddingTop: "var(--section-y)", paddingBottom: "var(--s6)" }}>
             <div className="reveal" style={{ ...eyebrowStyle, marginBottom: "var(--s3)" }}>The System</div>
             <h2 className="reveal reveal-delay-1 h-section" style={{ marginBottom: "var(--s4)", maxWidth: 820 }}>
               One connected system — <em>built end to end.</em>
             </h2>
-            <p className="reveal reveal-delay-2 measure-lead" style={{ ...leadStyle, marginBottom: "var(--s6)" }}>
+            <p className="reveal reveal-delay-2 measure-lead" style={{ ...leadStyle }}>
               Most agencies start at the copy and rent everything underneath it. We start at the infrastructure — and you own all of it.
             </p>
+          </div>
 
-            <div className="reveal reveal-delay-2" style={{ display: "flex", alignItems: "stretch", gap: 10, flexWrap: "wrap" }}>
-              {flowNodes.map((n, i) => {
-                const boxStyle: React.CSSProperties = {
-                  flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
-                  textAlign: "center", padding: "16px 8px", borderRadius: 14,
-                  border: `1px solid ${n.end ? "var(--green)" : "var(--rule)"}`,
-                  background: n.end ? "var(--green)" : "var(--paper-2)", minWidth: 0,
-                };
-                const inner = (
-                  <>
-                    <n.icon size={20} strokeWidth={1.75} style={{ color: n.end ? "#fff" : "var(--green)" }} />
-                    <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, fontWeight: 600, letterSpacing: "0.03em", color: n.end ? "#fff" : "var(--ink)" }}>{n.label}</span>
-                  </>
-                );
-                return (
-                  <div key={n.label} style={{ display: "flex", alignItems: "center", gap: 10, flex: "1 1 150px" }}>
-                    {n.end ? (
-                      <button onClick={bookCall} className="flow-node end" aria-label="Book a revenue sprint call" style={{ ...boxStyle, font: "inherit", cursor: "pointer" }}>{inner}</button>
-                    ) : (
-                      <button onClick={() => scrollToStage(n.target!)} className="flow-node" aria-label={`Jump to ${n.label}`} style={{ ...boxStyle, font: "inherit", cursor: "pointer" }}>{inner}</button>
-                    )}
-                    {i < flowNodes.length - 1 && (
-                      <span aria-hidden className="flow-arrow" style={{ flexShrink: 0, color: "var(--mint)", fontSize: 16, fontWeight: 700 }}>→</span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            {/* animated flow line */}
-            <div aria-hidden className="reveal reveal-delay-3" style={{ marginTop: 14, height: 2, borderRadius: 2, background: "var(--rule)", overflow: "hidden" }}>
-              <div className="flow-sweep" style={{ width: "100%", height: "100%" }} />
+          {/* sticky overview bar — locks under the nav and tracks the active stage */}
+          <div className="hwmi-sticky" ref={stickyRef}>
+            <div className="w" style={{ paddingTop: 14, paddingBottom: 14 }}>
+              <div className="reveal" style={{ display: "flex", alignItems: "stretch", gap: 10, flexWrap: "wrap" }}>
+                {flowNodes.map((n, i) => {
+                  const isCurrent = i === active;
+                  const isPassed = active >= 0 && i < active && !n.end;
+                  const lit = !n.end && (isCurrent || isPassed);
+                  const boxStyle: React.CSSProperties = {
+                    flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+                    textAlign: "center", padding: "13px 8px", borderRadius: 14,
+                    border: `1px solid ${n.end || lit ? "var(--green)" : "var(--rule)"}`,
+                    background: n.end ? "var(--green)" : isCurrent ? "rgba(13,92,56,0.10)" : isPassed ? "rgba(13,92,56,0.05)" : "var(--paper-2)",
+                    boxShadow: isCurrent ? "0 4px 16px rgba(13,92,56,0.12)" : "none",
+                    minWidth: 0,
+                  };
+                  const inner = (
+                    <>
+                      <n.icon size={20} strokeWidth={1.75} style={{ color: n.end ? "#fff" : "var(--green)" }} />
+                      <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, fontWeight: 600, letterSpacing: "0.03em", color: n.end ? "#fff" : lit ? "var(--green)" : "var(--ink)" }}>{n.label}</span>
+                    </>
+                  );
+                  return (
+                    <div key={n.label} style={{ display: "flex", alignItems: "center", gap: 10, flex: "1 1 150px" }}>
+                      {n.end ? (
+                        <button onClick={bookCall} className="flow-node end" aria-label="Book a revenue sprint call" style={{ ...boxStyle, font: "inherit", cursor: "pointer" }}>{inner}</button>
+                      ) : (
+                        <button onClick={() => scrollToStage(n.target!)} className="flow-node" aria-current={isCurrent ? "step" : undefined} aria-label={`Jump to ${n.label}`} style={{ ...boxStyle, font: "inherit", cursor: "pointer" }}>{inner}</button>
+                      )}
+                      {i < flowNodes.length - 1 && (
+                        <span aria-hidden className="flow-arrow" style={{ flexShrink: 0, color: "var(--mint)", fontSize: 16, fontWeight: 700 }}>→</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <div aria-hidden style={{ marginTop: 12, height: 2, borderRadius: 2, background: "var(--rule)", overflow: "hidden" }}>
+                <div className="flow-sweep" style={{ width: "100%", height: "100%" }} />
+              </div>
             </div>
           </div>
-        </section>
 
-        {/* The pipeline — four stages on one continuous spine */}
-        <section style={{ padding: "0 0 var(--section-y)", background: "var(--paper)" }}>
-          <div className="w">
+          {/* the pipeline — four stages on one continuous spine */}
+          <div className="w" style={{ paddingTop: "var(--s7)", paddingBottom: "var(--section-y)" }}>
 
             {/* 01 — Infrastructure */}
-            <Stage id="hwmi-infra" num="01" first eyebrow="The Infrastructure" title={<>We build on ground <em>you own.</em></>}>
+            <Stage id="hwmi-infra" num="01" index={0} active={active} first eyebrow="The Infrastructure" title={<>We build on ground <em>you own.</em></>}>
               <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s4)" }}>
                 Dedicated sending domains — never your brand domain. SPF, DKIM and DMARC hardened to a 10/10 MXToolbox score. Secondary domains for resilience. And a 21-day monitored warm-up before a single cold email goes out.
               </p>
@@ -295,7 +332,7 @@ const HowWeMakeIt = () => {
             </Stage>
 
             {/* 02 — The List */}
-            <Stage id="hwmi-list" num="02" eyebrow="The List · the engine" title={<>We don't buy lists. <em>We build them from signals.</em></>}>
+            <Stage id="hwmi-list" num="02" index={1} active={active} eyebrow="The List · the engine" title={<>We don't buy lists. <em>We build them from signals.</em></>}>
               <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s5)" }}>
                 Every send starts from a real event — a trigger that means now is the moment. Then every prospect is scored on weighted signals and tiered, so the best-fit accounts get hand-written outreach and the rest never cost us an afternoon.
               </p>
@@ -343,7 +380,7 @@ const HowWeMakeIt = () => {
             </Stage>
 
             {/* 03 — The Copy */}
-            <Stage id="hwmi-copy" num="03" eyebrow="The Copy" title={<>Written by a human, <em>for one human.</em></>}>
+            <Stage id="hwmi-copy" num="03" index={2} active={active} eyebrow="The Copy" title={<>Written by a human, <em>for one human.</em></>}>
               <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s5)" }}>
                 Trigger + offer. We open with what we actually saw, then lead with something useful — a teardown, a one-pager, a capacity sheet — never a call ask in the first email. Up to six touches over about 14 days, each with a job, ending in a gracious break-up. No filler, no pressure, no spam-trigger phrasing.
               </p>
@@ -370,7 +407,7 @@ const HowWeMakeIt = () => {
             </Stage>
 
             {/* 04 — The Replies */}
-            <Stage id="hwmi-replies" num="04" last eyebrow="The Replies" title={<>Every reply handled like it matters — <em>because it does.</em></>}>
+            <Stage id="hwmi-replies" num="04" index={3} active={active} last eyebrow="The Replies" title={<>Every reply handled like it matters — <em>because it does.</em></>}>
               <p className="reveal reveal-delay-1 measure" style={{ ...bodyStyle, marginBottom: "var(--s5)" }}>
                 Reviewed within 24 hours, by a person, never an auto-responder. We don't persist beyond consent — if someone's out, they're out, across every domain.
               </p>
