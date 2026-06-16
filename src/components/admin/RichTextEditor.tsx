@@ -40,8 +40,11 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       }),
       Link.configure({
         openOnClick: false,
+        protocols: ['http', 'https', 'mailto'],
+        isAllowedUri: (url, ctx) => ctx.defaultValidate(url) && /^(https?:|mailto:)/i.test(url),
         HTMLAttributes: {
           class: 'text-[#038C7F] underline',
+          rel: 'noopener noreferrer',
         },
       }),
       Placeholder.configure({

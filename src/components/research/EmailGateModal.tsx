@@ -70,8 +70,8 @@ const EmailGateModal = ({ isOpen, onClose, reportTitle, reportId, pdfUrl }: Emai
 
       // Trigger download after short delay
       setTimeout(() => {
-        if (pdfUrl) {
-          window.open(pdfUrl, "_blank");
+        if (pdfUrl && /^https?:\/\//i.test(pdfUrl)) {
+          window.open(pdfUrl, "_blank", "noopener,noreferrer");
         }
         setTimeout(() => {
           onClose();

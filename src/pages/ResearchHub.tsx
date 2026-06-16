@@ -91,9 +91,9 @@ const ResearchHub = () => {
   ];
 
   const handleDownload = async () => {
-    if (!latestReport?.pdf_url) return;
+    if (!latestReport?.pdf_url || !/^https?:\/\//i.test(latestReport.pdf_url)) return;
     incrementDownload.mutate(latestReport.id);
-    window.open(latestReport.pdf_url, "_blank");
+    window.open(latestReport.pdf_url, "_blank", "noopener,noreferrer");
   };
 
   const isReportNew = latestReport ? isNewContent(latestReport.published_date, 30) : false;
