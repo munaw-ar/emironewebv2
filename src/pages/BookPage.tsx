@@ -49,9 +49,17 @@ const BookPage = () => {
     if (leadSubmitted.current || !email.trim()) return;
     leadSubmitted.current = true;
     try {
-      await supabase.functions.invoke("capture-lead", {
-        body: { email: email.trim(), fullName, companyName, website, phone, goal },
+      const { error } = await supabase.from("leads").insert({
+        email: email.trim(),
+        full_name: fullName,
+        company_name: companyName,
+        website,
+        phone,
+        goal,
+        source: "book",
       });
+      // 23505 = same email already captured; fine, the booking still proceeds.
+      if (error && error.code !== "23505") throw error;
     } catch (e) {
       console.error("Lead capture failed:", e);
       leadSubmitted.current = false;

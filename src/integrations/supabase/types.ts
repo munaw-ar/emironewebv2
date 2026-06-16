@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.1"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
@@ -194,22 +194,64 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          company_name: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          goal: string | null
+          id: string
+          metadata: Json | null
+          phone: string | null
+          source: string | null
+          website: string | null
+        }
+        Insert: {
+          company_name?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          goal?: string | null
+          id?: string
+          metadata?: Json | null
+          phone?: string | null
+          source?: string | null
+          website?: string | null
+        }
+        Update: {
+          company_name?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          goal?: string | null
+          id?: string
+          metadata?: Json | null
+          phone?: string | null
+          source?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       methodology_page: {
         Row: {
           content: string
           id: string
+          is_published: boolean
           last_updated: string | null
           updated_by: string | null
         }
         Insert: {
           content?: string
           id?: string
+          is_published?: boolean
           last_updated?: string | null
           updated_by?: string | null
         }
         Update: {
           content?: string
           id?: string
+          is_published?: boolean
           last_updated?: string | null
           updated_by?: string | null
         }

@@ -10,8 +10,9 @@ export default function Footer() {
     const trimmed = email.trim();
     if (!trimmed || !trimmed.includes('@')) return;
     setStatus('loading');
-    const { error } = await supabase.from('newsletter_subscribers').insert({ email: trimmed });
-    setStatus(error ? 'error' : 'success');
+    const { error } = await supabase.from('newsletter_subscribers').insert({ email: trimmed, source: 'footer' });
+    // 23505 = already subscribed, which is a success from the visitor's view.
+    setStatus(error && error.code !== '23505' ? 'error' : 'success');
   };
 
   const year = new Date().getFullYear();

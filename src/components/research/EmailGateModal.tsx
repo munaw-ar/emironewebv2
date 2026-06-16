@@ -35,34 +35,20 @@ const EmailGateModal = ({ isOpen, onClose, reportTitle, reportId, pdfUrl }: Emai
     setLastSubmitTime(now);
 
     try {
-      // Use the rate-limited edge function
-      const { data, error } = await supabase.functions.invoke('subscribe-newsletter', {
-        body: { 
-          email: email.trim(), 
-          source: `quarterly_report_download_${reportId || 'unknown'}`
-        }
-      });
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .insert({ email: email.trim(), source: `quarterly_report_download_${reportId || 'unknown'}` });
 
-      if (error) throw error;
-      
-      if (data?.error) {
-        if (data.error.includes('Too many requests')) {
-          toast.error("Too many attempts. Please try again later.");
-        } else {
-          toast.error(data.error);
-        }
-        return;
-      }
+      // 23505 = unique violation -> already subscribed, treat as success.
+      if (error && error.code !== '23505') throw error;
 
-      // Log analytics via edge function if we have a reportId
+      // Best-effort analytics; never block the download.
       if (reportId) {
-        await supabase.functions.invoke('log-analytics', {
-          body: {
-            content_type: "quarterly_report",
-            content_id: reportId,
-            event_type: "download",
-            metadata: { report_title: reportTitle }
-          }
+        void supabase.from('research_analytics').insert({
+          content_type: "quarterly_report",
+          content_id: reportId,
+          event_type: "download",
+          metadata: { report_title: reportTitle },
         });
       }
 

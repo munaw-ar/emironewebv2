@@ -31,25 +31,16 @@ const SubscribeWidget = ({ variant = "sidebar", source = "research_page" }: Subs
     setLastSubmitTime(now);
 
     try {
-      // Use the rate-limited edge function
-      const { data, error } = await supabase.functions.invoke('subscribe-newsletter', {
-        body: { email: email.trim(), source }
-      });
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .insert({ email: email.trim(), source });
 
-      if (error) throw error;
-
-      if (data?.error) {
-        if (data.error.includes('Too many requests')) {
-          toast.error("Too many attempts. Please try again later.");
-        } else {
-          toast.error(data.error);
-        }
-        return;
-      }
+      // 23505 = unique violation -> already subscribed, which is a success here.
+      if (error && error.code !== '23505') throw error;
 
       setIsSubscribed(true);
       setEmail("");
-      toast.success("Successfully subscribed!");
+      toast.success(error?.code === '23505' ? "You're already subscribed!" : "Successfully subscribed!");
     } catch (error) {
       console.error("Subscription error:", error);
       toast.error("Failed to subscribe. Please try again.");
