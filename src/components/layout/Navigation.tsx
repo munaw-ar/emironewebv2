@@ -28,9 +28,9 @@ export default function Navigation() {
   useEffect(() => { if (!isMobile) setMobileOpen(false); }, [isMobile]);
 
   const navLinks = [
-    { href: '/research', label: 'Research' },
-    { href: '/sharia-aligned', label: 'Sharia-Aligned' },
     { href: '/how-we-make-it', label: 'How We Make It' },
+    { href: '/sharia-aligned', label: 'Sharia-Aligned' },
+    { href: '/research', label: 'Research & Case Studies' },
   ];
 
   const Logo = (
@@ -96,7 +96,7 @@ export default function Navigation() {
               {navLinks.map(link => (
                 <Link key={link.href} to={link.href} style={{
                   fontFamily: 'var(--body)', fontSize: 13, fontWeight: 500,
-                  letterSpacing: '0.02em', textDecoration: 'none',
+                  letterSpacing: '0.02em', textDecoration: 'none', whiteSpace: 'nowrap',
                   color: location.pathname.startsWith(link.href) ? 'var(--green)' : 'var(--ink)',
                 }}>
                   {link.label}
