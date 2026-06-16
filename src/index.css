@@ -534,6 +534,36 @@
 .table-scroll table { min-width: 560px; }      /* keep columns legible; scroll if tighter */
 .table-scroll--tall { max-height: 60vh; }       /* tall tables: cap + scroll, header stays pinned */
 
+/* "How We Make It" pipeline — spine + animated flow overview */
+@keyframes flowSweep {
+  0%   { background-position: -30% 0; }
+  100% { background-position: 130% 0; }
+}
+.flow-sweep {
+  background: linear-gradient(90deg, transparent, var(--mint), transparent);
+  background-size: 38% 100%;
+  background-repeat: no-repeat;
+  animation: flowSweep 3.4s linear infinite;
+}
+.pipe-stage { display: grid; grid-template-columns: 56px 1fr; gap: var(--s4); }
+.pipe-rail { position: relative; display: flex; justify-content: center; }
+.pipe-rail .pipe-line {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  width: 2px; background: var(--rule);
+}
+.pipe-node {
+  position: relative; z-index: 1; width: 44px; height: 44px; border-radius: 50%;
+  border: 1.5px solid var(--green); background: var(--paper); color: var(--green);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-weight: 600; font-size: 14px; flex-shrink: 0;
+}
+@media (max-width: 640px) {
+  .pipe-stage { grid-template-columns: 40px 1fr; gap: var(--s3); }
+  .pipe-node { width: 36px; height: 36px; font-size: 12px; }
+  /* dangling arrows point sideways once the flow nodes wrap to a grid */
+  .flow-arrow { display: none; }
+}
+
 /* Scroll-reveal */
 .reveal {
   opacity: 0;
