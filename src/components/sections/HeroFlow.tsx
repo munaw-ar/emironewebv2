@@ -36,7 +36,12 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // Resolved fresh on every measure() so the backing store tracks the live
+    // device pixel ratio. Browser zoom changes devicePixelRatio, so a value
+    // captured once would leave us upscaling a stale low-res bitmap (the blur).
+    // Ceiling of 3 keeps Retina + moderate zoom razor-sharp without paying for
+    // the quadratic pixel cost of unbounded ratios.
+    const dprOf = () => Math.min(window.devicePixelRatio || 1, 3);
     let W = 0;
     let H = 0;
     let mode: 'flow' | 'ambient' = 'ambient';
@@ -79,6 +84,7 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
       const pr = parent!.getBoundingClientRect();
       W = pr.width;
       H = pr.height;
+      const dpr = dprOf();
       canvas!.width = Math.max(1, Math.round(W * dpr));
       canvas!.height = Math.max(1, Math.round(H * dpr));
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -286,10 +292,26 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
     const onVis = () => (document.hidden ? stop() : start());
     document.addEventListener('visibilitychange', onVis);
 
+    // Re-measure the instant the device pixel ratio changes (browser zoom, or
+    // the window moving between a Retina and a standard display). matchMedia on
+    // the current resolution fires once when it stops matching; we re-arm it
+    // each time so the backing store is always rebuilt at full sharpness.
+    let dprMql: MediaQueryList | null = null;
+    const onDprChange = () => {
+      measure();
+      watchDpr();
+    };
+    function watchDpr() {
+      dprMql = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+      dprMql.addEventListener('change', onDprChange, { once: true });
+    }
+    watchDpr();
+
     return () => {
       stop();
       ro.disconnect();
       document.removeEventListener('visibilitychange', onVis);
+      dprMql?.removeEventListener('change', onDprChange);
     };
   }, [variant]);
 
