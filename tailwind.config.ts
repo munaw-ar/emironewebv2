@@ -70,10 +70,9 @@ export default {
         light: "var(--light)",
       },
       fontFamily: {
-        serif: ["Fraunces", "Georgia", "serif"],
-        body: ["Inter Tight", "-apple-system", "sans-serif"],
+        serif: ["Newsreader", "Georgia", "serif"],
+        body: ["Hanken Grotesk", "-apple-system", "sans-serif"],
         mono: ["JetBrains Mono", "Consolas", "monospace"],
-        baskerville: ["Libre Baskerville", "Georgia", "serif"],
       },
       maxWidth: {
         site: "1120px",

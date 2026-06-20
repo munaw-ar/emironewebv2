@@ -53,14 +53,16 @@ export default function Navigation() {
           style={{ fill: 'none' }}
         />
         <text
-          x="168" y="68"
-          fontFamily="'Great Vibes',cursive"
-          fontSize="32"
+          x="170" y="68"
+          fontFamily="'Newsreader',Georgia,serif"
+          fontStyle="italic"
+          fontSize="34"
+          fontWeight="500"
           fill="var(--ink)"
         >one</text>
         <text
           x="14" y="38"
-          fontFamily="'Libre Baskerville',Georgia,serif"
+          fontFamily="'Newsreader',Georgia,serif"
           fontSize="36"
           fontWeight="400"
           letterSpacing="10"

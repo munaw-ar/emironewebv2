@@ -56,10 +56,10 @@
     --glass-bg: rgba(255,255,255,0.72);
     --glass-border: #E5E7EB;
 
-    /* Typography — Fraunces editorial display + Inter body */
-    --serif:   "Fraunces", Georgia, serif;
-    --display: "Fraunces", Georgia, serif;
-    --body:    "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Typography — Newsreader editorial display + Hanken Grotesk body */
+    --serif:   "Newsreader", Georgia, serif;
+    --display: "Newsreader", Georgia, serif;
+    --body:    "Hanken Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
     --mono:    "JetBrains Mono", Consolas, monospace;
 
     /* Type scale — Major Third 1.25; Perfect Fourth reserved for hero H1 */
@@ -80,7 +80,7 @@
     --lh-caption: 1.45;
 
     /* Tracking */
-    --track-display: -0.03em;
+    --track-display: -0.02em;
     --track-h2:      -0.02em;
     --track-caps:    0.12em;
 
@@ -200,6 +200,8 @@
     font-family: var(--body);
     font-size: var(--step-0);
     line-height: var(--lh-body);
+    /* Hanken Grotesk sets a touch wide vs Inter — pull it in fractionally */
+    letter-spacing: -0.005em;
     -webkit-font-smoothing: antialiased;
     font-optical-sizing: auto;
     font-feature-settings: "liga" 1, "calt" 1, "kern" 1;
@@ -245,13 +247,13 @@
   td, .mono, [data-mono] { overflow-wrap: anywhere; }
 }
 
-/* Editorial heading system (Fraunces display) */
+/* Editorial heading system (Newsreader display) */
 .h-hero {
   font-family: var(--display);
   font-size: var(--step-5);
   font-weight: 400;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 144;
+  font-variation-settings: "opsz" 72;
   line-height: 1.03;
   letter-spacing: -0.02em;
   color: var(--ink);
@@ -274,7 +276,7 @@
   font-size: var(--step-4);
   font-weight: 400;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 110;
+  font-variation-settings: "opsz" 72;
   line-height: 1.05;
   letter-spacing: -0.015em;
   color: var(--ink);
@@ -520,6 +522,7 @@
   border-bottom: 1px solid var(--rule-2);
   color: var(--ink);
   vertical-align: top;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 .research-prose tbody tr:last-child td { border-bottom: 0; }
 .research-prose tbody tr:nth-child(even) { background: var(--rule-2); }
