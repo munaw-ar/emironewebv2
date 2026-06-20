@@ -65,7 +65,7 @@ export default function Hero() {
 
       {/* Action band — domain checker + the animated story card */}
       <div className="w hero-band" style={{ position: 'relative', zIndex: 1 }}>
-        <div className="hero-band-action">
+        <div className="hero-band-action" data-flow-source>
           <DomainHealthChecker />
           <Link
             to="/research"
