@@ -443,6 +443,11 @@
 }
 .hero-band > * { min-width: 0; }
 .hero-band-action { align-self: center; }
+/* Secondary CTA under the domain checker → research hub */
+.hero-research-cta {
+  transition: background var(--dur-micro) var(--ease-micro), color var(--dur-micro) var(--ease-micro);
+}
+.hero-research-cta:hover { background: var(--green); color: #fff !important; }
 @media (max-width: 980px) {
   .hero-band { grid-template-columns: minmax(0, 1fr); }
   .hero-band .hero-aside { margin-top: var(--s4); }
@@ -601,9 +606,10 @@
   .hwmi-sticky {
     position: sticky;
     top: var(--nav-h);
-    background: rgba(255, 255, 255, 0.82);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    /* Near-opaque solid instead of backdrop-filter: blur — a sticky blur layer
+       re-rasterizes the content behind it every scroll frame (jank). Flat also
+       matches the monopo aesthetic. */
+    background: rgba(255, 255, 255, 0.96);
     border-bottom: 1px solid var(--rule);
   }
   /* clear the nav + the sticky bar when jumping to a stage */

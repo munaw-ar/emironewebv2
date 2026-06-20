@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { Link } from 'react-router-dom';
 import DomainHealthChecker from './DomainHealthChecker';
 import HeroStory from './HeroStory';
 import HeroFlow from './HeroFlow';
@@ -66,24 +67,22 @@ export default function Hero() {
       <div className="w hero-band" style={{ position: 'relative', zIndex: 1 }}>
         <div className="hero-band-action">
           <DomainHealthChecker />
+          <Link
+            to="/research"
+            className="hero-research-cta"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 'var(--s4)',
+              fontFamily: 'var(--body)', fontSize: 12, fontWeight: 600, letterSpacing: '0.1em',
+              textTransform: 'uppercase', color: 'var(--green)', textDecoration: 'none',
+              border: '1px solid var(--green)', borderRadius: 999, padding: '12px 24px', minHeight: 44,
+            }}
+          >
+            See the research <span aria-hidden="true">→</span>
+          </Link>
         </div>
         <div className="hero-aside">
           <HeroStory />
         </div>
-      </div>
-
-      {/* Full-width metric bar — also the visual source of the email→calls flow */}
-      <div className="w hero-stats" data-flow-source style={{ position: 'relative', zIndex: 1, marginTop: 'var(--s5)', paddingTop: 'var(--s4)', borderTop: '1px solid var(--rule)' }}>
-        {[
-          { n: '10 / 10', l: 'MXToolbox domain score' },
-          { n: '21-day', l: 'Monitored warm-up' },
-          { n: 'SPF·DKIM·DMARC', l: 'Hardened on every domain' },
-        ].map((stat) => (
-          <div key={stat.l} className="hero-stat">
-            <div className="tnum" style={{ fontFamily: 'var(--display)', fontSize: 'var(--step-2)', fontWeight: 400, letterSpacing: '-0.01em', color: 'var(--ink)', lineHeight: 1.2 }}>{stat.n}</div>
-            <div style={{ fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--mid)', marginTop: 4 }}>{stat.l}</div>
-          </div>
-        ))}
       </div>
     </section>
   );

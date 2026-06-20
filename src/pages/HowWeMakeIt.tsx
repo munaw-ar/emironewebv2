@@ -187,23 +187,35 @@ const HowWeMakeIt = () => {
   // read as a live progress indicator as the visitor scrolls.
   useEffect(() => {
     const ids = ["hwmi-infra", "hwmi-list", "hwmi-copy", "hwmi-replies"];
-    const compute = () => {
+    // Cache the constants (only change on resize) so the per-scroll path stays
+    // cheap, and rAF-throttle so it computes at most once per frame.
+    let inset = 76;
+    let ticking = false;
+    const measureConsts = () => {
       const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--nav-h"), 10) || 60;
       const desktop = window.matchMedia("(min-width: 1024px)").matches;
-      const inset = navH + 16 + (desktop ? (stickyRef.current?.offsetHeight || 0) : 0);
+      inset = navH + 16 + (desktop ? (stickyRef.current?.offsetHeight || 0) : 0);
+    };
+    const compute = () => {
+      ticking = false;
       let cur = -1;
-      ids.forEach((id, i) => {
-        const el = document.getElementById(id);
+      for (let i = 0; i < ids.length; i++) {
+        const el = document.getElementById(ids[i]);
         if (el && el.getBoundingClientRect().top <= inset) cur = i;
-      });
+      }
       setActive((prev) => (prev === cur ? prev : cur));
     };
+    const onScroll = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(compute); }
+    };
+    const onResize = () => { measureConsts(); compute(); };
+    measureConsts();
     compute();
-    window.addEventListener("scroll", compute, { passive: true });
-    window.addEventListener("resize", compute);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
     return () => {
-      window.removeEventListener("scroll", compute);
-      window.removeEventListener("resize", compute);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
