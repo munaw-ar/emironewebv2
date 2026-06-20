@@ -2,7 +2,6 @@ import type { CSSProperties } from 'react';
 import DomainHealthChecker from './DomainHealthChecker';
 import HeroStory from './HeroStory';
 import HeroFlow from './HeroFlow';
-import HeroBubbles from './HeroBubbles';
 
 const HERO_WORDS = [
   'Your', 'cold', 'email', 'should', 'be',
@@ -23,8 +22,6 @@ export default function Hero() {
       position: 'relative',
       isolation: 'isolate',
     }}>
-      {/* deepest layer: drifting glass bubbles (monopo atmosphere) */}
-      <HeroBubbles />
       {/* signature background motion: emails → the system → calls booked */}
       <HeroFlow />
 
