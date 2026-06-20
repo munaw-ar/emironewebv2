@@ -13,13 +13,15 @@ import type { CSSProperties } from 'react';
 
 type Blob = { color: string; left: string; top: string; size: string; dx: string; dy: string; dur: string; delay: string };
 
-// Green-family blobs, desynced so the field never pulses in unison. Drift is
-// brisk and wide enough that the colour shift reads clearly (not a slow creep).
+// Green-family blobs spanning a wide hue range (spring-green → teal/cyan →
+// light emerald → deep forest) so overlap produces a dramatic colour shift.
+// Fast, wide, desynced drift; lower opacity keeps the field airy and the
+// headline readable.
 const BLOBS: Blob[] = [
-  { color: 'rgba(52,211,153,0.44)',  left: '-10%', top: '-18%', size: '62vw', dx: '16vw',  dy: '18vh',  dur: '15s', delay: '0s'   }, // mint
-  { color: 'rgba(45,212,191,0.38)',  left: '52%',  top: '-22%', size: '58vw', dx: '-18vw', dy: '20vh',  dur: '18s', delay: '-5s'  }, // teal
-  { color: 'rgba(110,231,183,0.34)', left: '18%',  top: '34%',  size: '52vw', dx: '20vw',  dy: '-15vh', dur: '21s', delay: '-9s'  }, // light emerald
-  { color: 'rgba(13,92,56,0.20)',    left: '68%',  top: '38%',  size: '46vw', dx: '-16vw', dy: '-18vh', dur: '17s', delay: '-13s' }, // deep emerald
+  { color: 'rgba(74,222,128,0.30)',  left: '-10%', top: '-18%', size: '62vw', dx: '22vw',  dy: '22vh',  dur: '8s',  delay: '0s'   }, // spring green
+  { color: 'rgba(20,184,166,0.28)',  left: '52%',  top: '-22%', size: '58vw', dx: '-24vw', dy: '24vh',  dur: '10s', delay: '-3s'  }, // teal / cyan
+  { color: 'rgba(110,231,183,0.26)', left: '18%',  top: '34%',  size: '52vw', dx: '26vw',  dy: '-20vh', dur: '11s', delay: '-6s'  }, // light emerald
+  { color: 'rgba(6,78,59,0.16)',     left: '68%',  top: '38%',  size: '46vw', dx: '-22vw', dy: '-24vh', dur: '9s',  delay: '-8s'  }, // deep forest
 ];
 
 export default function HeroMesh() {
