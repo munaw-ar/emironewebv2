@@ -748,6 +748,34 @@
   .ramp-card:not(:last-child) { margin-bottom: var(--s3); }
 }
 
+/* ── Hero mesh gradient (monopo "Mercury Flow", green family) ────────────
+   Large soft green blobs drift + cross-fade into a slowly colour-shifting
+   field. Transform-only animation behind a one-time blur ⇒ compositor-cheap,
+   so it never touches the scroll budget. */
+.hero-mesh {
+  position: absolute;
+  inset: 0;
+  z-index: -2;             /* behind the HeroFlow canvas (-1) and content (1) */
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-mesh-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px);
+  will-change: transform;
+  animation: meshDrift var(--dur, 40s) ease-in-out var(--delay, 0s) infinite;
+}
+@keyframes meshDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(var(--dx), var(--dy)) scale(1.12); }
+  66%  { transform: translate(calc(var(--dx) * -0.5), calc(var(--dy) * 0.6)) scale(0.94); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-mesh-blob { animation: none; }
+}
+
 /* Hero word-by-word reveal (Intelligent-Lab style) */
 .word-reveal .w-word {
   display: inline-block;

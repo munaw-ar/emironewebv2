@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import DomainHealthChecker from './DomainHealthChecker';
 import HeroStory from './HeroStory';
 import HeroFlow from './HeroFlow';
+import HeroMesh from './HeroMesh';
 
 const HERO_WORDS = [
   'Your', 'cold', 'email', 'should', 'be',
@@ -22,6 +23,8 @@ export default function Hero() {
       position: 'relative',
       isolation: 'isolate',
     }}>
+      {/* deepest layer: slowly colour-shifting green mesh gradient (monopo) */}
+      <HeroMesh />
       {/* signature background motion: emails → the system → calls booked */}
       <HeroFlow />
 
