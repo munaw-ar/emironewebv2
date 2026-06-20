@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import anime from 'animejs';
+import anime, { type AnimeInstance } from 'animejs';
 import { Ban, Target, ShieldCheck, MailCheck } from 'lucide-react';
 
 /**
@@ -23,6 +23,13 @@ const GREEN = '#0D5C38';
 
 export default function HeroStory() {
   const root = useRef<HTMLDivElement>(null);
+  const tlRef = useRef<AnimeInstance | null>(null);
+
+  const replay = () => {
+    const tl = tlRef.current;
+    if (!tl) return;
+    tl.restart();
+  };
 
   useEffect(() => {
     const el = root.current;
@@ -45,6 +52,7 @@ export default function HeroStory() {
     }
 
     const tl = anime.timeline({ loop: true, easing: 'easeOutExpo', autoplay: true });
+    tlRef.current = tl;
 
     STAGES.forEach((_, i) => {
       const at = i * STAGE_MS;
@@ -72,7 +80,7 @@ export default function HeroStory() {
       }
     });
 
-    return () => { anime.remove(panels); anime.remove(fills); if (ring) anime.remove(ring); };
+    return () => { anime.remove(panels); anime.remove(fills); if (ring) anime.remove(ring); tlRef.current = null; };
   }, []);
 
   const node = (active: boolean) => ({
@@ -85,7 +93,17 @@ export default function HeroStory() {
   const subStyle: React.CSSProperties = { fontFamily: 'var(--body)', fontSize: 'var(--step--1)', color: 'var(--mid)', lineHeight: 'var(--lh-body)' };
 
   return (
-    <div className="glass hero-story" data-flow-system ref={root} style={{ padding: 'var(--s5)', maxWidth: 380, marginLeft: 0, marginRight: 'auto', boxShadow: 'var(--shadow-lg)' }}>
+    <div
+      className="glass hero-story"
+      data-flow-system
+      ref={root}
+      role="button"
+      tabIndex={0}
+      aria-label="Replay the deliverability story animation"
+      onClick={replay}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); replay(); } }}
+      style={{ padding: 'var(--s5)', maxWidth: 380, marginLeft: 0, marginRight: 'auto', boxShadow: 'var(--shadow-lg)', cursor: 'pointer' }}
+    >
       {/* story progress segments */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 'var(--s4)' }}>
         {STAGES.map((_, i) => (

@@ -1,9 +1,10 @@
 declare module 'animejs' {
   // Minimal typing for anime.js v3 — enough for our timeline usage.
-  interface AnimeInstance {
+  export interface AnimeInstance {
     add: (params: Record<string, unknown>, offset?: string | number) => AnimeInstance;
     play: () => void;
     pause: () => void;
+    restart: () => void;
     finished: Promise<void>;
   }
   interface Anime {
