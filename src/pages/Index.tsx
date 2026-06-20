@@ -2,7 +2,6 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
-import Marquee from '@/components/sections/Marquee';
 import SectionEthics from '@/components/sections/SectionEthics';
 import SectionOffer from '@/components/sections/SectionOffer';
 import SectionDistinction from '@/components/sections/SectionDistinction';
@@ -18,7 +17,6 @@ export default function Index() {
       <Navigation />
       <main id="main">
         <Hero />
-        <Marquee />
         <SectionEthics />
         <SectionOffer />
         <SectionDistinction />
