@@ -1,13 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import anime, { type AnimeInstance } from 'animejs';
 import { Ban, Target, ShieldCheck, MailCheck } from 'lucide-react';
 
 /**
  * The hero's signature animation: an auto-playing "story" of Emir One —
- * a cold email's path to the inbox. Five stages cross-fade on a looping
- * anime.js timeline with story-style progress segments. Replaces the static
- * DNS report card. Falls back to the final (Delivered) stage under
- * prefers-reduced-motion.
+ * a cold email's path to the inbox. Five stages cross-fade story-style, with
+ * progress segments that fill across each stage (Instagram-stories pattern).
+ * Tap / click / Enter / Space advances to the next stage smoothly; when the
+ * active segment fills it auto-advances on its own and loops. Falls back to
+ * the final (Delivered) stage under prefers-reduced-motion.
  */
 const STAGES = [
   { key: 'flagged',   title: 'Flagged',              sub: 'Primary domain, SPF soft-fail, DMARC p=none — straight to spam.' },
@@ -17,33 +18,28 @@ const STAGES = [
   { key: 'delivered', title: '10 / 10 · Delivered',  sub: 'In the inbox — consent-first, Sharia-aligned, every claim verifiable.' },
 ];
 
-const STAGE_MS = 2200;
+const STAGE_MS = 2600;
 const RED = '#C2410C';
 const GREEN = '#0D5C38';
+const CIRC = 138.23; // 2π·22
 
 export default function HeroStory() {
   const root = useRef<HTMLDivElement>(null);
-  const tlRef = useRef<AnimeInstance | null>(null);
-
-  const replay = () => {
-    const tl = tlRef.current;
-    if (!tl) return;
-    tl.restart();
-  };
+  const [active, setActive] = useState(0);
+  // advance-to-next-stage handle, populated once the timeline is wired up
+  const nextRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    const panels = el.querySelectorAll<HTMLElement>('[data-panel]');
-    const fills = el.querySelectorAll<HTMLElement>('[data-fill]');
+    const fills = Array.from(el.querySelectorAll<HTMLElement>('[data-fill]'));
     const ring = el.querySelector<SVGCircleElement>('[data-ring]');
     const days = el.querySelector<HTMLElement>('[data-days]');
     const score = el.querySelector<HTMLElement>('[data-score]');
-    const CIRC = 138.23; // 2π·22
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) {
-      panels.forEach((p, i) => { p.style.opacity = i === panels.length - 1 ? '1' : '0'; });
+      setActive(STAGES.length - 1);
       fills.forEach(f => { f.style.transform = 'scaleX(1)'; });
       if (ring) ring.style.strokeDashoffset = '0';
       if (days) days.textContent = '21';
@@ -51,42 +47,65 @@ export default function HeroStory() {
       return;
     }
 
-    const tl = anime.timeline({ loop: true, easing: 'easeOutExpo', autoplay: true });
-    tlRef.current = tl;
+    let current = 0;
+    let fillAnim: AnimeInstance | null = null;
+    let counterTarget: { v: number } | null = null;
 
-    STAGES.forEach((_, i) => {
-      const at = i * STAGE_MS;
-      // progress segment fills across the stage
-      tl.add({ targets: fills[i], scaleX: [0, 1], duration: STAGE_MS - 120, easing: 'linear' }, at);
-      // panel in
-      tl.add({ targets: panels[i], opacity: [0, 1], translateY: [16, 0], scale: [0.96, 1], duration: 520 }, at);
+    const runStage = (index: number) => {
+      // stop whatever is in flight
+      anime.remove(fills);
+      if (counterTarget) { anime.remove(counterTarget); counterTarget = null; }
 
-      if (i === 3 && ring) {
-        tl.add({ targets: ring, strokeDashoffset: [CIRC, 0], duration: STAGE_MS - 500, easing: 'easeInOutQuart' }, at + 200);
-        tl.add({ targets: { v: 0 }, v: 21, round: 1, duration: STAGE_MS - 500, easing: 'easeInOutQuart',
-          update: (a: any) => { if (days) days.textContent = String(a.animations[0].currentValue); } }, at + 200);
-      }
-      if (i === 4 && score) {
-        tl.add({ targets: { v: 0 }, v: 10, round: 1, duration: 700,
-          update: (a: any) => { if (score) score.textContent = String(a.animations[0].currentValue); } }, at + 250);
-      }
-      // panel out (all but the last hold a beat longer before loop)
-      if (i < STAGES.length - 1) {
-        tl.add({ targets: panels[i], opacity: [1, 0], translateY: [0, -14], duration: 400, easing: 'easeInQuad' }, at + STAGE_MS - 280);
-      } else {
-        // last stage holds, then fade before loop restart
-        tl.add({ targets: panels[i], opacity: [1, 0], duration: 450, easing: 'easeInQuad' }, at + STAGE_MS + 700);
-        tl.add({ targets: fills, scaleX: 0, duration: 350, easing: 'easeInQuad' }, at + STAGE_MS + 700);
-      }
-    });
+      // progress segments: everything before the active stage reads as done
+      fills.forEach((f, i) => { f.style.transform = i < index ? 'scaleX(1)' : 'scaleX(0)'; });
 
-    return () => { anime.remove(panels); anime.remove(fills); if (ring) anime.remove(ring); tlRef.current = null; };
+      current = index;
+      setActive(index); // CSS handles the smooth panel crossfade
+
+      // reset + replay the stage-specific flourishes each visit
+      if (STAGES[index].key === 'warmed' && ring && days) {
+        ring.style.strokeDashoffset = String(CIRC);
+        days.textContent = '0';
+        anime({ targets: ring, strokeDashoffset: [CIRC, 0], duration: STAGE_MS - 600, easing: 'easeInOutQuart' });
+        counterTarget = { v: 0 };
+        anime({ targets: counterTarget, v: 21, round: 1, duration: STAGE_MS - 600, easing: 'easeInOutQuart',
+          update: () => { if (days && counterTarget) days.textContent = String(counterTarget.v); } });
+      }
+      if (STAGES[index].key === 'delivered' && score) {
+        score.textContent = '0';
+        counterTarget = { v: 0 };
+        anime({ targets: counterTarget, v: 10, round: 1, duration: 800, easing: 'easeOutExpo',
+          update: () => { if (score && counterTarget) score.textContent = String(counterTarget.v); } });
+      }
+
+      // the active segment fills across the dwell, then auto-advances + loops
+      fillAnim = anime({
+        targets: fills[index],
+        scaleX: [0, 1],
+        duration: STAGE_MS,
+        easing: 'linear',
+        complete: () => runStage((index + 1) % STAGES.length),
+      });
+    };
+
+    nextRef.current = () => runStage((current + 1) % STAGES.length);
+    runStage(0);
+
+    return () => {
+      anime.remove(fills);
+      if (ring) anime.remove(ring);
+      if (counterTarget) anime.remove(counterTarget);
+      if (fillAnim) fillAnim.pause();
+      nextRef.current = () => {};
+    };
   }, []);
 
-  const node = (active: boolean) => ({
+  const advance = () => nextRef.current();
+
+  const node = (isActive: boolean) => ({
     width: 52, height: 52, borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-    border: `1.5px solid ${active ? GREEN : RED}`, color: active ? GREEN : RED,
-    background: active ? 'rgba(13,92,56,0.08)' : 'rgba(194,65,12,0.06)',
+    border: `1.5px solid ${isActive ? GREEN : RED}`, color: isActive ? GREEN : RED,
+    background: isActive ? 'rgba(13,92,56,0.08)' : 'rgba(194,65,12,0.06)',
   }) as React.CSSProperties;
 
   const titleStyle: React.CSSProperties = { fontFamily: 'var(--display)', fontVariationSettings: '"opsz" 40', fontSize: 'var(--step-2)', fontWeight: 400, color: 'var(--ink)', fontVariantNumeric: 'tabular-nums' };
@@ -99,9 +118,9 @@ export default function HeroStory() {
       ref={root}
       role="button"
       tabIndex={0}
-      aria-label="Replay the deliverability story animation"
-      onClick={replay}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); replay(); } }}
+      aria-label="Tap to see the next stage of the deliverability story"
+      onClick={advance}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance(); } }}
       style={{ padding: 'var(--s5)', maxWidth: 380, marginLeft: 0, marginRight: 'auto', boxShadow: 'var(--shadow-lg)', cursor: 'pointer' }}
     >
       {/* story progress segments */}
@@ -115,8 +134,13 @@ export default function HeroStory() {
 
       {/* stage viewport */}
       <div style={{ position: 'relative', height: 184 }}>
-        {STAGES.map((s) => (
-          <div key={s.key} data-panel style={{ position: 'absolute', inset: 0, opacity: 0, display: 'flex', flexDirection: 'column', gap: 'var(--s3)' }}>
+        {STAGES.map((s, i) => (
+          <div
+            key={s.key}
+            data-panel
+            data-active={i === active ? 'true' : undefined}
+            style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: 'var(--s3)' }}
+          >
             {/* visual */}
             {s.key === 'flagged' && <span style={node(false)}><Ban size={22} strokeWidth={2} /></span>}
             {s.key === 'targeted' && (

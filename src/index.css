@@ -414,6 +414,22 @@
   .hero-story { margin: 0 auto !important; max-width: 100%; }
 }
 
+/* Story-card stages: smooth crossfade between panels (tap / auto advance).
+   Only the [data-active] panel is shown; the rest fade + lift out together. */
+.hero-story [data-panel] {
+  opacity: 0;
+  transform: translateY(16px) scale(0.96);
+  transition: opacity 0.42s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.hero-story [data-panel][data-active] {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-story [data-panel] { transition: none; }
+}
+
 /* ── Monopo "monumental statement" hero (homepage only) ──────────────────
    Whisper-weight (300) display type at extreme scale becomes the composition;
    the type spans the full container rather than a narrow column. Scoped to
