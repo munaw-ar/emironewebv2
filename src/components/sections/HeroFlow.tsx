@@ -44,9 +44,11 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
     // Resolved fresh on every measure() so the backing store tracks the live
     // device pixel ratio. Browser zoom changes devicePixelRatio, so a value
     // captured once would leave us upscaling a stale low-res bitmap (the blur).
-    // Ceiling of 3 keeps Retina + moderate zoom razor-sharp without paying for
-    // the quadratic pixel cost of unbounded ratios.
-    const dprOf = () => Math.min(window.devicePixelRatio || 1, 3);
+    // Ceiling of 2 keeps Retina razor-sharp. The crisp focal element (the
+    // "calls booked" node) is DOM/SVG, so this canvas only paints faint
+    // atmospheric dots — pixel cost scales with the square of the ratio, so a
+    // lower ceiling meaningfully cuts per-frame paint with no visible softness.
+    const dprOf = () => Math.min(window.devicePixelRatio || 1, 2);
     let W = 0;
     let H = 0;
     let mode: 'flow' | 'ambient' = 'ambient';
@@ -274,12 +276,27 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
     }
 
     measure();
-    start();
+
+    // The loop should run only when the hero is actually on-screen AND the tab
+    // is visible. HeroFlow mounts on every page, so an always-on rAF (full-canvas
+    // clear + repaint each frame) would burn the frame budget and fight Lenis's
+    // scroll loop the whole time you're reading anything below the fold.
+    let onScreen = true;
+    const sync = () => { (onScreen && !document.hidden) ? start() : stop(); };
 
     const ro = new ResizeObserver(() => measure());
     ro.observe(parent);
-    const onVis = () => (document.hidden ? stop() : start());
+
+    const io = new IntersectionObserver((entries) => {
+      onScreen = entries[0].isIntersecting;
+      sync();
+    }, { rootMargin: '120px' });
+    io.observe(parent);
+
+    const onVis = () => sync();
     document.addEventListener('visibilitychange', onVis);
+
+    sync();
 
     // Re-measure the instant the device pixel ratio changes (browser zoom, or
     // the window moving between a Retina and a standard display). matchMedia on
@@ -299,6 +316,7 @@ export default function HeroFlow({ variant = 'auto' }: Props) {
     return () => {
       stop();
       ro.disconnect();
+      io.disconnect();
       document.removeEventListener('visibilitychange', onVis);
       dprMql?.removeEventListener('change', onDprChange);
     };
