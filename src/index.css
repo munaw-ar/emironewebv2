@@ -56,10 +56,10 @@
     --glass-bg: rgba(255,255,255,0.72);
     --glass-border: #E5E7EB;
 
-    /* Typography — Newsreader editorial display + Hanken Grotesk body */
-    --serif:   "Newsreader", Georgia, serif;
-    --display: "Newsreader", Georgia, serif;
-    --body:    "Hanken Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Typography — Archivo single-family (Optimo Plain stand-in); JetBrains Mono for data */
+    --serif:   "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --body:    "Archivo", -apple-system, BlinkMacSystemFont, sans-serif;
     --mono:    "JetBrains Mono", Consolas, monospace;
 
     /* Type scale — Major Third 1.25; Perfect Fourth reserved for hero H1 */
@@ -200,7 +200,7 @@
     font-family: var(--body);
     font-size: var(--step-0);
     line-height: var(--lh-body);
-    /* Hanken Grotesk sets a touch wide vs Inter — pull it in fractionally */
+    /* Archivo (neo-grotesque) — a hair of negative tracking keeps body text tight */
     letter-spacing: -0.005em;
     -webkit-font-smoothing: antialiased;
     font-optical-sizing: auto;
@@ -247,7 +247,7 @@
   td, .mono, [data-mono] { overflow-wrap: anywhere; }
 }
 
-/* Editorial heading system (Newsreader display) */
+/* Editorial heading system (Archivo display) */
 .h-hero {
   font-family: var(--display);
   font-size: var(--step-5);

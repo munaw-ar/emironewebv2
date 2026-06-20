@@ -54,7 +54,7 @@ export default function Navigation() {
         />
         <text
           x="170" y="68"
-          fontFamily="'Newsreader',Georgia,serif"
+          fontFamily="'Archivo','Helvetica Neue',Arial,sans-serif"
           fontStyle="italic"
           fontSize="34"
           fontWeight="500"
@@ -62,7 +62,7 @@ export default function Navigation() {
         >one</text>
         <text
           x="14" y="38"
-          fontFamily="'Newsreader',Georgia,serif"
+          fontFamily="'Archivo','Helvetica Neue',Arial,sans-serif"
           fontSize="36"
           fontWeight="400"
           letterSpacing="10"

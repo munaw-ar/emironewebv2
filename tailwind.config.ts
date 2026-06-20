@@ -70,8 +70,8 @@ export default {
         light: "var(--light)",
       },
       fontFamily: {
-        serif: ["Newsreader", "Georgia", "serif"],
-        body: ["Hanken Grotesk", "-apple-system", "sans-serif"],
+        serif: ["Archivo", "Helvetica Neue", "Arial", "sans-serif"],
+        body: ["Archivo", "-apple-system", "sans-serif"],
         mono: ["JetBrains Mono", "Consolas", "monospace"],
       },
       maxWidth: {
