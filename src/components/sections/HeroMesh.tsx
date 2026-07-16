@@ -5,10 +5,11 @@ import type { CSSProperties } from 'react';
  * Hero mesh gradient — the monopo "Mercury Flow" living-gradient effect kept in
  * Emir One's green family. Several large, soft, green-tinted radial blobs drift
  * and cross-fade so the background reads as a slowly colour-shifting field
- * (mint → emerald → teal → sage). Transform-only animation behind a one-time
- * blur ⇒ the layer is rasterised once and GPU-composited, so it adds no real
- * main-thread cost and keeps scrolling buttery. Sits behind the particle flow
- * (z-index -2). Decorative: aria-hidden, pointer-events none, clipped by hero.
+ * (mint → emerald → teal → sage). The softness comes from the radial-gradients
+ * themselves, not a CSS blur — blurred layers get re-composited on every scroll
+ * frame and were measured as this page's worst scroll cost. Translate-only, and
+ * paused off-screen. Sits behind the particle flow (z-index -2). Decorative:
+ * aria-hidden, pointer-events none, clipped by hero.
  * Static under prefers-reduced-motion (handled in index.css).
  */
 

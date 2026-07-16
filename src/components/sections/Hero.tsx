@@ -47,7 +47,8 @@ export default function Hero() {
                     fontWeight: accent ? 600 : undefined,
                   } as CSSProperties}
                 >
-                  {word}
+                  {/* inner span does the moving; .w-word is the mask it rises out of */}
+                  <span>{word}</span>
                 </span>{' '}
               </span>
             );

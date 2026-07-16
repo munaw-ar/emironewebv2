@@ -32,7 +32,10 @@ export function useScrollReveal() {
             io.unobserve(e.target);
           }
         }),
-      { threshold: 0.12, rootMargin: '0px 0px -12% 0px' }
+      // Reveal only once content crosses 75% of the viewport height, rather than
+      // the instant it peeks in. Waiting reads as deliberate; firing early reads
+      // as eager and the motion gets lost above the fold.
+      { threshold: 0, rootMargin: '0px 0px -25% 0px' }
     );
 
     const seen = new WeakSet<Element>();

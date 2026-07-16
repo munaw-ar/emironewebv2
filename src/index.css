@@ -781,10 +781,14 @@
   overflow: hidden;
   pointer-events: none;
 }
+/* No filter: blur(). A radial-gradient fading to transparent is already smooth,
+   so a 64px blur on top was visually near-invisible — but it forced the browser
+   to re-composite four huge layers on every scroll frame (measured: 118ms worst
+   frame with it, 32ms without, identical to hiding the mesh entirely). Blur is
+   the single most expensive thing you can put behind a scrolling page. */
 .hero-mesh-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(64px);
   animation: meshDrift var(--dur, 40s) ease-in-out var(--delay, 0s) infinite;
 }
 /* Translate-only. scale() on a blurred layer forces WebKit to re-rasterize the
@@ -804,18 +808,31 @@
   .hero-mesh-blob { animation: none; }
 }
 
-/* Hero word-by-word reveal (Intelligent-Lab style) */
+/* Hero word-by-word curtain rise (monopo / Mercedes-Benz "WordFade").
+   Each word sits in an overflow:hidden mask and rises out from behind it.
+   Pure transform, no opacity fade — the mask edge is what gives it weight,
+   and the long-settling curve is what makes it feel expensive. */
 .word-reveal .w-word {
   display: inline-block;
-  opacity: 0;
-  transform: translateY(0.5em);
-  animation: wordUp 0.62s var(--ease-out) both;
-  animation-delay: calc(var(--i, 0) * 0.045s);
-  will-change: transform, opacity;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* At line-height .92 the mask would guillotine descenders (g, y, p).
+     Pad the box, then pull it back so the layout is unchanged. */
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
 }
-@keyframes wordUp { to { opacity: 1; transform: none; } }
+.word-reveal .w-word > span {
+  display: inline-block;
+  animation: wordUp 1s cubic-bezier(0, 1, 0.45, 1) both;
+  animation-delay: calc(var(--i, 0) * 0.075s);
+}
+@keyframes wordUp {
+  from { transform: translateY(1.1em); }
+  to   { transform: none; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .word-reveal .w-word { animation: none; opacity: 1; transform: none; }
+  .word-reveal .w-word { overflow: visible; padding-bottom: 0; margin-bottom: 0; }
+  .word-reveal .w-word > span { animation: none; transform: none; }
 }
 
 /* Animated underline wipe for body links */
