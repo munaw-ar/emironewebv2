@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import type { CSSProperties } from 'react';
 
 /**
@@ -25,8 +26,27 @@ const BLOBS: Blob[] = [
 ];
 
 export default function HeroMesh() {
+  const root = useRef<HTMLDivElement>(null);
+
+  // Only animate while the hero is on screen. Left running, four blurred layers
+  // keep drifting (and stay GPU-promoted) long after they've scrolled away —
+  // pure cost for something nobody can see. HeroFlow already does this.
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.setAttribute('data-active', '');
+        else el.removeAttribute('data-active');
+      },
+      { rootMargin: '120px' },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <div className="hero-mesh" aria-hidden="true">
+    <div className="hero-mesh" aria-hidden="true" ref={root}>
       {BLOBS.map((b, i) => (
         <span
           key={i}

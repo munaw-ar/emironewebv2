@@ -85,10 +85,12 @@ export default function Navigation() {
 
   return (
     <>
+      {/* Near-opaque solid instead of backdrop-filter: blur — a sticky blur layer
+          re-rasterizes everything behind it on every scroll frame, which WebKit
+          pays for far more than Blink does. Same call as .hwmi-sticky. */}
       <header style={{
         position: 'sticky', top: 0, zIndex: 100,
-        background: 'rgba(255,255,255,0.8)', borderBottom: '1px solid var(--rule)',
-        WebkitBackdropFilter: 'blur(10px)', backdropFilter: 'blur(10px)',
+        background: 'rgba(255,255,255,0.96)', borderBottom: '1px solid var(--rule)',
       }}>
         <div className="w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 'var(--nav-h)' }}>
           {Logo}

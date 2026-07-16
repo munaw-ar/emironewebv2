@@ -785,15 +785,21 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(64px);
-  will-change: transform;
   animation: meshDrift var(--dur, 40s) ease-in-out var(--delay, 0s) infinite;
 }
+/* Translate-only. scale() on a blurred layer forces WebKit to re-rasterize the
+   blur every frame (Blink just scales the cached texture) — the drift reads the
+   same without it. will-change is applied only while on-screen, from JS, so the
+   layers are released instead of staying promoted for the life of the page. */
 @keyframes meshDrift {
-  0%   { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(var(--dx), var(--dy)) scale(1.12); }
-  66%  { transform: translate(calc(var(--dx) * -0.5), calc(var(--dy) * 0.6)) scale(0.94); }
-  100% { transform: translate(0, 0) scale(1); }
+  0%   { transform: translate(0, 0); }
+  33%  { transform: translate(var(--dx), var(--dy)); }
+  66%  { transform: translate(calc(var(--dx) * -0.5), calc(var(--dy) * 0.6)); }
+  100% { transform: translate(0, 0); }
 }
+/* Off-screen: stop animating and drop the promotion (toggled by HeroMesh). */
+.hero-mesh[data-active] .hero-mesh-blob { will-change: transform; }
+.hero-mesh:not([data-active]) .hero-mesh-blob { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
   .hero-mesh-blob { animation: none; }
 }
