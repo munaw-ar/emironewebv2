@@ -414,6 +414,18 @@
   .hero-story { margin: 0 auto !important; max-width: 100%; }
 }
 
+/* Domain checker — a connected pill on desktop, stacked on phones. The button
+   is whiteSpace:nowrap so it can't shrink; below 480px it would starve the
+   input down to ~90px ("you|" instead of "yourdomain.com"). Stack instead. */
+.domain-form { display: flex; gap: 0; width: 100%; max-width: 440px; }
+.domain-form-input { border-right: none; border-radius: 999px 0 0 999px; }
+.domain-form-btn { border-radius: 0 999px 999px 0; }
+@media (max-width: 480px) {
+  .domain-form { flex-direction: column; gap: 10px; max-width: 100%; }
+  .domain-form-input { border-right: 1px solid var(--rule); border-radius: 999px; }
+  .domain-form-btn { border-radius: 999px; }
+}
+
 /* Story-card stages: smooth crossfade between panels (tap / auto advance).
    Only the [data-active] panel is shown; the rest fade + lift out together. */
 .hero-story [data-panel] {

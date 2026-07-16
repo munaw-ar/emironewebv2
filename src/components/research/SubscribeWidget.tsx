@@ -88,7 +88,7 @@ const SubscribeWidget = ({ variant = "sidebar", source = "research_page" }: Subs
         <Button
           type="submit"
           variant="hero"
-          className={variant === "inline" ? "shrink-0" : "w-full"}
+          className={variant === "inline" ? "shrink-0 min-h-11" : "w-full min-h-11"}
           disabled={isSubmitting}
         >
           {isSubmitting ? (

@@ -145,7 +145,10 @@ export default function DomainHealthChecker() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', gap: 0, width: '100%', maxWidth: 440 }}>
+      {/* Layout lives in index.css (.domain-form) so it can stack on phones —
+          the button can't shrink, so below 480px the input would be squeezed to
+          ~90px and you couldn't read the domain you were typing. */}
+      <form onSubmit={handleSubmit} noValidate className="domain-form">
         <input
           type="text"
           value={input}
@@ -155,21 +158,20 @@ export default function DomainHealthChecker() {
           autoComplete="off"
           aria-label="Your domain"
           disabled={isChecking}
+          className="domain-form-input"
           style={{
             flex: 1, minWidth: 0, fontFamily: 'var(--mono)', fontSize: 16, minHeight: 48,
             padding: '12px 20px', background: 'var(--paper)',
-            border: '1px solid var(--rule)', borderRight: 'none',
-            borderRadius: '999px 0 0 999px', color: 'var(--ink)',
+            border: '1px solid var(--rule)', color: 'var(--ink)',
           }}
         />
         <button
           type="submit"
-          className="cta"
+          className="cta domain-form-btn"
           disabled={isChecking}
           style={{
             fontFamily: 'var(--body)', fontSize: 13, fontWeight: 600,
             letterSpacing: '0.09em', textTransform: 'uppercase', padding: '12px 26px', minHeight: 48,
-            borderRadius: '0 999px 999px 0',
             whiteSpace: 'nowrap',
           }}
         >

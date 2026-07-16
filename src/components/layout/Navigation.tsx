@@ -77,7 +77,7 @@ export default function Navigation() {
       fontFamily: 'var(--body)', fontSize: 11, fontWeight: 600,
       letterSpacing: '0.12em', textTransform: 'uppercase',
       padding: '10px 20px',
-      display: 'inline-flex', alignItems: 'center', minHeight: 40,
+      display: 'inline-flex', alignItems: 'center', minHeight: 44,
     }}>
       Book a Call
     </Link>
